@@ -1,4 +1,4 @@
-import bci
+from ..bci import Thought
 
 
 def test_thought():
