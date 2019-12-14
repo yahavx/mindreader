@@ -4,6 +4,7 @@ import datetime as dt
 
 
 def upload_thought(address, user, thought):
+
     conn = Connection.connect(*address)
 
     with conn:

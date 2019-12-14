@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Thought:
-
+    """Represents a thought of a user"""
     def __init__(self, user_id, timestamp, thought):
         self.user_id = user_id
         self.timestamp = timestamp
@@ -30,6 +30,7 @@ class Thought:
         return True
 
     def serialize(self):
+        """Converts a thought to byte format"""
         user_bytes = struct.pack('Q', self.user_id)
         timestamp_bytes = struct.pack('Q', int(datetime.timestamp(self.timestamp)))
         msg_len_bytes = struct.pack('I', len(self.thought))
@@ -38,6 +39,7 @@ class Thought:
 
     @staticmethod
     def deserialize(data):
+        """Converts a sequence of bytes to a thought"""
         user_id = struct.unpack('Q', data[0:8])[0]
         timestamp = struct.unpack('Q', data[8:16])[0]
         n = struct.unpack('I', data[16:20])[0]
