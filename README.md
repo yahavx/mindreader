@@ -1,3 +1,6 @@
+![build status](https://travis-ci.org/yahavx/YahavFooBar.svg?branch=master)
+
+
 # YahavFooBar
 
 Yahav's final project for Advanced System Design course
