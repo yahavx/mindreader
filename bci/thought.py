@@ -10,14 +10,24 @@ class Thought:
         self.thought = thought
 
     def __repr__(self):
-        return f'Thought(user_id={self.user_id!r}, timestamp={self.timestamp!r}, thought={self.thought!r})'
+        user_id_r = f'user_id={self.user_id!r}'
+        timestamp_r = f'timestamp={self.timestamp!r}'
+        thought_r = f'thought={self.thought!r}'
+        return f'Thought({user_id_r}, {timestamp_r}, {thought_r})'
 
     def __str__(self):
         return f'[{self.timestamp}] user {self.user_id}: {self.thought}'
 
     def __eq__(self, other):
-        return isinstance(other, Thought) and self.user_id == other.user_id \
-               and self.timestamp == other.timestamp and self.thought == other.thought
+        if not isinstance(other, Thought):
+            return False
+        if self.user_id != other.user_id:
+            return False
+        if self.timestamp != other.timestamp:
+            return False
+        if self.thought != other.thought:
+            return False
+        return True
 
     def serialize(self):
         user_bytes = struct.pack('Q', self.user_id)

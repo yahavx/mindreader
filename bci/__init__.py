@@ -1,4 +1,4 @@
-from .server import run_server
-from .client import upload_thought
-from .web import run_webserver
-from .thought import Thought
+from .server import run_server  # noqa
+from .client import upload_thought  # noqa
+from .web.web import run_webserver  # noqa
+from .thought import Thought  # noqa

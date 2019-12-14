@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# Dan ignore from FooBar
+.env/
+.pytest_cache/
+docs/build/
+
 # Distribution / packaging
 .Python
 build/

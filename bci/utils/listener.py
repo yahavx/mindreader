@@ -11,7 +11,11 @@ class Listener:
         self.server = socket.socket()
 
     def __repr__(self):
-        return f'Listener(port={self.port!r}, host={self.host!r}, backlog={self.backlog!r}, reuseaddr={self.reuseaddr!r})'
+        port_r = f'port={self.port!r}'
+        host_r = f'host={self.host!r}'
+        backlog_r = f'backlog={self.backlog!r}'
+        reuseaddr_r = f'reuseaddr={self.reuseaddr!r}'
+        return f'Listener({port_r}, {host_r}, {backlog_r}, {reuseaddr_r})'
 
     def start(self):
         if self.reuseaddr:

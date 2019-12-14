@@ -71,7 +71,8 @@ It also provides a `utils` sub-package, which provides a `Connection` and `Liste
 
     This function starts a http website, consists of list of thoughts for each user.
     It receives the following arguments:
-    - address
+    - address: a tuple of consist of ip and port, i.e (ip, port), to run the server on
+    - data: a directory that contains thoughts to be displayed on the website
     
     Usage example:
     ```pycon

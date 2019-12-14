@@ -1,5 +1,6 @@
 import socket
 
+
 class Connection:
     def __init__(self, socket):
         self.socket = socket
