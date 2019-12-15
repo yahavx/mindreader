@@ -10,3 +10,4 @@ def upload_thought(address, user, thought):
     with conn:
         thought = Thought(user, dt.datetime.now(), thought)
         conn.send(thought.serialize())
+
