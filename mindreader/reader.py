@@ -23,6 +23,12 @@ class Reader:
         gender = self.gender
         return f'Reader({user_id=}, {username=}, {birthdate=}, {gender=})'
 
+    def __str__(self):
+        user = f'user {self.user_id}'
+        birthdate = dt.datetime.fromtimestamp(self.birthdate).strftime("%d/%m/%y")
+        gender = 'male' if gender == 'm' else "female"
+        return f'{user}: {self.username}, born {birthdate} ({gender})'
+
     def _get_user_information(self):
         s = self.stream
         self.user_id, = struct.unpack('Q', s.read(ULONG_SIZE))
@@ -31,7 +37,7 @@ class Reader:
         self.birthdate, = struct.unpack('I', s.read(UINT_SIZE))
         self.gender, = s.read(1).decode('utf8')
 
-    def _get_snapshot(self):
+    def get_snapshot(self):
         s = self.stream
         snapshot = Snapshot()
 
@@ -43,18 +49,22 @@ class Reader:
         snapshot.translation = struct.unpack('ddd', s.read(3 * DOUBLE))
         snapshot.rotation = struct.unpack('dddd', s.read(4 * DOUBLE))
 
-        c_image_height, = struct.unpack('I', s.read(UINT_SIZE))
-        c_image_width, = struct.unpack('I', s.read(UINT_SIZE))
+        ci_height, = struct.unpack('I', s.read(UINT_SIZE))
+        ci_width, = struct.unpack('I', s.read(UINT_SIZE))
         color_image = list()
-        for i in range(c_image_height):
-            color_image.append(s.read(3 * c_image_width))
+        for i in range(ci_height):
+            color_image.append(s.read(3 * ci_width))
+        snapshot.ci_height = ci_height
+        snapshot.ci_width = ci_width
         snapshot.color_image = color_image
 
-        d_image_height, = struct.unpack('I', s.read(UINT_SIZE))
-        d_image_width, = struct.unpack('I', s.read(UINT_SIZE))
+        di_height, = struct.unpack('I', s.read(UINT_SIZE))
+        di_width, = struct.unpack('I', s.read(UINT_SIZE))
         depth_image = list()
-        for i in range(d_image_height):
-            depth_image.append(struct.unpack('f'*d_image_width, s.read(d_image_width * FLOAT)))
+        for i in range(di_height):
+            depth_image.append(struct.unpack('f'*di_width, s.read(di_width * FLOAT)))
+        snapshot.di_height = ci_height
+        snapshot.di_width = ci_width
         snapshot.depth_image = depth_image
 
         snapshot.hunger, = struct.unpack('f', s.read(FLOAT))
@@ -65,22 +75,10 @@ class Reader:
 
     def __iter__(self):
         while True:
-            snapshot = self._get_snapshot()
+            snapshot = self.get_snapshot()
             if not snapshot:  # reached EOF
                 break
             yield snapshot
 
     def close(self):
         self.stream.close()
-
-
-sample = "./sample.mind"
-reader = Reader(sample)
-reader.get_user_information()
-print(reader)
-sample = reader.get_snapshot()
-print(sample)
-sample = reader.get_snapshot()
-print(sample)
-reader.close()
-

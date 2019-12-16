@@ -1,12 +1,13 @@
 import struct
+from mindreader.reader import Reader
 
-s = open("./sandbox.py", "rb")
-x = 1
-while x:
-    token = s.read(1)
-    if not token:
-        print("REACHED EOF")
+
+sample = "./mindreader/sample.mind"
+reader = Reader(sample)
+
+i = 0
+for snapshot in reader:
+    print(snapshot)
+    i+=1
+    if i == 10:
         break
-    x = struct.unpack('s', token)
-    print(x)
-print("finished!")
