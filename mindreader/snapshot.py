@@ -1,5 +1,6 @@
 import datetime as dt
 
+
 class Snapshot:
 
     def __repr__(self):

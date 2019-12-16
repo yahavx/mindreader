@@ -18,4 +18,4 @@ def read(path, size):
 
 
 if __name__ == '__main__':
-    cli(prog_name='bci')
+    cli(prog_name='mindreader')

@@ -1,4 +1,6 @@
 import socket
+import struct
+from mindreader.reader import UINT_SIZE
 
 
 class Connection:
@@ -10,11 +12,12 @@ class Connection:
         peer = self.socket.getpeername()
         return f'<Connection from {sock[0]}:{sock[1]} to {peer[0]}:{peer[1]}>'
 
-    def send(self, data):
+    def send_message(self, data):
         self.socket.sendall(data)
 
-    def receive(self, size):
+    def receive_message(self):
         x = b''
+        size, = struct.unpack('I', self.socket.read(UINT_SIZE))
         original_size = size
         while size > 0:
             tmp = self.socket.recv(size)

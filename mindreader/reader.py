@@ -26,7 +26,7 @@ class Reader:
     def __str__(self):
         user = f'user {self.user_id}'
         birthdate = dt.datetime.fromtimestamp(self.birthdate).strftime("%d/%m/%y")
-        gender = 'male' if gender == 'm' else "female"
+        gender = 'male' if self.gender == 'm' else "female"
         return f'{user}: {self.username}, born {birthdate} ({gender})'
 
     def _get_user_information(self):
