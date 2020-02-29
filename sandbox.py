@@ -1,5 +1,4 @@
-import struct
-from mindreader.reader import Reader
+from mindreader.utils.reader import Reader
 
 
 sample = "./mindreader/sample.mind"
