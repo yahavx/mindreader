@@ -24,10 +24,11 @@ class ProtobufFileReader:
         return self.stream.read(size)
 
     def get_user_information(self):
-        user = ProtoUser()
-        user.ParseFromString(self._get_data())
-        gender = 'm' if user.gender == 0 else ('f' if user.gender == 1 else 'unknown')
-        return User(user.user_id, user.username, user.birthday, gender)
+        user_snap = ProtoUser()
+        user_snap.ParseFromString(self._get_data())
+        gender = 'm' if user_snap.gender == 0 else ('f' if user_snap.gender == 1 else 'unknown')
+        return user_snap
+        return User(user_snap.user_id, user_snap.username, user_snap.birthday, gender)
 
     @staticmethod
     def _convert_to_snapshot(proto_snap):  # converts proto snapshot to our snapshot object
@@ -46,4 +47,5 @@ class ProtobufFileReader:
     def get_snapshot(self):
         proto_snap = ProtoSnapshot()
         proto_snap.ParseFromString(self._get_data())
+        return proto_snap
         return self._convert_to_snapshot(proto_snap)

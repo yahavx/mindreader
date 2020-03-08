@@ -1,6 +1,7 @@
 import click
-from mindreader.utils.reader.reader import Reader
+from .utils.reader.reader import Reader
 from . import server, client
+from .parsers import mq
 
 
 @click.group()
@@ -19,19 +20,27 @@ def read(path, size):
 
 
 @cli.command()
-@click.option('--address', default="localhost:2000")
-def run_server(address):
-    ip, port = address.split(':')
+@click.option('-h', '--host', default='127.0.0.1')
+@click.option('-p', '--port', default='8000')
+@click.option('--path', default='./sample.mind.gz')
+def upload_sample(host, port, path):
+    client.upload_sample(host, port, path)
+
+
+@cli.command()
+@click.option('-h', '--host', default='127.0.0.1')
+@click.option('-p', '--port', default='8000')
+# @click.argument('path')
+def run_server(host, port):
     try:
-        server.run_server((ip, port), "./server_data")
+        server.run_server(host, port, "localhost")
     except Exception as error:
         print(f'ERROR: {error}')
 
 
 @cli.command()
-@click.option('--address', default="localhost:2000")
-def upload(address="localhost:2000"):
-    client.upload_snapshot(address)
+def run_parser():
+    mq.consume()
 
 
 if __name__ == '__main__':

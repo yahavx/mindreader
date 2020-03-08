@@ -1,6 +1,8 @@
 protobuf
 Pillow
 google
+pika
+bson
 alabaster==0.7.12
 attrs==19.3.0
 Babel==2.7.0

@@ -17,9 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'YahavFooBar'
-copyright = '2019, Yahav'
-author = 'Yahav'
+project = 'mindreader'
+copyright = '2020, Yahav Ben Yaakov'
+author = 'Yahav Ben Yaakov'
+
+# The full version, including alpha/beta/rc tags
+release = '1.0.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -27,7 +30,7 @@ author = 'Yahav'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc'
+extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.

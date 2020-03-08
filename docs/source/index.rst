@@ -1,10 +1,10 @@
-.. YahavFooBar documentation master file, created by
-   sphinx-quickstart on Sat Dec 14 18:29:44 2019.
+.. mindreader documentation master file, created by
+   sphinx-quickstart on Sat Feb 29 19:45:45 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to YahavFooBar's documentation!
-=======================================
+Welcome to mindreader's documentation!
+======================================
 
 .. toctree::
    :maxdepth: 2

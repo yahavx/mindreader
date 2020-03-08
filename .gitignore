@@ -136,3 +136,4 @@ dmypy.json
 # samples
 /mindreader/sample.mind
 /mindreader/sample.mind.gz
+/sample.mind.gz
