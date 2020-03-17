@@ -1,5 +1,7 @@
 import click
 from .mq import parse as parse_data
+
+
 @click.group()
 def cli():
     pass

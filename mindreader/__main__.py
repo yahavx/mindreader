@@ -10,7 +10,7 @@ def cli():
 
 
 @cli.command()
-@click.argument('path')
+@click.option('--path', default='./sample.mind.gz')
 @click.argument('size', type=int)
 def read(path, size):
     reader = Reader(path)

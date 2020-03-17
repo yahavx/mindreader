@@ -1,6 +1,6 @@
 import requests
 from mindreader.utils.reader.reader import Reader
-from mindreader.utils.encoder.pb_encoder import PBEncoder
+from mindreader.utils.protocol_encoder.pb_encoder import PBEncoder
 
 
 def read2(path="sample.mind.gz"):

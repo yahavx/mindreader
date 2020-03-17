@@ -1,5 +1,5 @@
 import pika
-from mindreader.utils.encoder.pb_encoder import PBEncoder
+from mindreader.utils.protocol_encoder.pb_encoder import PBEncoder
 from flask import Flask, request
 
 serv = Flask(__name__)

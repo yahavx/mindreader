@@ -1,7 +1,7 @@
 import pika
 import importlib
 import sys
-from mindreader.utils.encoder.pb_encoder import PBEncoder
+from mindreader.utils.protocol_encoder.pb_encoder import PBEncoder
 from pathlib import Path
 
 # docker run -d -p 5672:5672 rabbitmq
@@ -9,8 +9,8 @@ from pathlib import Path
 config = {}
 
 
-def parse(parser_name, data):
-    return config[parser_name](data)
+def parse(parser_name, raw_data):
+    return config[parser_name](raw_data)
 
 
 def run_all_parsers(context, snapshot):
@@ -31,19 +31,19 @@ def consume(handler='', name=''):
     channel.start_consuming()
 
 
+def callback(channel, method, properties, body):
+    user, snapshot = PBEncoder.message_decode(body)
+    print(user)
+    print(f'snapshot time: {snapshot.datetime}')
+
+
 def load_parsers():
     root = Path("mindreader/parsers").absolute()
     sys.path.insert(0, str(root.parent))
     for file in root.iterdir():
-        if file.name.startswith('_') or not file.suffix == '.py':
+        if file.name.startswith('_') or not file.suffix == '.py' or file.name.startswith('m'):
             continue
         module = importlib.import_module(f'{root.name}.{file.stem}', package=root.name)
         for key, func in module.__dict__.items():
             if callable(func) and func.__name__.startswith("parse"):
                 config[func.field] = func
-
-
-def callback(channel, method, properties, body):
-    user, snapshot = PBEncoder.message_decode(body)
-    print(user)
-    print(f'snapshot time: {snapshot.datetime}')
