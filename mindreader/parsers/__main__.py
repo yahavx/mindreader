@@ -1,5 +1,5 @@
 import click
-from .mq import parse as parse_data
+from .rabbit_mq import parse as parse_data
 
 
 @click.group()

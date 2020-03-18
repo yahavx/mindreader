@@ -1,7 +1,7 @@
 import click
 from .utils.reader.reader import Reader
 from . import server, client
-from .parsers import mq
+from .parsers import rabbit_mq
 
 
 @click.group()
@@ -40,7 +40,7 @@ def run_server(host, port):
 
 @cli.command()
 def run_parser():
-    mq.consume()
+    rabbit_mq.consume()
 
 
 if __name__ == '__main__':

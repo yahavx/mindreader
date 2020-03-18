@@ -1,15 +1,16 @@
 import pika
 from mindreader.utils.protocol_encoder.pb_encoder import PBEncoder
 from flask import Flask, request
+from mindreader.parsers.rabbit_mq import publish
 
 serv = Flask(__name__)
 data_dir = None
-snapshot_handler = None
+_publish = None
 
 
 def run_server(host, port, publish):
-    global snapshot_handler
-    snapshot_handler = publish
+    global _publish
+    _publish = publish
     serv.run(host, int(port))
 
 
@@ -26,16 +27,11 @@ def post_snapshot():
     print(user)
     print(snapshot.datetime)
 
-    if callable(snapshot_handler):
-        snapshot_handler(user, snapshot)
+    if callable(_publish):
+        _publish(user, snapshot)
 
     else:  # snapshot_handler is a URL of a message queue
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=snapshot_handler))
-        channel = connection.channel()
-        channel.exchange_declare(exchange='snapshot', exchange_type='fanout')
-        channel.basic_publish(exchange='snapshot', routing_key='', body=PBEncoder.message_encode(user, snapshot))
-        connection.close()
-        print("Message sent to queue")
+        publish('snapshot', '', PBEncoder.message_encode(user, snapshot), _publish)
 
     # context = Context.generate_context(user, snapshot)
     # parse(context, snapshot)

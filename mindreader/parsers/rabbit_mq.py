@@ -18,11 +18,20 @@ def run_all_parsers(context, snapshot):
         parser(context, snapshot)
 
 
-def consume(handler='', name=''):
+def publish(exchange, queue, message, host):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=host))
+    channel = connection.channel()
+    channel.exchange_declare(exchange=exchange, exchange_type='fanout')
+    channel.basic_publish(exchange=exchange, routing_key=queue, body=message)
+    connection.close()
+    print("Message sent to queue")
+
+
+def consume(queue='', exchange='snapshot'):
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
-    channel.exchange_declare(exchange='snapshot', exchange_type='fanout')
-    result = channel.queue_declare(queue='', exclusive=True)
+    channel.exchange_declare(exchange=exchange, exchange_type='fanout')
+    result = channel.queue_declare(queue=queue, exclusive=True)
     queue_name = result.method.queue
     channel.queue_bind(exchange='snapshot', queue=queue_name)
 
@@ -41,7 +50,7 @@ def load_parsers():
     root = Path("mindreader/parsers").absolute()
     sys.path.insert(0, str(root.parent))
     for file in root.iterdir():
-        if file.name.startswith('_') or not file.suffix == '.py' or file.name.startswith('m'):
+        if file.name.startswith('_') or not file.suffix == '.py' or file.name == 'rabbit_mq.py':
             continue
         module = importlib.import_module(f'{root.name}.{file.stem}', package=root.name)
         for key, func in module.__dict__.items():

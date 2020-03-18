@@ -3,8 +3,13 @@ from mindreader.utils.reader.reader import Reader
 from mindreader.utils.protocol_encoder.pb_encoder import PBEncoder
 
 
-def read2(path="sample.mind.gz"):
-    return Reader(path)
+def snap():
+    r = Reader("sample.mind.gz")
+    return r.get_snapshot()
+
+
+def read2():
+    return Reader("sample.mind.gz")
 
 
 def upload_sample(host, port, path="sample.mind.gz"):
