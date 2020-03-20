@@ -1,6 +1,6 @@
 import json
-from mindreader.objects import User
-from mindreader.objects.snapshot import Snapshot, Pose, Translation, Rotation, Image, Feelings
+from bci.objects import User
+from bci.objects import Snapshot, Pose, Translation, Rotation, Image, Feelings
 
 
 def snap_encode(snapshot):

@@ -1,6 +1,6 @@
 import requests
-from mindreader.utils.reader.reader import Reader
-from mindreader.utils.protocol_encoder.pb_encoder import PBEncoder
+from mindreader.drivers.reader.reader import Reader
+from mindreader.drivers.protocol_encoder.pb_encoder import PBEncoder
 
 
 def snap():
@@ -24,19 +24,3 @@ def upload_sample(host, port, path="sample.mind.gz"):
 # def get_config(address):
 #     r = requests.get(url=HTTP + address + "/config")
 #     return r.json()
-
-
-# def parse_color_image(snapshot):
-#     path = './color_image.jpg'
-#     size = snapshot.color_image.width, snapshot.color_image.height
-#     # print('\n\n\n\n')
-#     # print(size)
-#     # print(len(snapshot.color_image.data))
-#     # print('\n\n\n\n')
-#     from PIL import Image as PIL
-#     image = PIL.new('RGB', size)
-#     data = snapshot.color_image.data
-#     print(data[0:10])
-#     print(len(data))
-#     image.putdata(snapshot.color_image.data[1:])
-#     image.save(path)

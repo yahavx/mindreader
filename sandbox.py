@@ -1,4 +1,4 @@
-from mindreader.utils.reader import Reader
+from mindreader.drivers.reader import Reader
 
 
 sample = "./mindreader/sample.mind"

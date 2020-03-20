@@ -1,7 +1,7 @@
 import pika
 import importlib
 import sys
-from mindreader.utils.protocol_encoder.pb_encoder import PBEncoder
+from mindreader.drivers.protocol_encoder.pb_encoder import PBEncoder
 from pathlib import Path
 
 # docker run -d -p 5672:5672 rabbitmq

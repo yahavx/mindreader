@@ -1,5 +1,5 @@
 from PIL import Image as PIL
-from mindreader.utils.mq_encoder.pb_mq_encoder import PBMQEncoder
+from mindreader.drivers.mq_encoder.pb_mq_encoder import PBMQEncoder
 
 
 def parse_color_image(raw_snapshot, encoded=False):

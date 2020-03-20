@@ -1,5 +1,5 @@
 import click
-from .utils.reader.reader import Reader
+from .drivers.reader.reader import Reader
 from . import server, client
 from .parsers import rabbit_mq
 

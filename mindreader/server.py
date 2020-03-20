@@ -1,5 +1,5 @@
 import pika
-from mindreader.utils.protocol_encoder.pb_encoder import PBEncoder
+from mindreader.drivers.protocol_encoder.pb_encoder import PBEncoder
 from flask import Flask, request
 from mindreader.parsers.rabbit_mq import publish
 
