@@ -6,24 +6,24 @@ from mindreader.drivers.encoders.pb_encoder import PBEncoder
 
 
 class RabbitMQ:
-    name = 'rabbitmq'
+    prefix = 'rabbitmq'
 
     def __init__(self, host, port):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=host, port=port))
 
-    def publish(self, exchange, queue, message):
+    def publish(self, topic, message):
         connection = self.connection
         channel = connection.channel()
-        channel.exchange_declare(exchange=exchange, exchange_type='fanout')
-        channel.basic_publish(exchange=exchange, routing_key=queue, body=message)
+        channel.exchange_declare(exchange=topic, exchange_type='fanout')
+        channel.basic_publish(exchange=topic, routing_key='', body=message)
         connection.close()
         print('Message sent to queue')
 
-    def consume(self, exchange, queue, callback):
+    def consume(self, topic, callback):
         connection = self.connection
         channel = connection.channel()
-        channel.exchange_declare(exchange=exchange, exchange_type='fanout')
-        result = channel.queue_declare(queue=queue, exclusive=True)
+        channel.exchange_declare(exchange=topic, exchange_type='fanout')
+        result = channel.queue_declare(queue='', exclusive=True)
         queue_name = result.method.queue
         channel.queue_bind(exchange='snapshot', queue=queue_name)
 

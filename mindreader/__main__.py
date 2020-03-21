@@ -1,6 +1,7 @@
 import click
 from .drivers.reader.reader import Reader
-from . import server, client
+from . import client
+from mindreader.server import server
 from .drivers.message_queues import init_queue
 from .drivers.encoders.json_encoder import JSONEncoder
 
@@ -40,8 +41,26 @@ def run_server(host, port):
 @cli.command()
 def run_parser():
     mq = init_queue('rabbitmq://127.0.0.1:5672')
+    mq.consume('snapshot', callback)
+
+
+def callback(channel, method, properties, body):
     encoder = JSONEncoder()
-    mq.consume('snapshot', '', lambda channel, method, properties, body: print(encoder.snapshot_decode(body)))
+    snap = body
+    print(snap)
+    print(type(snap))
+    print("\n\n\n")
+    snap = encoder.snapshot_decode(snap)
+    print(snap)
+    print(type(snap))
+    print("\n\n\n")
+    # snap = encoder.snapshot_decode(snap)
+    # print(snap)
+    # print(type(snap))
+    # print("\n\n\n")
+
+    # print(snap["timestamp"])
+    # print("finish")
 
 
 if __name__ == '__main__':

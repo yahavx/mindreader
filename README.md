@@ -1,4 +1,4 @@
-![build status](https://travis-ci.org/yahavx/YahavFooBar.svg?branch=master)
+![build status](https://travis-ci.org/yahavx/mindreader.svg?branch=master)
 ![coverage](https://codecov.io/gh/yahavx/YahavFooBar/branch/master/graph/badge.svg)
 ![docs](https://readthedocs.org/projects/yahavfoobar/badge/?version=latest)
 

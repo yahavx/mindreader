@@ -16,7 +16,7 @@ def load_message_queues():
 
         for key, mq in module.__dict__.items():
             if isinstance(mq, type) and mq.__name__.endswith("MQ"):
-                config[mq.name] = mq
+                config[mq.prefix] = mq
 
 
 def init_queue(url):
