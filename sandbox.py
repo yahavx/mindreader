@@ -1,5 +1,4 @@
-from mindreader.drivers.reader import Reader
-
+from mindreader import Reader
 
 sample = "./mindreader/sample.mind"
 reader = Reader(sample)
@@ -10,3 +9,12 @@ for snapshot in reader:
     i+=1
     if i == 10:
         break
+
+
+def snap():
+    r = Reader("sample.mind.gz")
+    return r.get_snapshot()
+
+
+def read2():
+    return Reader("sample.mind.gz")

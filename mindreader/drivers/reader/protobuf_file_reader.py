@@ -1,7 +1,7 @@
 import gzip
 import struct
-from mindreader.drivers.cortex_pb2 import User
-from mindreader.drivers.cortex_pb2 import Snapshot
+from mindreader.objects.cortex_pb2 import User
+from mindreader.objects.cortex_pb2 import Snapshot
 
 UINT_SIZE = 4
 

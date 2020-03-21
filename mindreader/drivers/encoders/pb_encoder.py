@@ -1,17 +1,17 @@
 import struct
 import io
-from mindreader.drivers.cortex_pb2 import User as ProtoUser
-from mindreader.drivers.cortex_pb2 import Snapshot as ProtoSnapshot
+from mindreader.objects.cortex_pb2 import User
+from mindreader.objects.cortex_pb2 import Snapshot
 
 
-class PBMQEncoder:  # this class can decode user and snapshot to bytes
+class PBEncoder:
     @staticmethod
     def user_encode(user):
         return user.SerializeToString()
     
     @staticmethod
     def user_decode(user_bytes):
-        user = ProtoUser()
+        user = User()
         user.ParseFromString(user_bytes)
         return user
 
@@ -21,14 +21,14 @@ class PBMQEncoder:  # this class can decode user and snapshot to bytes
 
     @staticmethod
     def snapshot_decode(snapshot_bytes):
-        snapshot = ProtoSnapshot()
+        snapshot = Snapshot()
         snapshot.ParseFromString(snapshot_bytes)
         return snapshot
 
     @staticmethod
     def message_encode(user, snapshot):
-        user_bytes = PBMQEncoder.user_encode(user)
-        snapshot_bytes = PBMQEncoder.snapshot_encode(snapshot)
+        user_bytes = PBEncoder.user_encode(user)
+        snapshot_bytes = PBEncoder.snapshot_encode(snapshot)
         user_len = struct.pack('I', len(user_bytes))
         snapshot_len = struct.pack('I', len(snapshot_bytes))
         return user_len + user_bytes + snapshot_len + snapshot_bytes
@@ -41,7 +41,7 @@ class PBMQEncoder:  # this class can decode user and snapshot to bytes
         snapshot_len, = struct.unpack('I', stream.read(4))
         snapshot_bytes = stream.read(snapshot_len)
 
-        user = PBMQEncoder.user_decode(user_bytes)
-        snapshot = PBMQEncoder.snapshot_decode(snapshot_bytes)
+        user = PBEncoder.user_decode(user_bytes)
+        snapshot = PBEncoder.snapshot_decode(snapshot_bytes)
 
         return [user, snapshot]
