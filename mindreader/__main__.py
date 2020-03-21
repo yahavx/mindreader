@@ -2,7 +2,7 @@ import click
 from .drivers.reader.reader import Reader
 from . import server, client
 from .drivers.message_queues import init_queue
-
+from .drivers.encoders.json_encoder import JSONEncoder
 
 @click.group()
 def cli():
@@ -32,15 +32,16 @@ def upload_sample(host, port, path):
 @click.option('-p', '--port', default='8000')
 def run_server(host, port):
     try:
-        server.run_server(host, port, mq_url="rabbitmq://127.0.0.1:5000")
+        server.run_server(host, port, mq_url="rabbitmq://127.0.0.1:5672")
     except Exception as error:
         print(f'ERROR: {error}')
 
 
 @cli.command()
 def run_parser():
-    mq = init_queue('rabbitmq://127.0.0.1:5000')
-    mq.consume('snapshot', '')
+    mq = init_queue('rabbitmq://127.0.0.1:5672')
+    encoder = JSONEncoder()
+    mq.consume('snapshot', '', lambda channel, method, properties, body: print(encoder.snapshot_decode(body)))
 
 
 if __name__ == '__main__':

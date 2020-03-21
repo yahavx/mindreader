@@ -1,19 +1,16 @@
 import json
 
+from mindreader.objects.user import User
 
-def snap_encode(snapshot):
-    # result = json.dumps(snapshot, cls=ComplexEncoder)
-    result = json.dumps(snapshot, default=lambda o: o.__dict__ if type(o) != bytes else o.hex(), indent=4)
-    return result
+class JSONEncoder:
+    def user_encode(self, user):
+        return json.dumps(user, default=lambda o: o.__dict__, indent=4)
 
+    def user_decode(self, json_user):
+        return json.loads(json_user)
 
-def snap_decode(json_snapshot):
-    pass
+    def snapshot_encode(self, snapshot):
+        return json.dumps(snapshot, default=lambda o: o.__dict__, indent=4)
 
-
-def user_encode(user):
-    return snap_encode(user)
-
-
-def user_decode(user):
-    pass
+    def snapshot_decode(self, json_snapshot):
+        return json.loads(json_snapshot)

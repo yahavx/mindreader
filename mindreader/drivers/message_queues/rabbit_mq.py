@@ -19,7 +19,7 @@ class RabbitMQ:
         connection.close()
         print('Message sent to queue')
 
-    def consume(self, exchange, queue):
+    def consume(self, exchange, queue, callback):
         connection = self.connection
         channel = connection.channel()
         channel.exchange_declare(exchange=exchange, exchange_type='fanout')
@@ -30,9 +30,3 @@ class RabbitMQ:
         channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
         print('Waiting for messages')
         channel.start_consuming()
-
-
-def callback(channel, method, properties, body):
-    user, snapshot = PBEncoder.message_decode(body)
-    print(user)
-    print(f'snapshot time: {snapshot.datetime}')

@@ -1,4 +1,7 @@
+import json
+
 from mindreader.drivers.encoders.pb_encoder import PBEncoder
+from mindreader.drivers.encoders.json_encoder import JSONEncoder
 from mindreader.drivers.message_queues import init_queue
 from mindreader.objects.snapshot import Snapshot
 from mindreader.objects.user import User
@@ -10,7 +13,8 @@ serv = Flask(__name__)
 data_dir = '/mindreader_data/'
 message_handler = None
 url = None
-encoder = PBEncoder()
+protocol_encoder = PBEncoder()
+json_encoder = JSONEncoder()
 
 
 def run_server(host, port, publish=None, mq_url=None):
@@ -31,21 +35,20 @@ def post_snapshot():
         message_handler(message_bytes)
         return ""  # return status code 200
 
-    user, snapshot = encoder.message_decode(message_bytes)
+    user, snapshot = protocol_encoder.message_decode(message_bytes)
     user, snapshot = _convert_objects_format(user, snapshot)
+    user = json_encoder.user_encode(user)
+    snapshot = json_encoder.snapshot_encode(snapshot)
 
-    print(user)
-    print(snapshot)
-    return ""
     mq = init_queue(url)
-    mq.publish('snapshot', '', PBEncoder.message_encode(user, snapshot))
+    mq.publish('snapshot', '', json_encoder.snapshot_encode(snapshot))
 
     print("Finished!")
     return ""
 
 
 def _convert_objects_format(user, snapshot):  # converts user and snapshot from protobuf format to self-created format
-    snapshot = Snapshot(user.user_id, uuid.uuid4(), snapshot.datetime, snapshot.pose, '', snapshot.color_image.width,
+    snapshot = Snapshot(user.user_id, str(uuid.uuid4()), snapshot.datetime, snapshot.pose, '', snapshot.color_image.width,
                         snapshot.color_image.height, '', snapshot.depth_image.width, snapshot.depth_image.height,
                         snapshot.feelings)
     gender = 'm' if user.gender == 0 else 'f' if user.gender == '1' else 'u'
