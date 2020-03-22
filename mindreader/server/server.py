@@ -1,12 +1,12 @@
 import json
 import uuid
 
+from ..drivers.context import Context
 from ..drivers.encoders.pb_encoder import PBEncoder
 from ..drivers.encoders.json_encoder import JSONEncoder
 from ..drivers.message_queues import init_queue
 from ..objects.snapshot import Snapshot
 from ..objects.user import User
-from .context import Context
 from flask import Flask, request
 
 
@@ -38,8 +38,8 @@ def post_snapshot():
 
     user, snapshot = _convert_objects_format(user, snapshot)  # convert objects format to a JSON-supported one
     context = Context(data_dir, user.user_id, snapshot.snapshot_id)
-    # snapshot.color_image_path = context.save('color_image', color_image_data)
-    # snapshot.depth_image_path = context.save('depth_image', depth_image_data)
+    snapshot.color_image_path = context.save('color_image', color_image_data)
+    snapshot.depth_image_path = context.save('depth_image', depth_image_data)
 
     if message_handler:  # run_server was invoked through API
         message_handler(message_bytes)

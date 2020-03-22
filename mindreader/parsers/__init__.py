@@ -3,10 +3,10 @@ import json
 import sys
 from pathlib import Path
 from threading import Thread
-
 from mindreader.drivers.message_queues import init_queue
 
 config = {}
+data_dir = '/home/user/mindreader/data'  # large files will be stored here (path will be passed)
 
 
 def load_parsers():
@@ -43,7 +43,6 @@ def add_id(data, snapshot):
     data["user_id"] = snapshot["user_id"]
     data["snapshot_id"] = snapshot["snapshot_id"]
     return json.dumps(data)
-
 
 
 def run_all_parsers(mq_url):
