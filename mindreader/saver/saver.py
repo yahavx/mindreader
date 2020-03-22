@@ -2,6 +2,7 @@ import json
 from ..drivers.databases import init_database
 from ..drivers.message_queues import init_queue
 from ..parsers import get_available_parsers
+from threading import Thread
 
 
 class Saver:
@@ -16,14 +17,17 @@ class Saver:
         else:
             self.db.insert_data(topic, data)
 
-    def run_saver(self, mq_url):
+    def run_saver(self, parser_name, mq_url):
         mq = init_queue(mq_url)
+        mq.consume(parser_name, lambda body: self.save(parser_name, body))
 
+    def run_all_savers(self, mq_url):
         for parser_name in get_available_parsers():
-            if parser_name != 'rotation':
-                continue
+            t = Thread(target=self.run_saver, args=(parser_name, mq_url))
+            t.start()
             print(f'Now listening on exchange: {parser_name}')
-            mq.consume(parser_name, lambda body: self.save(parser_name, body))
+
+
 
 
 

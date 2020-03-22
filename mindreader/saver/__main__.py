@@ -21,7 +21,7 @@ def save(database, topic, data):
 @click.option('-m', '--mq_url', default='rabbitmq://127.0.0.1:5672')
 def run_saver(db_url, mq_url):
     saver = Saver(db_url)
-    saver.run_saver(mq_url)
+    saver.run_all_savers(mq_url)
 
 
 if __name__ == '__main__':

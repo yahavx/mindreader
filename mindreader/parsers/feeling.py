@@ -1,4 +1,4 @@
-def parse_feeling(context, snapshot):
+def parse_feeling(snapshot):
     pass
 
 

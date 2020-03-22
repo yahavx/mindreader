@@ -2,6 +2,8 @@ import importlib
 import json
 import sys
 from pathlib import Path
+from threading import Thread
+
 from mindreader.drivers.message_queues import init_queue
 
 config = {}
@@ -28,15 +30,18 @@ def run_parser(parser_name, mq_url):
 
     def handler(body):
         result = parse(parser_name, body)
-        print(result)
+        
+        print(f"Parsed {parser_name}")
         mq.publish(parser_name, result)
 
     mq.consume('snapshot', handler)
 
 
 def run_all_parsers(mq_url):
-    for parser in config.keys():
-        run_parser(parser, mq_url)
+    for parser_name in get_available_parsers():
+        t = Thread(target=run_parser, args=(parser_name, mq_url))
+        t.start()
+        print(f'Parser {parser_name} is activated')
 
 
 def get_available_parsers():
