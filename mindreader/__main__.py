@@ -44,7 +44,7 @@ def run_parser():
     mq.consume('snapshot', callback)
 
 
-def callback(channel, method, properties, body):
+def callback(body):
     encoder = JSONEncoder()
     snap = body
     print(snap)

@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from ..drivers.encoders.pb_encoder import PBEncoder
@@ -10,7 +11,7 @@ from flask import Flask, request
 
 
 serv = Flask(__name__)
-data_dir = '/mindreader_data'  # large files will be stored here (path will be passed)
+data_dir = '/home/user/mindreader/data'  # large files will be stored here (path will be passed)
 message_handler = None
 url = None
 protocol_encoder = PBEncoder()
@@ -33,12 +34,12 @@ def post_snapshot():
     user, snapshot = protocol_encoder.message_decode(message_bytes)  # convert from bytes to pb objects
 
     color_image_data = snapshot.color_image.data
-    depth_image_data = snapshot.depth_image.data
+    depth_image_data = json.dumps(list(snapshot.depth_image.data))
 
     user, snapshot = _convert_objects_format(user, snapshot)  # convert objects format to a JSON-supported one
     context = Context(data_dir, user.user_id, snapshot.snapshot_id)
-    snapshot.color_image_path = context.save(color_image_data)
-    snapshot.depth_image_path = context.save(depth_image_data)
+    # snapshot.color_image_path = context.save('color_image', color_image_data)
+    # snapshot.depth_image_path = context.save('depth_image', depth_image_data)
 
     if message_handler:  # run_server was invoked through API
         message_handler(message_bytes)
