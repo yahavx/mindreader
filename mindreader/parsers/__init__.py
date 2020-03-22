@@ -28,13 +28,22 @@ def parse(parser_name, raw_data):
 def run_parser(parser_name, mq_url):
     mq = init_queue(mq_url)
 
-    def handler(body):
-        result = parse(parser_name, body)
-        
+    def handler(snapshot):
+        result = parse(parser_name, snapshot)
+        result = add_id(result, snapshot)
         print(f"Parsed {parser_name}")
         mq.publish(parser_name, result)
 
     mq.consume('snapshot', handler)
+
+
+def add_id(data, snapshot):
+    snapshot = json.loads(snapshot)
+    data = json.loads(data)
+    data["user_id"] = snapshot["user_id"]
+    data["snapshot_id"] = snapshot["snapshot_id"]
+    return json.dumps(data)
+
 
 
 def run_all_parsers(mq_url):

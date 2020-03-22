@@ -19,7 +19,7 @@ class Saver:
 
     def run_saver(self, parser_name, mq_url):
         mq = init_queue(mq_url)
-        mq.consume(parser_name, lambda body: self.save(parser_name, body))
+        mq.consume(parser_name, lambda data: self.save(parser_name, data))
 
     def run_all_savers(self, mq_url):
         for parser_name in get_available_parsers():

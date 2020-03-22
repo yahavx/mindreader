@@ -31,13 +31,13 @@ class MongoDB:
             self.snapshots.insert_one({'topic': topic, **data})
 
         if type(data) == str:
-            self.snapshots.insert_one({'name': topic, 'data': data})
+            self.snapshots.insert_one({'topic': topic, 'data': data})
 
     def get_users(self):
         return self.users.find()
 
     def get_user_by_id(self, user_id):
-        return self.users.find({'id': user_id})
+        return self.users.find({'user_id': user_id})
 
     def get_data_by_user_id(self, user_id):
         return self.snapshots.find({'user_id': user_id})

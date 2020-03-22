@@ -1,26 +1,18 @@
 import json
 
 
-def parse_rotation(snapshot):
+def parse_pose(snapshot):
     snapshot = json.loads(snapshot)
-    rotation = json.dumps(dict(
+    rotation = dict(
         x=snapshot["pose_rotation_x"],
         y=snapshot["pose_rotation_y"],
         z=snapshot["pose_rotation_z"],
-        w=snapshot["pose_rotation_w"],))
-    return rotation
-
-
-parse_rotation.field = 'rotation'
-
-
-def parse_translation(snapshot):
-    snapshot = json.loads(snapshot)
-    translation = json.dumps(dict(
+        w=snapshot["pose_rotation_w"],)
+    translation = dict(
         x=snapshot["pose_translation_x"],
         y=snapshot["pose_translation_y"],
-        z=snapshot["pose_translation_z"]))
-    return translation
+        z=snapshot["pose_translation_z"])
+    return json.dumps({'rotation': rotation, 'translation': translation})
 
 
-parse_translation.field = 'translation'
+parse_pose.field = 'pose'
