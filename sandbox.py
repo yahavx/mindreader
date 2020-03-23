@@ -1,6 +1,9 @@
 from mindreader import Reader
+from mindreader.drivers.databases import init_database
 from mindreader.server.server import _convert_objects_format
 from mindreader.drivers.encoders.json_encoder import JSONEncoder
+from bson.json_util import dumps
+
 
 sample = "./mindreader/sample.mind"
 # reader = Reader(sample)
@@ -47,3 +50,7 @@ def u():
     user, snapshot = _convert_objects_format(user, snapshot)
     return user
 
+
+def db():
+    db = init_database("mongodb://127.0.0.1:27017")
+    return db

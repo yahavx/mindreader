@@ -1,5 +1,5 @@
 import click
-from mindreader.server.server import run_server as run
+from mindreader.api.api import run_api_server
 
 
 @click.group()
@@ -9,10 +9,11 @@ def cli():
 
 @cli.command()
 @click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='8000')
-def run_server(host, port):
+@click.option('-p', '--port', default='5000')
+@click.option('-d', '--database', default='mongodb://127.0.0.1:27017')
+def run_server(host, port, database):
     try:
-        run(host, port, mq_url="rabbitmq://127.0.0.1:5672")
+        run_api_server(host, port, database)
     except Exception as error:
         print(f'ERROR: {error}')
 

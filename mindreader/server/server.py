@@ -11,7 +11,7 @@ from flask import Flask, request
 
 
 serv = Flask(__name__)
-data_dir = '/home/user/mindreader/data'  # large files will be stored here (path will be passed)
+data_dir = 'mindreader_data'  # large files will be stored here (path will be passed)
 message_handler = None
 url = None
 protocol_encoder = PBEncoder()
@@ -50,7 +50,7 @@ def post_snapshot():
 
     mq = init_queue(url)
     mq.publish('snapshot', snapshot)
-
+    mq.publish('user', user)
     print("Finished!")
     return ""
 

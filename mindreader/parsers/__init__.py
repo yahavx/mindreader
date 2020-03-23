@@ -6,7 +6,7 @@ from threading import Thread
 from mindreader.drivers.message_queues import init_queue
 
 config = {}
-data_dir = '/home/user/mindreader/data'  # large files will be stored here (path will be passed)
+data_dir = 'mindreader_data'  # large files will be stored here (path will be passed)
 
 
 def load_parsers():

@@ -15,10 +15,10 @@ class Context:  # this class is used to work with the disk
             f.write(data)
         return path
 
-    # def load_bytes(self, name):
-    #     path = self.path(name)
-    #     with open(path, 'rb') as f:
-    #         return f.read()
+    def load_bytes(self, name):
+        path = self.path(name)
+        with open(path, 'rb') as f:
+            return f.read()
 
     def load(self, name):
         path = self.path(name)

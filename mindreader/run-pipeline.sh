@@ -8,3 +8,4 @@ python -m mindreader.client upload-sample
 python -m mindreader.server run-server
 python -m mindreader.parsers run-parsers
 python -m mindreader.saver run-saver
+python -m mindreader.api run-server
