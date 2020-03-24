@@ -2,8 +2,11 @@ import json
 import os
 
 
+data_dir = 'mindreader_data'
+
+
 class Context:  # this class is used to work with the disk
-    def __init__(self, data_dir, user_id, snapshot_id):
+    def __init__(self, user_id, snapshot_id):
         self.data_dir = f'{data_dir}/{user_id}/{snapshot_id}'
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
@@ -15,19 +18,15 @@ class Context:  # this class is used to work with the disk
             f.write(data)
         return path
 
-    def load_bytes(self, name):
+    def load(self, name, byte=False):
         path = self.path(name)
-        with open(path, 'rb') as f:
-            return f.read()
-
-    def load(self, name):
-        path = self.path(name)
-        with open(path, 'r') as f:
+        mode = 'rb' if byte else 'r'
+        with open(path, mode) as f:
             return f.read()
 
     def path(self, name):
         return f'{self.data_dir}/{name}'
 
     @classmethod
-    def generate_from_snapshot(cls, data_dir, snapshot):
-        return cls(data_dir, snapshot["user_id"], snapshot["snapshot_id"])
+    def generate_from_snapshot(cls, snapshot):
+        return cls(snapshot["user_id"], snapshot["snapshot_id"])

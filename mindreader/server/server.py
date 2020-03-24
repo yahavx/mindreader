@@ -12,7 +12,6 @@ from ..objects.user import User
 from flask import Flask, request
 
 serv = Flask(__name__)
-data_dir = 'mindreader_data'  # large files will be stored here (path will be passed)
 message_handler = None
 url = None
 protocol_encoder = PBEncoder()
@@ -38,7 +37,7 @@ def post_snapshot():
     depth_image_data = json.dumps(list(snapshot.depth_image.data))
 
     user, snapshot = _convert_objects_format(user, snapshot)  # convert objects format to a JSON-supported one
-    context = Context(data_dir, user.user_id, snapshot.snapshot_id)
+    context = Context(user.user_id, snapshot.snapshot_id)
     snapshot.color_image_path = context.save('color_image', color_image_data)
     snapshot.depth_image_path = context.save('depth_image', depth_image_data)
 

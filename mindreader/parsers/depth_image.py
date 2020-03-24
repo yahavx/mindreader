@@ -11,7 +11,7 @@ def parse_depth_image(snapshot):
     size = snapshot["depth_image_height"], snapshot["depth_image_width"]
     path = snapshot["depth_image_path"]
     # TODO: maybe use the path?
-    context = Context.generate_from_snapshot(data_dir, snapshot)
+    context = Context.generate_from_snapshot(snapshot)
     data = json.loads(context.load('depth_image'))
     shaped = numpy.reshape(data, size)
     fig = plt.imshow(shaped)

@@ -19,4 +19,4 @@ def run_server(host, port, database):
 
 
 if __name__ == '__main__':
-    cli(prog_name='server')
+    cli(prog_name='api')
