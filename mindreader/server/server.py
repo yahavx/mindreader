@@ -1,4 +1,5 @@
 import json
+import time
 import uuid
 
 from ..drivers.context import Context
@@ -8,7 +9,6 @@ from ..drivers.message_queues import init_queue
 from ..objects.snapshot import Snapshot
 from ..objects.user import User
 from flask import Flask, request
-
 
 serv = Flask(__name__)
 data_dir = 'mindreader_data'  # large files will be stored here (path will be passed)
@@ -45,14 +45,22 @@ def post_snapshot():
         message_handler(message_bytes)
         return ""  # return status code 200
 
-    user = json_encoder.user_encode(user)
+    snapshot_md = _generate_snapshot_metadata(user, snapshot)
     snapshot = json_encoder.snapshot_encode(snapshot)
+    user = json_encoder.user_encode(user)
 
     mq = init_queue(url)
     mq.publish('snapshot', snapshot)
+    mq.publish('snapshot_md', snapshot_md)
     mq.publish('user', user)
     print("Finished!")
     return ""
+
+
+def _generate_snapshot_metadata(user, snapshot):
+    return json.dumps({'user_id': user.user_id,
+                       'snapshot_id': snapshot.snapshot_id,
+                       'timestamp': snapshot.timestamp})
 
 
 def _convert_objects_format(user, snapshot):  # converts user and snapshot from protobuf format to self-created format

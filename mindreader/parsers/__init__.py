@@ -30,19 +30,18 @@ def run_parser(parser_name, mq_url):
 
     def handler(snapshot):
         result = parse(parser_name, snapshot)
-        result = add_id(result, snapshot)
+        wrapped = wrap_parser_data(parser_name, result, snapshot)
         print(f"Parsed {parser_name}")
-        mq.publish(parser_name, result)
+        mq.publish(parser_name, wrapped)
 
     mq.consume('snapshot', handler)
 
 
-def add_id(data, snapshot):
+def wrap_parser_data(data_type, data, snapshot):
     snapshot = json.loads(snapshot)
     data = json.loads(data)
-    data["user_id"] = snapshot["user_id"]
-    data["snapshot_id"] = snapshot["snapshot_id"]
-    return json.dumps(data)
+    wrapped = {'snapshot_id': snapshot['snapshot_id'], data_type: data}
+    return json.dumps(wrapped)
 
 
 def run_all_parsers(mq_url):

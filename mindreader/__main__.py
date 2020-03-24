@@ -1,6 +1,6 @@
 import click
 from .drivers.reader.reader import Reader
-from . import client
+from .client import client
 from mindreader.server import server
 from .drivers.message_queues import init_queue
 from .drivers.encoders.json_encoder import JSONEncoder
@@ -21,11 +21,9 @@ def read(path, size):
 
 
 @cli.command()
-@click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='8000')
-@click.option('--path', default='./sample.mind.gz')
-def upload_sample(host, port, path):
-    client.upload_sample(host, port, path)
+@click.argument('amount', type=int)
+def us(amount):
+    client.upload_samples(amount)
 
 
 @cli.command()

@@ -10,10 +10,11 @@ def cli():
 @cli.command()
 @click.option('-d', '--database', default='mongodb://127.0.0.1:27017')
 @click.argument('topic')
-@click.argument('data')
-def save(database, topic, data):
+@click.argument('path')
+def save(database, topic, path):
     saver = Saver(database)
-    saver.save(topic, data)
+    with open(path, 'r') as f:
+        saver.save(topic, f.read())
 
 
 @cli.command()
