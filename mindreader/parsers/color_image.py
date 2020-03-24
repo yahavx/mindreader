@@ -15,7 +15,8 @@ def parse_color_image(snapshot):
 
     image_path = context.path('color_image.png')  # save it to the same directory, can be changed if needed
     image.save(image_path, 'PNG')
-    return json.dumps({'path': image_path})
+    width, height = size
+    return json.dumps({'image_path': image_path, 'width': width, 'height': height})
 
 
 parse_color_image.field = 'color_image'
