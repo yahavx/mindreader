@@ -14,14 +14,3 @@ def upload_sample(host, port, path="sample.mind.gz"):
 
     if r.status_code != 200:
         print("Snapshot was sent unsuccessfully")
-
-
-def upload_samples(amount):  # TODO: remove
-    reader = Reader("sample.mind.gz")
-    user = reader.get_user()
-    i = 0
-    for snapshot in reader:
-        r = requests.post(url="http://127.0.0.1:8000/snapshot", data=encoder.message_encode(user, snapshot))
-        i += 1
-        if i == amount:
-            break

@@ -14,12 +14,13 @@ def parse_depth_image(snapshot):
     context = Context.generate_from_snapshot(data_dir, snapshot)
     data = json.loads(context.load('depth_image'))
     shaped = numpy.reshape(data, size)
-    plt.imshow(shaped,  cmap=matplotlib.cm.RdYlGn, interpolation='nearest')  # TODO: cmap=hot, interpolation='nearest'?
+    plt.imshow(shaped,  cmap=matplotlib.cm.RdYlGn)  # TODO: cmap=hot, interpolation='nearest'?
+    # print(plt.get_size_inches())
     # plt.colorbar()
 
     image_path = context.path('depth_image.png')
     plt.savefig(image_path)
-    return json.dumps({'depth_image_path': image_path})
+    return json.dumps({'path': image_path})
 
 
 parse_depth_image.field = 'depth_image'

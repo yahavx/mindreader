@@ -13,9 +13,9 @@ def parse_color_image(snapshot):
     data = context.load_bytes('color_image')
     image = PIL.frombytes('RGB', size, data)
 
-    image_path = context.path('color_image.png')
+    image_path = context.path('color_image.png')  # save it to the same directory, can be changed if needed
     image.save(image_path, 'PNG')
-    return json.dumps({'color_image_path': image_path})
+    return json.dumps({'path': image_path})
 
 
 parse_color_image.field = 'color_image'

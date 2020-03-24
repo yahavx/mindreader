@@ -1,3 +1,4 @@
+import datetime as dt
 import json
 import time
 import uuid
@@ -65,9 +66,11 @@ def _generate_snapshot_metadata(user, snapshot):
 
 def _convert_objects_format(user, snapshot):  # converts user and snapshot from protobuf format to self-created format
     snapshot_id = str(uuid.uuid4())
-    snapshot = Snapshot(user.user_id, snapshot_id, snapshot.datetime, snapshot.pose, '', snapshot.color_image.width,
+    datetime = dt.datetime.fromtimestamp(snapshot.datetime / 1000).strftime('%d/%m/%Y, %H:%M:%S:%f')
+    snapshot = Snapshot(user.user_id, snapshot_id, datetime, snapshot.pose, '', snapshot.color_image.width,
                         snapshot.color_image.height, '', snapshot.depth_image.width, snapshot.depth_image.height,
                         snapshot.feelings)
-    gender = 'm' if user.gender == 0 else 'f' if user.gender == '1' else 'u'
-    user = User(user.user_id, user.username, user.birthday, gender)
+    gender = 'male' if user.gender == 0 else 'female' if user.gender == '1' else 'unknown'
+    datetime = dt.datetime.fromtimestamp(user.birthday).strftime('%d/%m/%Y')
+    user = User(user.user_id, user.username, datetime, gender)
     return user, snapshot

@@ -40,7 +40,8 @@ def run_parser(parser_name, mq_url):
 def wrap_parser_data(data_type, data, snapshot):
     snapshot = json.loads(snapshot)
     data = json.loads(data)
-    wrapped = {'snapshot_id': snapshot['snapshot_id'], data_type: data}
+    wrapped = {'snapshot_id': snapshot['snapshot_id'],
+               'results': {data_type: data}}
     return json.dumps(wrapped)
 
 

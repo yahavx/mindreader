@@ -18,7 +18,7 @@ class RabbitMQ:
         channel.exchange_declare(exchange=topic, exchange_type='fanout')
         channel.basic_publish(exchange=topic, routing_key='', body=message)
         connection.close()
-        print('Message sent to queue')
+        # print('Message sent to queue')
 
     def consume(self, topic, handler):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host, port=self.port))
@@ -30,7 +30,7 @@ class RabbitMQ:
 
         def callback(channel, method, properties, body):
             handler(body)
-            print("Handled message from queue")
+            # print("Handled message from queue")
 
         channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
         print('Waiting for messages')

@@ -1,9 +1,17 @@
+import shutil
+
 import click
+import pymongo
+import requests
+
+from mindreader.drivers.databases import init_database
 from .drivers.reader.reader import Reader
 from .client import client
 from mindreader.server import server
 from .drivers.message_queues import init_queue
 from .drivers.encoders.json_encoder import JSONEncoder
+from mindreader.drivers.encoders.pb_encoder import PBEncoder
+
 
 @click.group()
 def cli():
@@ -23,7 +31,14 @@ def read(path, size):
 @cli.command()
 @click.argument('amount', type=int)
 def us(amount):
-    client.upload_samples(amount)
+    db = pymongo.MongoClient('localhost', 27017)
+    db.drop_database("db")
+    try:
+        shutil.rmtree('mindreader_data')
+    except:
+        pass
+    finally:
+        upload_samples(amount)
 
 
 @cli.command()
@@ -59,6 +74,18 @@ def callback(body):
 
     # print(snap["timestamp"])
     # print("finish")
+
+
+def upload_samples(amount):  # TODO: remove
+    reader = Reader("sample.mind.gz")
+    user = reader.get_user()
+    i = 0
+    encoder = PBEncoder()
+    for snapshot in reader:
+        r = requests.post(url="http://127.0.0.1:8000/snapshot", data=encoder.message_encode(user, snapshot))
+        i += 1
+        if i == amount:
+            break
 
 
 if __name__ == '__main__':
