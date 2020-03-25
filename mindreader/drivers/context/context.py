@@ -2,7 +2,7 @@ import json
 import os
 
 
-data_dir = 'mindreader_data'
+data_dir = '/home/user/mindreader/mindreader_data'
 
 
 class Context:  # this class is used to work with the disk

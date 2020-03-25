@@ -9,7 +9,7 @@ def cli():
     pass
 
 
-def get_request(host, port, directory):
+def send_get_request(host, port, directory):
     url = f'http://{host}:{port}/{directory}'
     r = requests.get(url=url)
     result = r.json()
@@ -20,7 +20,7 @@ def get_request(host, port, directory):
 @click.option('-h', '--host', default='127.0.0.1')
 @click.option('-p', '--port', default='5000')
 def get_users(host, port):
-    print(get_request(host, port, 'users'))
+    print(send_get_request(host, port, 'users'))
 
 
 @cli.command()
@@ -28,7 +28,7 @@ def get_users(host, port):
 @click.option('-p', '--port', default='5000')
 @click.argument('user_id')
 def get_user(host, port, user_id):
-    print(get_request(host, port, f'users/{user_id}'))
+    print(send_get_request(host, port, f'users/{user_id}'))
 
 
 @cli.command()
@@ -36,7 +36,7 @@ def get_user(host, port, user_id):
 @click.option('-p', '--port', default='5000')
 @click.argument('user_id')
 def get_snapshots(host, port, user_id):
-    print(get_request(host, port, f'users/{user_id}/snapshots'))
+    print(send_get_request(host, port, f'users/{user_id}/snapshots'))
 
 
 @cli.command()
@@ -45,7 +45,7 @@ def get_snapshots(host, port, user_id):
 @click.argument('user_id')
 @click.argument('snapshot_id')
 def get_snapshot(host, port, user_id, snapshot_id):
-    print(get_request(host, port, f'users/{user_id}/snapshots/{snapshot_id}'))
+    print(send_get_request(host, port, f'users/{user_id}/snapshots/{snapshot_id}'))
 
 
 @cli.command()
@@ -56,7 +56,12 @@ def get_snapshot(host, port, user_id, snapshot_id):
 @click.argument('snapshot_id')
 @click.argument('result_name')
 def get_result(host, port, save, user_id, snapshot_id, result_name):
-    print(get_request(host, port, f'users/{user_id}/snapshots/{snapshot_id}/{result_name}'))
+    result = send_get_request(host, port, f'users/{user_id}/snapshots/{snapshot_id}/{result_name}')
+    if save:
+        with open(save, 'w+') as f:
+            f.write(result)
+    else:
+        print(result)
 
 
 if __name__ == '__main__':

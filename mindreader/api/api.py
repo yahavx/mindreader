@@ -1,7 +1,7 @@
 import json
 import datetime as dt
 
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, send_file
 from mindreader.drivers.databases import init_database
 
 serv = Flask(__name__)
@@ -17,7 +17,7 @@ def run_api_server(host, port, database_url):
 @serv.route('/users', methods=['GET'])
 def get_users():
     users = db.get_users()
-    users = [{'user_id': user["user_id"], 'username': user["username"]} for user in users]
+    users = [{'user_id': user['user_id'], 'username': user['username']} for user in users]
     return jsonify(users)
 
 
@@ -46,3 +46,9 @@ def get_snapshot_by_id(user_id, snapshot_id):
 def get_snapshot_result(user_id, snapshot_id, result_name):
     result = db.get_snapshot_by_id(user_id, snapshot_id)['results'][result_name]
     return jsonify(result)
+
+
+@serv.route('/users/<int:user_id>/snapshots/<snapshot_id>/<result_name>/data')
+def get_snapshot_result_data(user_id, snapshot_id, result_name):
+    path = db.get_snapshot_by_id(user_id, snapshot_id)['results'][result_name]['data_path']
+    return send_file(path)
