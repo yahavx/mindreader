@@ -1,15 +1,15 @@
 import datetime as dt
+from flask import Flask, request
 import json
-import time
 import uuid
 
-from ..drivers.context import Context
-from ..drivers.encoders.pb_encoder import PBEncoder
-from ..drivers.encoders.json_encoder import JSONEncoder
-from ..drivers.message_queues import init_queue
-from ..objects.snapshot import Snapshot
-from ..objects.user import User
-from flask import Flask, request
+from mindreader.drivers.context import Context
+from mindreader.drivers.encoders import PBEncoder
+from mindreader.drivers.encoders import JSONEncoder
+from mindreader.drivers.message_queues import init_queue
+from mindreader.objects.snapshot import Snapshot
+from mindreader.objects.user import User
+
 
 serv = Flask(__name__)
 message_handler = None

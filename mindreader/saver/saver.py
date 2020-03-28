@@ -1,7 +1,7 @@
 import json
-from ..drivers.databases import init_database
-from ..drivers.message_queues import init_queue
-from ..parsers import get_available_parsers
+from mindreader.drivers.databases import init_database
+from mindreader.drivers.message_queues import init_queue
+from mindreader.parsers import get_available_parsers
 from threading import Thread
 
 
@@ -10,8 +10,8 @@ class Saver:
         self.db = init_database(database_url)
 
     def save(self, topic, data):
-        print(f'Now saving {topic}')
-        data = json.loads(data)
+        print(f'Now saving {topic}')  # TODO: remove
+        data = json.loads(data)  # we expect data in JSON format
         if topic == 'user':
             self.db.insert_user(data)
         else:

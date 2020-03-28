@@ -1,6 +1,5 @@
 import pika
 
-from mindreader.drivers.encoders.pb_encoder import PBEncoder
 
 # docker run -d -p 5672:5672 rabbitmq
 
@@ -33,5 +32,5 @@ class RabbitMQ:
             # print("Handled message from queue")
 
         channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
-        print('Waiting for messages')
+        # print('Waiting for messages')
         channel.start_consuming()

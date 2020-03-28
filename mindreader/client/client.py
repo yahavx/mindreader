@@ -8,12 +8,13 @@ encoder = PBEncoder()
 
 
 def upload_sample(host, port, path):
-    """Connects to a server and sends snapshot to it."""
+    """
+    Read snapshots from path, and sends it to the server at host:port.
+    """
     try:
         reader = Reader(path)  # load sample
-    except Exception as e:
-        print(f"Couldn't open file: {e}")
-        return
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Upload failed: path does not exist")
 
     user = reader.get_user()
     snapshot = reader.get_snapshot()
@@ -21,6 +22,4 @@ def upload_sample(host, port, path):
     try:
         requests.post(url=address, data=encoder.message_encode(user, snapshot))
     except requests.exceptions.ConnectionError:
-        print(f"Uploading failed: couldn't post to {address}")
-    except Exception as e:
-        print(f'Uploading failed: {e}')
+        raise ConnectionError(f"Upload failed: couldn't post to address")
