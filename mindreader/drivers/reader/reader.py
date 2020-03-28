@@ -1,4 +1,5 @@
-from .protobuf_file_reader import ProtobufFileReader
+from .file_readers import ProtobufFileReader
+
 
 DEFAULT_READER = ProtobufFileReader
 
@@ -28,8 +29,10 @@ class Reader:
         return f'Reader({path=}, user={self.user.username})'
 
     def __iter__(self):
-        while snapshot := self.file_reader.get_snapshot():
+        snapshot = self.file_reader.get_snapshot()
+        while snapshot:
             yield snapshot
+            snapshot = self.file_reader.get_snapshot()
 
     def close(self):
         self.file_reader.stream.close()

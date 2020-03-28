@@ -1,3 +1,6 @@
+# flake8: noqa
+# TODO: remove this file
+
 import shutil
 
 import click

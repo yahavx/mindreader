@@ -3,3 +3,5 @@ max-line-length = 100
 exclude =
     .git
     .env
+ignore =
+    F401 # unused import

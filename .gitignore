@@ -140,6 +140,7 @@ dmypy.json
 
 # idea
 .idea/
+/.idea
 
 # sample data
 /data
