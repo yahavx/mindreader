@@ -10,7 +10,7 @@ def cli():
 
 @cli.command()
 @click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='8000')
+@click.option('-p', '--port', default=8000)
 @click.argument('path')
 def upload_sample(host, port, path):
     client.upload_sample(host, port, path)

@@ -27,7 +27,6 @@ Yahav's final project for Advanced System Design course
 
 3. To check that everything is working as expected, run the tests:
 
-
     ```sh
     $ pytest tests/
     ...
@@ -36,9 +35,7 @@ Yahav's final project for Advanced System Design course
 ## Usage
 
 The `mindreader` package provides several sub-packages:
-
-[a relative link](mindreader/parsers/README.md)
-
+client, server, parsers, saver, api, cli, gui.
 It also provides a `utils` sub-package, which provides a `Connection` and `Listener` classes.
   In addition, `bci` provides the following functions:  
 

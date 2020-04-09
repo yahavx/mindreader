@@ -57,7 +57,7 @@ def run_server(host, port):
 
 
 def upload_samples(amount):  # TODO: remove
-    reader = Reader("sample.mind.gz")
+    reader = Reader("sample.mind.gz", "pb")
     user = reader.get_user()
     i = 0
     encoder = PBEncoder()

@@ -1,23 +1,44 @@
-from .file_readers import ProtobufFileReader
+from pathlib import Path
+import importlib
+import sys
 
 
-DEFAULT_READER = ProtobufFileReader
+supported_file_readers = {}
+"""Holds the list of supported file formats, loaded dynamically."""
 
 
 class Reader:
-    def __init__(self, path, file_reader=None):  # file_reader
-        self.path = path
-        if not file_reader:
-            file_reader = DEFAULT_READER()
-        self.file_reader = file_reader
+    """
+    This class is used to parse users and snapshots from files.
 
+    Attributes:
+        file_reader: the file reader instantiated to read from a received path.
+        user: the user associated with the path.
+    """
+
+    def __init__(self, path: str, file_format: str):
+        """
+        Initializes a new reader.
+
+        Args:
+            path(str): path to the file.
+            file_format(str): format of the file.
+
+        Raises:
+            NotImplementedError: the format type received is currently not supported.
+        """
+        if file_format not in supported_file_readers:
+            raise NotImplementedError("File format is not supported")
+        self.file_reader = supported_file_readers[file_format]()
         self.file_reader.open_file(path)
         self.user = self.file_reader.get_user_information()
 
     def get_user(self):
+        """Returns the user associated to the file."""
         return self.user
 
     def get_snapshot(self):
+        """Returns the next snapshot in the file."""
         return self.file_reader.get_snapshot()
 
     def __repr__(self):
@@ -29,6 +50,7 @@ class Reader:
         return f'Reader({path=}, user={self.user.username})'
 
     def __iter__(self):
+        """Iterates over all the snapshots in the file."""
         snapshot = self.file_reader.get_snapshot()
         while snapshot:
             yield snapshot
@@ -36,3 +58,26 @@ class Reader:
 
     def close(self):
         self.file_reader.stream.close()
+
+
+def load_readers():
+    """
+    Loads dynamically all the file readers.
+
+    To add a new reader, add a file to the sub-package 'file_readers'
+    with a class named ***Reader, with an attribute named 'prefix' (string),
+    which indicates the file format this reader supports.
+    """
+    root = Path("mindreader/drivers/reader/file_readers").absolute()
+    sys.path.insert(0, str(root.parent))
+    for file in root.iterdir():
+        if file.name.startswith('_') or not file.suffix == '.py':
+            continue
+        module = importlib.import_module(f'{root.name}.{file.stem}', package=root.name)
+
+        for key, filereader in module.__dict__.items():
+            if isinstance(filereader, type) and filereader.__name__.endswith("Reader"):
+                supported_file_readers[filereader.prefix] = filereader
+
+
+load_readers()

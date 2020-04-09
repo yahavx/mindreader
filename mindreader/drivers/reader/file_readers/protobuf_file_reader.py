@@ -7,6 +7,8 @@ UINT_SIZE = 4
 
 
 class ProtobufFileReader:
+    prefix = 'pb'
+
     def __init__(self, path=None):
         self.path = path
         if path:

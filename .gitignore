@@ -144,4 +144,6 @@ dmypy.json
 
 # sample data
 /mindreader_data
+
+# sandbox
 /sb

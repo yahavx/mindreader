@@ -31,3 +31,4 @@ source .env/bin/activate
 python -m mindreader.server run-server &
 python -m mindreader.parsers run-parsers &
 python -m mindreader.saver run-saver &
+
