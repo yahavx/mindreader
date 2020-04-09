@@ -4,7 +4,13 @@
 
 # mindreader
 
-Yahav's final project for Advanced System Design course
+Yahav's final project for Advanced System Design course.
+
+## Table of contents
+* [Installation](#Installation)
+* [Quickstart](#Quickstart)
+* [Usage](#Usage)
+* [Credits](#Credits)
 
 ## Installation
 
@@ -32,14 +38,33 @@ Yahav's final project for Advanced System Design course
     ...
     ```
 
+## Quickstart
+After finishing the [installation](#installation) step, run the ```run-pipeline``` script:
+
+    ```sh
+    $ ./scripts/run-pipeline.sh
+    ...
+    Everything is ready!
+    ```
+
+Now upload and sample, and enter
+
 ## Usage
 
-The `mindreader` package provides several sub-packages:
-client, server, parsers, saver, api, cli, gui.
-It also provides a `utils` sub-package, which provides a `Connection` and `Listener` classes.
-  In addition, `bci` provides the following functions:  
+The `mindreader` package provides the following sub-packages:
+* `client` -
+* `server` :joy:
+* `parsers` :art:
+* `saver`
+* `api`
+* `cli`
+* `gui`
 
+Below is a simple description, and usage example, of each of the packages above.
+For a more detailed explanation, as well as necessary information to manage the code, check the [official documentation](https://mindreader.readthedocs.io/en/latest/).
 
+### client
+  
 - `run_server`
 
     This function starts a server that is going to receive thoughts.
