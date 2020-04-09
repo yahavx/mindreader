@@ -73,19 +73,27 @@ For a more detailed explanation, as well as necessary information to manage the 
 ### client
   
 The client provides the following API:
-* ```upload_sample```: reads a sample and uploads it to the server. Use CTRL+C to exit gracefully in the middle. This function receives the following arguments:
-    * ```host```: server host
-    * ``port``: server port
+* `upload_sample`: reads a sample and uploads it to the server. Use CTRL+C to exit gracefully in the middle. This function receives the following arguments:
+    * `host`: server host
+    * `port`: server port
     * `path`: relative or absolute path to the sample
+    * `format`: the format of the sample supplied. Optional parameter, defaults to 'pb' (protobuf)
 
-
-Format is an optional parameter, which defaults to 'pb' (protobuf), and indicates the format of the file supplied.    
-```pycon
->>> from mindreader.client import upload_sample
->>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz', format='pb')
-...
-^CServer terminated by user (KeyboardInterrupt)
-```
+    Example usage:    
+    ```pycon
+    >>> from mindreader.client import upload_sample
+    >>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz', format='pb')
+    ...
+    ^CSome of the snapshots were not sent due to a keyboard interrupt. Total sent: 27
+    ```
+  
+    It is also consumable by a CLI, where the host and port are optional:
+    ```sh
+    [mindreader] $ python -m mindreader.client -h/--host '127.0.0.1' -p/--port 8000 -f/--format 'pb' snapshot.mind.gz'
+    ...
+    All the 1024 snapshots were sent successfully!  # We were patient this time
+    [mindreader] $ 
+    ```
     
 This function starts a server that is going to receive thoughts.
 It receives the following arguments:
@@ -103,7 +111,7 @@ It receives the following arguments:
     - address: a tuple of consist of ip and port, i.e (ip, port), the ip of the server.
     - user: an integer that represents the sender's id
     - thought: a string that contains the thought
-    
+
     Usage example:
 
     ```pycon

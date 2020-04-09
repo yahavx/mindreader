@@ -14,7 +14,7 @@ def cli():
 @click.argument('path')
 @click.option('-f', '--format', default='pb')
 def upload_sample(host, port, path, format):
-    client.upload_sample(host, port, path, format)
+    client.upload_sample(host, int(port), path, format)
 
 
 if __name__ == '__main__':
