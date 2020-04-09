@@ -143,5 +143,5 @@ dmypy.json
 /.idea
 
 # sample data
-/data
-/mindreader/sb
+/mindreader_data
+/sb
