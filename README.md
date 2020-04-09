@@ -1,8 +1,8 @@
 ![build status](https://travis-ci.org/yahavx/mindreader.svg?branch=master)
-![coverage](https://codecov.io/gh/yahavx/YahavFooBar/branch/master/graph/badge.svg)
-![docs](https://readthedocs.org/projects/yahavfoobar/badge/?version=latest)
+![coverage](https://codecov.io/gh/yahavx/mindreader/branch/master/graph/badge.svg)
+![docs](https://readthedocs.org/projects/mindreader/badge/?version=latest)
 
-# YahavFooBar
+# mindreader
 
 Yahav's final project for Advanced System Design course
 
@@ -11,9 +11,9 @@ Yahav's final project for Advanced System Design course
 1. Clone the repository and enter it:
 
     ```sh
-    $ git clone git@github.com:yahavx/YahavFooBar.git
+    $ git clone git@github.com:yahavx/mindreader.git
     ...
-    $ cd YahavFooBar/
+    $ cd mindreader/
     ```
 
 2. Run the installation script and activate the virtual environment:
@@ -22,7 +22,7 @@ Yahav's final project for Advanced System Design course
     $ ./scripts/install.sh
     ...
     $ source .env/bin/activate
-    [YahavFB] $ # you're good to go!
+    [mindreader] $ # you're good to go!
     ```
 
 3. To check that everything is working as expected, run the tests:
@@ -35,7 +35,10 @@ Yahav's final project for Advanced System Design course
 
 ## Usage
 
-The `bci` (aka Brain Computer Interface) package provides the `Thought` class. 
+The `mindreader` package provides several sub-packages:
+
+[a relative link](mindreader/parsers/README.md)
+
 It also provides a `utils` sub-package, which provides a `Connection` and `Listener` classes.
   In addition, `bci` provides the following functions:  
 
