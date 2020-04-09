@@ -51,14 +51,14 @@ Now upload and sample, and enter
 
 ## Usage
 
-The `mindreader` package provides the following sub-packages (click to jump):
-* `client` :mega: - sends cognition snapshots to the server.
-* `server` :joy: - receives cognition snapshots from the client, and handle them.
-* `parsers` :hammer: - processes snapshots received from the server.
-* `saver` :key: - saves processed data to the database.
-* `api` :book: - an API to receive the data.
-* `cli` :memo: - a CLI that consumes the api
-* `gui` :computer: - allows to visualize the data comfortably
+The `mindreader` package provides the following sub-packages (click to jump into section):
+* [`client`](#client) :mega: - sends cognition snapshots to the server.
+* [`server`](#server) :calling: - receives cognition snapshots from the client, and handles them.
+* [`parsers`](#parsers) :hammer: - processes snapshots received from the server.
+* [`saver`](#saver) :key: - saves processed data to the database.
+* [`api`](#api) :book: - an API to receive the data.
+* [`cli`](#cli) :memo: - a CLI that consumes the api
+* [`gui`](#gui) :computer: - allows to visualize the data comfortably
 
 Below is a simple description, and usage example, of each of the packages above.
 For a more detailed explanation, as well as necessary information to manage the code, check the [official documentation](https://mindreader.readthedocs.io/en/latest/).
