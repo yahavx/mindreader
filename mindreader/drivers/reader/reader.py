@@ -5,7 +5,7 @@ DEFAULT_READER = ProtobufFileReader
 
 
 class Reader:
-    def __init__(self, path, file_reader=None):
+    def __init__(self, path, file_reader=None):  # file_reader
         self.path = path
         if not file_reader:
             file_reader = DEFAULT_READER()

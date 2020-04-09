@@ -2,7 +2,7 @@ import json
 import datetime as dt
 
 from flask import Flask, jsonify, send_file
-from mindreader.drivers.databases import init_database
+from mindreader.drivers import Database
 
 serv = Flask(__name__)
 db = None
@@ -10,7 +10,7 @@ db = None
 
 def run_api_server(host, port, database_url):
     global db
-    db = init_database(database_url)
+    db = Database(database_url)
     serv.run(host, int(port))
 
 

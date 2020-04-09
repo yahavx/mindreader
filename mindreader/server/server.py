@@ -6,7 +6,7 @@ import uuid
 from mindreader.drivers.context import Context
 from mindreader.drivers.encoders import PBEncoder
 from mindreader.drivers.encoders import JSONEncoder
-from mindreader.drivers.message_queues import init_queue
+from mindreader.drivers import MessageQueue
 from mindreader.objects.snapshot import Snapshot
 from mindreader.objects.user import User
 
@@ -14,8 +14,8 @@ from mindreader.objects.user import User
 serv = Flask(__name__)
 message_handler = None
 url = None
-protocol_encoder = PBEncoder()
-json_encoder = JSONEncoder()
+protocol_encoder = PBEncoder()  # encoder for the client-server protocol
+json_encoder = JSONEncoder()  # encoder for the server-parser protocol
 
 
 def run_server(host, port, publish=None, mq_url=None):
@@ -49,11 +49,14 @@ def post_snapshot():
     snapshot = json_encoder.snapshot_encode(snapshot)
     user = json_encoder.user_encode(user)
 
-    mq = init_queue(url)
-    mq.publish('snapshot', snapshot)
-    mq.publish('snapshot_md', snapshot_md)
-    mq.publish('user', user)
-    print("Finished!")
+    try:
+        mq = MessageQueue(url)
+        mq.publish('snapshot', snapshot)
+        mq.publish('snapshot_md', snapshot_md)
+        mq.publish('user', user)
+    except ConnectionError:
+        raise ConnectionError("Server failure: received a message from client, but couldn't connect to queue")
+
     return ""
 
 

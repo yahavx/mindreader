@@ -1,15 +1,17 @@
 import pika
 
 
-# docker run -d -p 5672:5672 rabbitmq
-
-
-class RabbitMQ:
+class RabbitMQ:  # TODO: remove prints
     prefix = 'rabbitmq'
 
     def __init__(self, host, port):
         self.host = host
         self.port = port
+
+        try:  # test connection
+            pika.BlockingConnection(pika.ConnectionParameters(host=self.host, port=self.port))
+        except pika.exceptions.AMQPConnectionError:
+            raise ConnectionError
 
     def publish(self, topic, message):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host, port=self.port))

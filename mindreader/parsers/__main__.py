@@ -1,7 +1,8 @@
 import click
 from . import parse as parse_data
 from . import run_parser as register_parser
-from . import run_all_parsers
+from .parsers import run_all_parsers
+
 
 @click.group()
 def cli():

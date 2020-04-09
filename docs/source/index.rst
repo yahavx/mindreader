@@ -1,18 +1,23 @@
-.. mindreder documentation master file, created by
-   sphinx-quickstart on Sat Mar 28 19:30:06 2020.
+.. Yahav documentation master file, created by
+   sphinx-quickstart on Thu Apr  9 16:08:53 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to mindreder's documentation!
-=====================================
+Documentation for the Code
+**************************
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+useful #1 -- auto members
+=========================
 
-Indices and tables
-==================
+.. automodule:: mindreader.__main__
+   :members:
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+
+useful #2 -- auto members
+=========================
+
+This is something I want to say that is not in the docstring...
+
+.. automodule:: mindreader.client.client
+   :members:
+

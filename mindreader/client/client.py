@@ -1,25 +1,49 @@
 import requests
 
 from mindreader.drivers.encoders import PBEncoder
-from mindreader.drivers.reader.reader import Reader
-
+from mindreader.drivers import Reader
 
 encoder = PBEncoder()
 
 
-def upload_sample(host, port, path):
+def upload_sample(host: str, port: str, path: str):
     """
-    Read snapshots from path, and sends it to the server at host:port.
+    Reads snapshots from a file, and sends them to the server.
+
+    Args:
+        host(str): host of the server.
+        port(str): port of the server.
+        path(str): path to the file.
+
+    Raises:
+        FileNotFoundError: the path to the file is invalid.
+        ConnectionError: couldn't establish connection to the server.
     """
     try:
         reader = Reader(path)  # load sample
     except FileNotFoundError:
-        raise FileNotFoundError(f"Upload failed: path does not exist")
+        raise FileNotFoundError(f"Client failure: path to sample does not exist")
 
     user = reader.get_user()
     snapshot = reader.get_snapshot()
-    address = f'http://{host}:{port}/snapshot'
+
+    address = generate_snapshot_address(host, port)
+    encoded_data = encoder.message_encode(user, snapshot)
     try:
-        requests.post(url=address, data=encoder.message_encode(user, snapshot))
+        send_data_to_server(address, encoded_data)
+    except ConnectionError:
+        raise ConnectionError(f"Client failure: couldn't connect to server")
+
+
+def send_data_to_server(address, data):
+    try:
+        requests.post(url=address, data=data)
     except requests.exceptions.ConnectionError:
-        raise ConnectionError(f"Upload failed: couldn't post to address")
+        raise ConnectionError
+
+
+def generate_snapshot_address(host: str, port: str) -> str:
+    """
+    Generates an address from host and port, according to the client-server protocol.
+    """
+    return f'http://{host}:{port}/snapshot'

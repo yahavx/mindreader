@@ -1,6 +1,5 @@
 import json
 from mindreader.drivers.context import Context
-from . import data_dir
 import numpy
 import matplotlib
 import matplotlib.pyplot as plt
