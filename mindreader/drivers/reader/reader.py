@@ -8,24 +8,16 @@ supported_file_readers = {}
 
 
 class Reader:
-    """
-    This class is used to parse users and snapshots from files.
-
-    Attributes:
-        file_reader: the file reader instantiated to read from a received path.
-        user: the user associated with the path.
-    """
+    """This class is used to parse users and snapshots from files."""
 
     def __init__(self, path: str, file_format: str):
         """
         Initializes a new reader.
 
-        Args:
-            path(str): path to the file.
-            file_format(str): format of the file.
+        :param path: path to the file.
+        :param file_format: format of the file.
 
-        Raises:
-            NotImplementedError: the format type received is currently not supported.
+        :raises NotImplementedError: the format type received is currently not supported.
         """
         if file_format not in supported_file_readers:
             raise NotImplementedError("File format is not supported")

@@ -13,16 +13,16 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
     If all the snapshots were sent successfully to the server,
     or the function operation was interrupted, prints an appropriate message.
 
-    Args:
-        host(str): host of the server.
-        port(int): port of the server.
-        path(str): path to the file (relative or absolute).
-        file_format(str): the format of the file provided.
+    :param host: host of the server.
+    :param port: port of the server.
+    :param path: path to the file (relative or absolute).
+    :param file_format: the format of the file provided.
 
-    Raises:
-        FileNotFoundError: the path to the file is invalid.
-        ConnectionRefusedError: couldn't establish connection to the server.
-        ConnectionError: the server sent a bad response code.
+    :raises FileNotFoundError: the path to the file is invalid.
+    :raises ConnectionRefusedError: couldn't establish connection to the server.
+    :raises ConnectionError: the server sent a bad response code.
+
+    :return: The number of snapshots sent successfully.
     """
     try:
         reader = Reader(path, file_format)  # load sample
@@ -46,6 +46,7 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
         print(f'Some of the snapshots were not sent due to a keyboard interrupt. Total sent: {i}')
     else:
         print(f"All the {i} snapshots were sent successfully!")
+    return i
 
 
 def send_snapshot(address: str, snapshot: Snapshot, user: User):
@@ -54,7 +55,7 @@ def send_snapshot(address: str, snapshot: Snapshot, user: User):
     """
     encoded_data = encoder.message_encode(user, snapshot)
     try:
-        status_code = send_serialized_data_to_server(address, encoded_data)
+        status_code = post_serialized_data_to_server(address, encoded_data)
         if status_code != 200:
             raise ConnectionError
 
@@ -62,12 +63,11 @@ def send_snapshot(address: str, snapshot: Snapshot, user: User):
         raise ConnectionRefusedError
 
 
-def send_serialized_data_to_server(address: str, data) -> int:
+def post_serialized_data_to_server(address: str, data) -> int:
     """
     Sends a post request to the server.
 
-    Returns:
-        Status code of the post request.
+    :return: Status code of the post request.
     """
     try:
         r = requests.post(url=address, data=data)

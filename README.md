@@ -73,7 +73,7 @@ For a more detailed explanation, as well as necessary information to manage the 
 ### client
   
 The client provides the following API:
-* `upload_sample`: reads a sample and uploads it to the server. Use CTRL+C to exit gracefully in the middle. This function receives the following arguments:
+* `upload_sample`: reads a sample and uploads it to the server. Use CTRL+C to exit gracefully in the middle. It receives the following arguments:
     * `host`: server host
     * `port`: server port
     * `path`: relative or absolute path to the sample
@@ -87,64 +87,38 @@ The client provides the following API:
     ^CSome of the snapshots were not sent due to a keyboard interrupt. Total sent: 27
     ```
   
-    It is also consumable by a CLI, where the host and port are optional:
+    It is also consumable by a CLI, where the host and port are optional (and default to the shown here):
     ```sh
-    [mindreader] $ python -m mindreader.client -h/--host '127.0.0.1' -p/--port 8000 -f/--format 'pb' snapshot.mind.gz'
+    [mindreader] $ python -m mindreader.client -h/--host '127.0.0.1' -p/--port 8000 \
+    -f/--format 'pb' snapshot.mind.gz'
     ...
     All the 1024 snapshots were sent successfully!  # We were patient this time
     [mindreader] $ 
     ```
+
+### server
+
+The server provides the following API:
+* `run_server`: starts the server, and handles cognition snapshots received from client. It receives the following arguments:
+    * `host`: server host, to listen in
+    * `port`: server port
+    * `publish`: an handler (function) to the snapshots. Each time a snapshot is received, this function will be called
+    with the user (of it) and the snapshot.
     
-This function starts a server that is going to receive thoughts.
-It receives the following arguments:
-- address: a tuple of consist of ip and port, i.e (ip, port), to run the server on
-- data: a directory to save received data
-    
-    Sending SIGINT ends the connection. 
-    Usage example:
-
-
-
-- `upload_thought`
-    
-    This function sends a thought to a server. It receives the following arguments:
-    - address: a tuple of consist of ip and port, i.e (ip, port), the ip of the server.
-    - user: an integer that represents the sender's id
-    - thought: a string that contains the thought
-
-    Usage example:
-
+    Example usage:    
     ```pycon
-    >>> upload_thought((127.0.0.1, 10000), 1, "I'm hungry")
-    done  # when sending is complete, this message is printed 
+    >>> from mindreader.server import run_server
+    >>> def print_message(user, snapshot):
+    ...     print(f'User: {user}, Snapshot: {snapshot}')
+    >>> run_server(host='127.0.0.1', port=8000, publish=print_snapshot)
+    ... # Listening on 127.0.0.1:8000
     ```
   
-- `run_webserver`
-
-    This function starts a http website, consists of list of thoughts for each user.
-    It receives the following arguments:
-    - address: a tuple of consist of ip and port, i.e (ip, port), to run the server on
-    - data: a directory that contains thoughts to be displayed on the website
-    
-    Usage example:
-    ```pycon
-    >>> run_server((127.0.0.1, 8000), ./data)
+    It is also consumable by a CLI, where the host and port are optional (default to the shown here), but instead
+    of a handler, it receives a path to a message queue, where it posts the user/snapshot data:
+    ```sh
+    [mindreader] $ python -m mindreader.server -h/--host '127.0.0.1' -p/--port 8000 \
+    'rabbitmq://127.0.0.1:5672/'  # The prefix indicates the message queue type
+    ...
     ```
-
-The `bci` package also provides a command-line interface:
-
-```sh
-$ python -m bci
-Brain Computer Interface, version 1.0.1
-```
-
-The CLI provides the `run_server`, `upload_thought` and `run_webserver`, with the same arguments as above:
-
-```sh
-$ python -m bci run_server 127.0.0.1:10000 ./data 
-...
-$ python -m bci upload_thought 127.0.0.1:10000 1 "I'm hungry"
-done
-$ python -m bci run_webserver
-...
-```
+  
