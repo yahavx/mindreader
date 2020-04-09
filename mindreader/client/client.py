@@ -2,6 +2,7 @@ import requests
 
 from mindreader.drivers.encoders import PBEncoder
 from mindreader.drivers import Reader
+from mindreader.objects import User, Snapshot
 
 encoder = PBEncoder()
 
@@ -9,7 +10,8 @@ encoder = PBEncoder()
 def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
     """
     Reads snapshots from a file, and sends them to the server.
-    If message was received successfully in the server, prints a message.
+    If all the snapshots were sent successfully to the server,
+    or the function operation was interrupted, prints an appropriate message.
 
     Args:
         host(str): host of the server.
@@ -19,7 +21,8 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
 
     Raises:
         FileNotFoundError: the path to the file is invalid.
-        ConnectionError: couldn't establish connection to the server.
+        ConnectionRefusedError: couldn't establish connection to the server.
+        ConnectionError: the server sent a bad response code.
     """
     try:
         reader = Reader(path, file_format)  # load sample
@@ -27,26 +30,41 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
         raise FileNotFoundError(f"Client failure: path to sample does not exist")
 
     user = reader.get_user()
-    snapshot = reader.get_snapshot()
-
     address = generate_snapshot_address(host, port)
+
+    i = 0
+
+    try:
+        for snapshot in reader:
+            send_snapshot(address, snapshot, user)
+            i += 1
+    except ConnectionRefusedError:
+        raise ConnectionRefusedError(f"Client failure: couldn't connect to server")
+    except ConnectionError:
+        raise ConnectionError("Client failure: the server sent back a bad response")
+    except KeyboardInterrupt:
+        print(f'Some of the snapshots were not sent due to a keyboard interrupt. Total sent: {i}')
+    else:
+        print(f"All the {i} snapshots were sent successfully!")
+
+
+def send_snapshot(address: str, snapshot: Snapshot, user: User):
+    """
+    Sends a single snapshot to the server.
+    """
     encoded_data = encoder.message_encode(user, snapshot)
     try:
-        code = send_data_to_server(address, encoded_data)
-        if code == 200:
-            print("Message sent successfully")
+        status_code = send_serialized_data_to_server(address, encoded_data)
+        if status_code != 200:
+            raise ConnectionError
 
-    except ConnectionError:
-        raise ConnectionError(f"Client failure: couldn't connect to server")
+    except ConnectionRefusedError:
+        raise ConnectionRefusedError
 
 
-def send_data_to_server(address: str, data) -> int:
+def send_serialized_data_to_server(address: str, data) -> int:
     """
     Sends a post request to the server.
-
-    Args:
-        address(str): full address of the server 'post' page.
-        data: data to send.
 
     Returns:
         Status code of the post request.
@@ -56,7 +74,7 @@ def send_data_to_server(address: str, data) -> int:
         return r.status_code
 
     except requests.exceptions.ConnectionError:
-        raise ConnectionError
+        raise ConnectionRefusedError
 
 
 def generate_snapshot_address(host: str, port: int) -> str:

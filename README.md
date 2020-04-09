@@ -7,10 +7,10 @@
 Yahav's final project for Advanced System Design course.
 
 ## Table of contents
-* [Installation](#Installation)
-* [Quickstart](#Quickstart)
-* [Usage](#Usage)
-* [Credits](#Credits)
+* [Installation](#installation)
+* [Quickstart](#quickstart)
+* [Usage](#usage)
+* [Credits](#credits)
 
 ## Installation
 
@@ -34,53 +34,68 @@ Yahav's final project for Advanced System Design course.
 3. To check that everything is working as expected, run the tests:
 
     ```sh
-    $ pytest tests/
+    [mindreader] $ pytest tests/
     ...
     ```
 
 ## Quickstart
 After finishing the [installation](#installation) step, run the ```run-pipeline``` script:
 
-    ```sh
-    $ ./scripts/run-pipeline.sh
-    ...
-    Everything is ready!
-    ```
+```sh
+[mindreader] $ ./scripts/run-pipeline.sh
+...
+Everything is ready!
+[mindreader] $
+```
 
-Now upload and sample, and enter
+Now upload some samples using the [upload_sample](#client), and than you can see the results
+at http://127.0.0.1: 
+use the [CLI](#cli)
+or [API](#api) to consume the data, and the [GUI](#gui) to visual 
 
 ## Usage
 
-The `mindreader` package provides the following sub-packages (click to jump into section):
+The `mindreader` package provides the following sub-packages:
 * [`client`](#client) :mega: - sends cognition snapshots to the server.
 * [`server`](#server) :calling: - receives cognition snapshots from the client, and handles them.
 * [`parsers`](#parsers) :hammer: - processes snapshots received from the server.
 * [`saver`](#saver) :key: - saves processed data to the database.
 * [`api`](#api) :book: - an API to receive the data.
-* [`cli`](#cli) :memo: - a CLI that consumes the api
-* [`gui`](#gui) :computer: - allows to visualize the data comfortably
+* [`cli`](#cli) :memo: - a CLI to receive the data.
+* [`gui`](#gui) :computer: - allows to visualize the data comfortably.
 
 Below is a simple description, and usage example, of each of the packages above.
+Most of the functions provide an API and a CLI as well. When the usage is identical,
+only one of them will be provided for the example.
+
 For a more detailed explanation, as well as necessary information to manage the code, check the [official documentation](https://mindreader.readthedocs.io/en/latest/).
 
 ### client
   
-- `run_server`
+The client provides the following API:
+* ```upload_sample```: reads a sample and uploads it to the server. Use CTRL+C to exit gracefully in the middle. This function receives the following arguments:
+    * ```host```: server host
+    * ``port``: server port
+    * `path`: relative or absolute path to the sample
 
-    This function starts a server that is going to receive thoughts.
-    It receives the following arguments:
-    - address: a tuple of consist of ip and port, i.e (ip, port), to run the server on
-    - data: a directory to save received data
+
+Format is an optional parameter, which defaults to 'pb' (protobuf), and indicates the format of the file supplied.    
+```pycon
+>>> from mindreader.client import upload_sample
+>>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz', format='pb')
+...
+^CServer terminated by user (KeyboardInterrupt)
+```
+    
+This function starts a server that is going to receive thoughts.
+It receives the following arguments:
+- address: a tuple of consist of ip and port, i.e (ip, port), to run the server on
+- data: a directory to save received data
     
     Sending SIGINT ends the connection. 
     Usage example:
 
-    ```pycon
-    >>> run_server((127.0.0.1, 10000), ./data)
-    # Waiting for data
-    # When data is sent in the correct format, it will be appended to ./data
-    # ^CServer terminated by user (KeyboardInterrupt)
-    ```
+
 
 - `upload_thought`
     

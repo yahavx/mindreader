@@ -16,6 +16,7 @@ snap run intellij-idea-community
 # sphinx
 export PYTHONPATH=$PWD
 sphinx-quickstart docs/
+sphinx-apidoc ./ -o ./docs/source
 make html -C ./docs
 cd docs/build/html/
 python -m http.server
