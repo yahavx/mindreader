@@ -48,10 +48,8 @@ Everything is ready!
 [mindreader] $
 ```
 
-Now upload some samples using the [upload_sample](#client), and than you can see the results
-at http://127.0.0.1: 
-use the [CLI](#cli)
-or [API](#api) to consume the data, and the [GUI](#gui) to visual 
+Now upload some samples using the [upload_sample](#client), and than you can visit
+http://127.0.0.1:8080 to see the results. You can also use the [CLI](#cli) or [API](#api) to consume the data.
 
 ## Usage
 
@@ -108,10 +106,10 @@ The server provides the following API:
     Example usage:    
     ```pycon
     >>> from mindreader.server import run_server
-    >>> def print_message(user, snapshot):
+    >>> def print_snapshot(user, snapshot):
     ...     print(f'User: {user}, Snapshot: {snapshot}')
     >>> run_server(host='127.0.0.1', port=8000, publish=print_snapshot)
-    ... # Listening on 127.0.0.1:8000
+    # Listening on 127.0.0.1:8000
     ```
   
     It is also consumable by a CLI, where the host and port are optional (default to the shown here), but instead
@@ -121,4 +119,55 @@ The server provides the following API:
     'rabbitmq://127.0.0.1:5672/'  # The prefix indicates the message queue type
     ...
     ```
+
+### parsers
+
+The parsers sub-package is used to parse snapshots. Each parser can be used directly on a
+snapshot, or be deployed to a message queue, where it receives snapshots 
+from the queue and pass the results back to it.
+
+The current parsers are color_image, depth_image, feelings, and pose. You can easily 
+[add a new parser](#adding-a-new-parser) which will be automatically collected and deployed when you [run the pipeline](#quickstart). 
+
+ provides the following API:
+* `run_server`: starts the server, and handles cognition snapshots received from the client. It receives the following arguments:
+    * `host`: server host, to listen in
+    * `port`: server port
+    * `publish`: an handler (function) to snapshots. Each time a snapshot is received, this function will be called
+    with the user (of it) and the snapshot.
+    
+    Example usage:    
+    ```pycon
+    >>> from mindreader.server import run_server
+    >>> def print_message(user, snapshot):
+    ...     print(f'User: {user}, Snapshot: {snapshot}')
+    >>> run_server(host='127.0.0.1', port=8000, publish=print_snapshot)
+    # Listening on 127.0.0.1:8000
+    ```
   
+    It is also consumable by a CLI, where the host and port are optional (default to the shown here), but instead
+    of a handler, it receives a path to a message queue, where it posts the user/snapshot data:
+    ```sh
+    [mindreader] $ python -m mindreader.server -h/--host '127.0.0.1' -p/--port 8000 \
+    'rabbitmq://127.0.0.1:5672/'  # The prefix indicates the message queue type
+    ...
+    ```
+
+##### Adding a new parser
+In order to add a new parser, create a `<parser_name>.py` inside this sub-package.
+Inside, add the parser as a function, which is named `parse_<parser_name>`.
+It should receive a raw snapshot, and return the parsed data, in JSON format. Finally, add to the function an attribute, named 'field', which is the name of the parser (string).
+
+Example:
+```python
+# parsers/example.py
+
+def parse_example(snapshot):
+    result = ...  # parse the snapshot
+    return {'example': result}
+
+parse_example.field = 'example'
+```
+
+Although few parsers can work from the same `.py` file, it is recommended to put each one in
+a different file.
