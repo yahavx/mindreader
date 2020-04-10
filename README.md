@@ -12,7 +12,7 @@ Yahav's final project for Advanced System Design course.
 * [Quickstart](#quickstart)
 * [Usage](#usage)
 * [Documentation](#documentation)
-* [Credits](#credits)
+* [Support](#support)
 
 ## Installation
 
@@ -387,4 +387,4 @@ The complete documentation for the project can be found [here](https://mindreade
 
 Reach out to me at one of the following places!
 * Email :email: - yahavxx@gmail.com
-* Twitter :bird: - yahavx
+* Twitter :bird: - @yahavxx
