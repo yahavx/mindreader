@@ -63,8 +63,7 @@ The project contains one package, `mindreader`, which provides the following sub
 * [`cli`](#cli) :memo: - a CLI that consumes the API.
 * [`gui`](#gui) :computer: - allows to visualize the data comfortably.
 
-Below is a simple description, and usage example, of each of the packages above.
-Most of the functions can be used via an API and a CLI as well.
+Below is a simple description, and usage examples, of each of the packages above.
 
 For a more detailed explanation, as well as necessary information to manage the code, check the
 [official documentation](https://mindreader.readthedocs.io/en/latest/).
