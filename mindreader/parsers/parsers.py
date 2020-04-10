@@ -11,6 +11,8 @@ available_parsers = {}
 
 
 def parse(parser_name, raw_data):
+    if parser_name not in available_parsers:
+        raise NotImplementedError("Parser type is not supported")
     return available_parsers[parser_name](raw_data)
 
 
@@ -19,14 +21,14 @@ def run_parser(parser_name, mq_url):
 
     def handler(snapshot):
         result = parse(parser_name, snapshot)
-        wrapped = wrap_parser_data(parser_name, result, snapshot)
+        wrapped = wrap_parser_result(parser_name, result, snapshot)
         print(f"Parsed {parser_name}")
         mq.publish(parser_name, wrapped)
 
     mq.consume('snapshot', handler)
 
 
-def wrap_parser_data(data_type, data, snapshot):
+def wrap_parser_result(data_type, data, snapshot):
     snapshot = json.loads(snapshot)
     data = json.loads(data)
     wrapped = {'snapshot_id': snapshot['snapshot_id'],
