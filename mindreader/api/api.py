@@ -39,7 +39,8 @@ def get_snapshots_by_user_id(user_id):
 def get_snapshot_by_id(user_id, snapshot_id):
     snapshot = db.get_snapshot_by_id(user_id, snapshot_id)
     results = list(snapshot['results'].keys())
-    return jsonify(results)
+    ret = {'snapshot_id': snapshot['snapshot_id'], 'date': snapshot['timestamp'], 'results': results}
+    return jsonify(ret)
 
 
 @serv.route('/users/<int:user_id>/snapshots/<snapshot_id>/<result_name>')

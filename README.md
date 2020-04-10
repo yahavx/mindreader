@@ -6,7 +6,8 @@
 
 Yahav's final project for Advanced System Design course.
 
-## Table of contents
+## Table of Contents
+
 * [Installation](#installation)
 * [Quickstart](#quickstart)
 * [Usage](#usage)
@@ -58,8 +59,8 @@ The `mindreader` package provides the following sub-packages:
 * [`server`](#server) :calling: - receives cognition snapshots from the client, and handles them.
 * [`parsers`](#parsers) :hammer: - processes snapshots received from the server.
 * [`saver`](#saver) :key: - saves processed data to the database.
-* [`api`](#api) :book: - an API to receive the data.
-* [`cli`](#cli) :memo: - a CLI to receive the data.
+* [`api`](#api) :book: - an API to consume the data.
+* [`cli`](#cli) :memo: - a CLI that consumes the API.
 * [`gui`](#gui) :computer: - allows to visualize the data comfortably.
 
 Below is a simple description, and usage example, of each of the packages above.
@@ -200,7 +201,7 @@ The saver is responsible to save parsed data, supplied by parsers, to a database
 
 It provides a `Saver` class, which is instantiated via a database url:
 ```pycon
->>> from cortex.saver import Saver
+>>> from mindreader.saver import Saver
 >>> saver = Saver(database_url)
 ```
 
@@ -230,9 +231,150 @@ The following functions are exposed via the CLI:
     
     Example usage:
     ```sh
-    [mindreader] $ -m cortex.saver run-saver 'mongodb://127.0.0.1:27017' \
+    [mindreader] $ python -m cortex.saver run-saver 'mongodb://127.0.0.1:27017' \
     'rabbitmq://127.0.0.1:5672/'
     ...
     ```
 
 ### API
+
+The API allows to consume the data from the database.
+
+It provide the `run-api-server` function, which runs the RESTful API server. it receives the following arguments:
+* `host`: server host, to serve in 
+* `port`: server port
+* `database_url`: a url do a database
+
+Example usage:
+```pycon
+>>> from mindreader.api import run_api_server
+>>> run_api_server('127.0.0.1', 5000, 'mongodb://127.0.0.1:27017')
+# serves on 127.0.0.1:5000
+```
+
+It can be also run via a CLI (with the name `run-server`):
+```sh
+[mindreader] $ python -m mindreader.api run-server -h/--host '127.0.0.1' -p/--port 5000 \
+-d/--database 'mongodb://127.0.0.1:27017'
+...
+```
+
+After running the server (in either way), it provides the following API endpoints: 
+* `GET /users` - returns the list of all the supported users, including their IDs and names.
+* `GET /users/user-id` - returns the specified user's details: ID, name, birthday and gender.
+* `GET /users/user-id/snapshots` - returns the list of the specified user's snapshot IDs and datetimes.
+* `GET /users/user-id/snapshots/snapshot-id` - returns the specified snapshot's details:
+ID, datetime, and the available results' names.
+* `GET /users/user-id/snapshots/snapshot-id/result-name` - returns the specified snapshot's result. If the result is
+is very large (e.g image), it will contain only metadata, and the data itself will be available in:
+    * `GET /users/user-id/snapshots/snapshot-id/color-image/data`
+    
+All the results are returned in pretty JSON format (except the last one), and can be consumed also via the [CLI](#cli).
+
+### CLI
+
+The CLI consumes the [API](#api). It provides a command for each API endpoint (except the last one - data).
+Each command can receive the `-h` (`--host`) and `-p` (`--port`) flags which indicates the host and port to question,
+respectively. If not supplied, it defaults to '127.0.0.1', 5000.
+
+The following commands are provided:
+* `get-users`: returns the list of all the supported users, including their IDs and names.
+```sh
+[mindreader] $ python -m mindreader.cli get-users -h '127.0.0.1' -p 5000
+[
+    {
+        "user_id": 42,
+        "username": "Dan Gittik"
+    }
+]
+```
+
+* `get-user`: receives a user ID, and returns the specified user's details: ID, name, birthday and gender.
+```sh
+[mindreader] $ python -m mindreader.cli get-user 42
+{
+    "birthday": "05/03/1992",
+    "gender": "male",
+    "user_id": 42,
+    "username": "Dan Gittik"
+}
+```
+
+* `get-snapshots`: receives a user ID, and returns his snapshot IDs and timestamps.
+```sh
+[mindreader] $ python -m mindreader.cli get-snapshots 42
+[
+    {
+        "date": "04/12/2019, 10:08:07:339000",
+        "snapshot_id": "c5f8f545"
+    },
+    {
+        "date": "04/12/2019, 10:08:07:412000",
+        "snapshot_id": "9cd2f9d0"
+    }
+] 
+``` 
+
+* `get-snapshot`: receives a user ID and a snapshot ID, and returns the specified snapshot's details:
+    ID, datetime, and the available results.
+```sh
+[mindreader] $ python -m mindreader.cli get-snapshot 42 'c5f8f545'
+{
+    "date": "04/12/2019, 10:08:07:339000",
+    "results": [
+        "pose",
+        "feelings",
+        "depth_image",
+        "color_image"
+    ],
+    "snapshot_id": "c5f8f545"
+}
+``` 
+
+* `get-result`: receives a user ID, a snapshot ID, and a result name, and returns the snapshot's result
+    (if the result is too big, it will return metadata only, the data will be available via
+     the [CLI](#cli)).
+
+```sh
+[mindreader] $ python -m mindreader.cli get-result 42 'c5f8f545' 'pose'
+{
+    {
+    "rotation": {
+        "w": 0.9571326384559261,
+        "x": -0.10888676356214629,
+        "y": -0.26755994585035286,
+        "z": -0.021271118915446748
+    },
+    "translation": {
+        "x": 0.4873843491077423,
+        "y": 0.007090016733855009,
+        "z": -1.1306129693984985
+    }
+}
+```
+
+### GUI
+
+The GUI consumes and API and visualizes all of the above. It provides the following functions:
+* `run-server` function, which recives: 
+    * `host`: server host, to serve in
+    * `port`: server port
+    * `api_host`: host to consume the API from
+    * `api_port`: API port
+    
+    And runs the server at host:port, consuming the data needed from api_host:api_port.
+    
+    Example usage:    
+    ```pycon
+    >>> from mindreader.gui import run_server
+    >>> run_server(host='127.0.0.1', port=8080, api_host = '127.0.0.1', api_port = 5000)
+    # Serving on http://127.0.0.1:8080/ 
+    ```
+    
+    Similarly, it can be run via the CLI:
+    ```sh
+    [mindreader] $ python -m mindreader.gui run-server -h/--host '127.0.0.1' -p/--port 8080 \
+    -H/--api-host '127.0.0.1' -P/--api-port 5000
+    # Serving on http://127.0.0.1:8080/ 
+    ```
+

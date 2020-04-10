@@ -18,8 +18,8 @@ def save(database, topic, path):
 
 
 @cli.command()
-@click.option('-d', '--db_url', default='mongodb://127.0.0.1:27017')
-@click.option('-m', '--mq_url', default='rabbitmq://127.0.0.1:5672')
+@click.argument('db_url')
+@click.argument('mq_url')
 def run_saver(db_url, mq_url):
     saver = Saver(db_url)
     saver.run_all_savers(mq_url)
