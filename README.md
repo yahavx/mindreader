@@ -50,11 +50,11 @@ Everything is ready!
 ```
 
 Now upload some samples using the [upload_sample](#client), and than you can visit
-http://127.0.0.1:8080 to see the results. You can also use the [CLI](#cli) or [API](#api) to consume the data.
+http://127.0.0.1:8080/ to see the results. You can also use the [CLI](#cli) or [API](#api) to consume the data.
 
 ## Usage
 
-The `mindreader` package provides the following sub-packages:
+The project contains one package, `mindreader`, which provides the following sub-packages:
 * [`client`](#client) :mega: - sends cognition snapshots to the server.
 * [`server`](#server) :calling: - receives cognition snapshots from the client, and handles them.
 * [`parsers`](#parsers) :hammer: - processes snapshots received from the server.
