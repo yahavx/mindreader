@@ -11,6 +11,7 @@ Yahav's final project for Advanced System Design course.
 * [Installation](#installation)
 * [Quickstart](#quickstart)
 * [Usage](#usage)
+* [Documentation](#documentation)
 * [Credits](#credits)
 
 ## Installation
@@ -82,6 +83,7 @@ The client sends snapshots to the server. It provides the following functions:
     >>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz', format='pb')
     ...
     ^CSome of the snapshots were not sent due to a keyboard interrupt. Total sent: 27
+    >>>
     ```
   
     It is also consumable by a CLI, where the host and port are optional (and default to the shown here):
@@ -377,3 +379,12 @@ The GUI consumes and API and visualizes all of the above. It provides the follow
     # Serving on http://127.0.0.1:8080/ 
     ```
 
+## Documentation
+
+The complete documentation for the project can be found [here](https://mindreader.readthedocs.io/en/latest/).
+
+## Support
+
+Reach out to me at one of the following places!
+* Email :email: - yahavxx@gmail.com
+* Twitter :bird: - yahavx
