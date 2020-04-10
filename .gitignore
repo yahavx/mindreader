@@ -147,3 +147,4 @@ dmypy.json
 
 # sandbox
 /sb
+/quick-testing.sh
