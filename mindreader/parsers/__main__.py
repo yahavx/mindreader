@@ -20,14 +20,15 @@ def parse(parser_name, path):
 
 @cli.command()
 @click.argument('parser_name')
-@click.option('--mq_url', default='rabbitmq://127.0.0.1:5672')
+@click.argument('mq_url')
 def run_parser(parser_name, mq_url):
     register_parser(parser_name, mq_url)
 
 
 @cli.command()
-def run_parsers():
-    run_all_parsers('rabbitmq://127.0.0.1:5672')
+@click.argument('mq_url')
+def run_parsers(mq_url):
+    run_all_parsers(mq_url)
 
 
 if __name__ == '__main__':

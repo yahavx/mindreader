@@ -63,15 +63,13 @@ The `mindreader` package provides the following sub-packages:
 * [`gui`](#gui) :computer: - allows to visualize the data comfortably.
 
 Below is a simple description, and usage example, of each of the packages above.
-Most of the functions provide an API and a CLI as well. When the usage is identical,
-only one of them will be provided for the example.
+Most of the functions can be used via an API and a CLI as well.
 
 For a more detailed explanation, as well as necessary information to manage the code, check the
 [official documentation](https://mindreader.readthedocs.io/en/latest/).
 
 ### client
-  
-The client provides the following functions:
+The client sends snapshots to the server. It provides the following functions:
 * `upload_sample`: reads a sample and uploads it to the server. Use CTRL+C to exit gracefully in the middle. It receives the following arguments:
     * `host`: server host
     * `port`: server port
@@ -96,8 +94,9 @@ The client provides the following functions:
     ```
 
 ### server
+The server receives snapshots from the client, and is responsible to handle them. 
 
-The server provides the following functions:
+It provides the following functions:
 * `run_server`: starts the server, and handles cognition snapshots received from client. It receives the following arguments:
     * `host`: server host, to listen in
     * `port`: server port
@@ -153,19 +152,29 @@ The parsers (package) provides the following functions:
 
 * `run_parser`: runs a parser as a service, so it listens on a message queue, receive raw snapshots, parse them,
     and pass the parsed results back to the message queue. This is only available via the CLI.
-    This command receives a parser name, and a url to a message queue. Example usage:
+    This command receives a parser name, and a url to a message queue. 
+    
+    Example usage:
     ```sh
     [mindreader] $ python -m mindreader.parsers run-parser 'feeling' 'rabbitmq://127.0.0.1:5672/'
     ...  # Listening on the message queue
     ```
 
+* `run_parsers`: collects all available parsers, and runs each one as a service, as in `run_parser`.
+    This is also only available via the CLI.
+    This command receives a parser name, and a url to a message queue. Example usage:
+    ```sh
+    [mindreader] $ python -m mindreader.parsers run-parsers 'rabbitmq://127.0.0.1:5672/'
+    ...  # Listening on the message queue, with eash parser separately
+    ```
+  
 #### Adding a new parser
-In order to add a new parser, create a `<parser_name>.py` inside this sub-package.
+In order to add a new parser, create a `<parser_name>.py` inside this `parsers` sub-package.
 Inside, add the parser as a function, which is named `parse_<parser_name>`.
-It should receive a raw snapshot, and return the parsed data, in JSON format. Finally, add to the function an attribute,
-named `field`, which is the name of the parser (a string).
+It should receive a raw snapshot (in JSON format), and return the parsed data, in JSON format.
+Finally, add to the function an attribute, named `field`, which is the name of the parser (a string).
 
-You can also add the parser as an instance of a class (instead of a function), which 
+You can also add a parser as an instance of a class (instead of a function), which 
 implements `__call__(self, snapshot)`. The rules from above will follow to this instance, in exactly the same way. 
 
 The parser will be automatically collected, to be used through the parsing functions (with the name
@@ -184,3 +193,46 @@ parse_example.field = 'example'
 
 Although few parsers can work from the same `.py` file, it is recommended to put each one in
 a different file.
+
+### saver
+
+The saver is responsible to save parsed data, supplied by parsers, to a database.
+
+It provides a `Saver` class, which is instantiated via a database url:
+```pycon
+>>> from cortex.saver import Saver
+>>> saver = Saver(database_url)
+```
+
+After that, the `saver` provide the following functions:
+* `save`: saves data to the database. It receives the following arguments:
+    * `topic`: the type of parsed data, usually the name of the parser which produces it
+    * `data`: the data, in JSON format
+    
+    Example usage:    
+    ```pycon
+    >>> from mindreader.parsers import parse
+    >>> data = ...  # some parsed data, in JSON
+    >>> result = parse('feelings', data)
+    ```
+  
+    This function can be also used directly via a CLI, that receives optionally a database url (defaulted to the below),
+    a topic name, and a path to a file which contains parsed data of a parser:
+    ```sh
+    [mindreader] $ python -m cortex.saver save -d/--database 'mongodb://127.0.0.1:27017' \
+    'feelings' 'data_folder/feelings.result'
+    ```
+
+The following functions are exposed via the CLI:
+* `run_saver`: runs the saver as a service, so it listens on a message queue to every relevant topic (parser),
+    consume the results, and saves them to the database. This command receives the url of the
+    message queue to listen to, and a url to the database, to save the data in.
+    
+    Example usage:
+    ```sh
+    [mindreader] $ -m cortex.saver run-saver 'mongodb://127.0.0.1:27017' \
+    'rabbitmq://127.0.0.1:5672/'
+    ...
+    ```
+
+### API
