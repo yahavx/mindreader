@@ -3,8 +3,10 @@ import datetime as dt
 
 from flask import Flask, jsonify, send_file
 from mindreader.drivers import Database
+from flask_cors import CORS
 
 serv = Flask(__name__)
+CORS(serv)
 db = None
 
 

@@ -164,7 +164,7 @@ The parsers (package) provides the following functions:
 
 * `run_parsers`: collects all available parsers, and runs each one as a service, as in `run_parser`.
     This is also only available via the CLI.
-    This command receives a parser name, and a url to a message queue. Example usage:
+    This command receives only a url to a message queue. Example usage:
     ```sh
     [mindreader] $ python -m mindreader.parsers run-parsers 'rabbitmq://127.0.0.1:5672/'
     ...  # Listening on the message queue, with eash parser separately
@@ -378,7 +378,7 @@ The GUI consumes and API and visualizes all of the above. It provides the follow
     -H/--api-host '127.0.0.1' -P/--api-port 5000
     # Serving on http://127.0.0.1:8080/ 
     ```
-
+    After that, visit http://127.0.0.1:8080/ (or your chosen url) to view the website.
 ## Documentation
 
 The complete documentation for the project can be found [here](https://mindreader.readthedocs.io/en/latest/).

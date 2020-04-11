@@ -1,0 +1,9 @@
+FROM python:3
+ADD requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
+ADD thoughts thoughts
+EXPOSE 8000
+
+ENV MQ_URL rabbitmq://127.0.0.1:5672
+ENV PARSER all
+CMD ["python", "-m", "mindreader.parsers", "run-parsers]

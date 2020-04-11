@@ -20,7 +20,7 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
 
     :raises FileNotFoundError: the path to the file is invalid.
     :raises ConnectionRefusedError: couldn't establish connection to the server.
-    :raises ConnectionError: the server sent a bad response code.
+    :raises ConnectionError: the server returned a bad response code.
 
     :return: The number of snapshots sent successfully.
     """
@@ -32,7 +32,7 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
     user = reader.get_user()
     address = generate_snapshot_address(host, port)
 
-    i = 0
+    i = 0  # count the snapshots sent
 
     try:
         for snapshot in reader:
@@ -50,9 +50,7 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
 
 
 def send_snapshot(address: str, snapshot: Snapshot, user: User):
-    """
-    Sends a single snapshot to the server.
-    """
+    """Sends a single snapshot to the server."""
     encoded_data = encoder.message_encode(user, snapshot)
     try:
         status_code = post_serialized_data_to_server(address, encoded_data)
@@ -78,7 +76,5 @@ def post_serialized_data_to_server(address: str, data) -> int:
 
 
 def generate_snapshot_address(host: str, port: int) -> str:
-    """
-    Generates an address from host and port, according to the client-server protocol.
-    """
+    """Generates an address from host and port, according to the client-server protocol."""
     return f'http://{host}:{port}/snapshot'
