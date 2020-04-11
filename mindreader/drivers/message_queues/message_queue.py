@@ -12,7 +12,7 @@ class MessageQueue:
         url = furl(url)
         prefix = url.scheme
         if prefix not in supported_mqs:
-            raise NotImplementedError("Message queue type is not supported")
+            raise NotImplementedError(f"Message queue type ('{prefix}') is not supported")
         self.mq = supported_mqs[prefix](url.host, url.port)
 
     def __repr__(self):

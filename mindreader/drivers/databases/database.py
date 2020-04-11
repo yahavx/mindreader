@@ -12,7 +12,7 @@ class Database:
         url = furl(url)
         prefix = url.scheme
         if prefix not in supported_dbs:
-            raise NotImplementedError("Database type is not supported")
+            raise NotImplementedError(f"Database type ('{prefix}') is not supported")
         self.db = supported_dbs[prefix](url.host, url.port)
 
     def __repr__(self):
