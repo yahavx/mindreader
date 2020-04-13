@@ -1,0 +1,134 @@
+version: '3.3'
+
+services:
+  db:
+    image: mongo
+    restart: on-failure
+    networks:
+      - mindreader-net
+    ports:
+      - "27017:27017"
+    volumes:
+      - ~/data:/var/data/db_mongo
+
+  mq:
+    image: rabbitmq
+    restart: on-failure
+    networks:
+      - mindreader-net
+    ports:
+      - "5672:5672"
+
+
+  server:
+    depends_on:
+      - mq
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile-server
+    restart: on-failure
+    networks:
+      - mindreader-net
+    ports:
+      - "8000:8000"
+    volumes:
+      - ~/mindreader/:/var/data/mindreader
+
+  pose-parser:
+    depends_on:
+      - mq
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile-parsers
+    restart: on-failure
+    networks:
+      - mindreader-net
+    environment:
+      - PARSER=pose
+    volumes:
+      - ~/mindreader:/var/data/mindreader
+
+  feelings-parser:
+    depends_on:
+      - mq
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile-parsers
+    restart: on-failure
+    networks:
+      - mindreader-net
+    environment:
+      - PARSER=feelings
+    volumes:
+      - ~/mindreader:/var/data/mindreader
+
+  depth-image-parser:
+    depends_on:
+      - mq
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile-parsers
+    restart: on-failure
+    networks:
+      - mindreader-net
+    environment:
+      - PARSER=depth_image
+    volumes:
+      - ~/mindreader:/var/data/mindreader
+
+  color-image-parser:
+    depends_on:
+      - mq
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile-parsers
+    restart: on-failure
+    networks:
+      - mindreader-net
+    environment:
+      - PARSER=color_image
+    volumes:
+      - ~/mindreader:/var/data/mindreader
+
+  saver:
+    depends_on:
+      - mq
+      - db
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile-saver
+    restart: on-failure
+    networks:
+      - mindreader-net
+    volumes:
+      - ~/mindreader:/var/data/mindreader
+
+  api:
+    depends_on:
+      - db
+    build:
+      context: ./dockerfiles
+      dockerfile: ./Dockerfile-api
+    restart: on-failure
+    networks:
+      - mindreader-net
+    ports:
+      - "5000:5000"
+    volumes:
+      - ~/mindreader:/var/data/mindreader
+
+  gui:
+    depends_on:
+      - api
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile-gui
+    restart: on-failure
+    networks:
+      - mindreader-net
+    ports:
+      - "8080:8080"
+
+
+networks:
+  mindreader-net:

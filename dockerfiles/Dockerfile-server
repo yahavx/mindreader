@@ -1,0 +1,6 @@
+FROM mindreader-base
+
+ENV HOST 127.0.0.1
+ENV PORT 8000
+ENV MQ_URL rabbitmq://mq:5672
+CMD python -m mindreader.server run-server -h ${HOST} -p ${PORT} ${MQ_URL}

@@ -13,7 +13,7 @@ from mindreader.objects.user import User
 
 serv = Flask(__name__)
 message_handler = None
-url = None
+mq = None
 protocol_encoder = PBEncoder()  # encoder for the client-server protocol
 json_encoder = JSONEncoder()  # encoder for the server-parser protocol
 
@@ -22,9 +22,11 @@ def run_server(host, port, publish=None, mq_url=None):
     if publish:
         global message_handler
         message_handler = publish
+    elif mq_url:
+        global mq
+        mq = MessageQueue(mq_url)
     else:
-        global url
-        url = mq_url
+        raise ValueError("No handler provided for snapshots")
     serv.run(host, int(port))
 
 
@@ -50,7 +52,6 @@ def post_snapshot():
     user = json_encoder.user_encode(user)
 
     try:
-        mq = MessageQueue(url)
         mq.publish('snapshot', snapshot)
         mq.publish('snapshot_md', snapshot_md)
         mq.publish('user', user)

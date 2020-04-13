@@ -148,3 +148,4 @@ dmypy.json
 # sandbox
 /sb
 /quick-testing.sh
+/docker-compose-test.yml

@@ -1,0 +1,6 @@
+from mindreader-base
+
+ENV HOST 127.0.0.1
+ENV PORT 500
+ENV DB_URL mongodb://db:27017
+CMD python -m mindreader.api run-server -h ${DB_URL} -p ${PORT} -d ${DB_URL}

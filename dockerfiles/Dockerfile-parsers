@@ -1,0 +1,4 @@
+from mindreader-base
+
+ENV MQ_URL rabbitmq://mq:5672
+CMD python -m mindreader.parsers run-parser ${PARSER} ${MQ_URL}
