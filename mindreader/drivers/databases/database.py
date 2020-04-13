@@ -13,7 +13,10 @@ class Database:
         prefix = url.scheme
         if prefix not in supported_dbs:
             raise NotImplementedError(f"Database type ('{prefix}') is not supported")
-        self.db = supported_dbs[prefix](url.host, url.port)
+        try:
+            self.db = supported_dbs[prefix](url.host, url.port)
+        except ConnectionError:
+            raise ConnectionError("Couldn't connect to database")
 
     def __repr__(self):
         return self.db.__repr__()

@@ -12,7 +12,11 @@ class MongoDB:
 
     def __init__(self, host, port):
         self.address = f'{host}:{port}'
-        self.client = pymongo.MongoClient(host, int(port), serverSelectionTimeoutMS=1000)
+        try:
+            self.client = pymongo.MongoClient(host, int(port), serverSelectionTimeoutMS=120000)  # 2 minutes timeout
+        except pymongo.errors.ServerSelectionTimeoutError:
+            raise ConnectionError
+
         self.db = self.client[DB]
         self.users = self.db[USERS_COL]
         self.snapshots = self.db[SNAPSHOT_COL]

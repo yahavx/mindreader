@@ -19,11 +19,11 @@ class Saver:  # TODO: remove prints
 
     def run_saver(self, parser_name, mq_url):
         mq = MessageQueue(mq_url)
+        print("Saver connected to queue")
         mq.consume(parser_name, lambda data: self.save(parser_name, data))
 
     def run_all_savers(self, mq_url):
         for parser_name in [*get_available_parsers(), 'user', 'snapshot_md']:
             t = Thread(target=self.run_saver, args=(parser_name, mq_url))
             t.start()
-            print(f'Now listening on exchange: {parser_name}')
 

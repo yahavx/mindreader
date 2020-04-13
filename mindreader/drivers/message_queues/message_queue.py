@@ -13,7 +13,10 @@ class MessageQueue:
         prefix = url.scheme
         if prefix not in supported_mqs:
             raise NotImplementedError(f"Message queue type ('{prefix}') is not supported")
-        self.mq = supported_mqs[prefix](url.host, url.port)
+        try:
+            self.mq = supported_mqs[prefix](url.host, url.port)
+        except ConnectionError:
+            raise ConnectionError("Couldn't connect to message queue")
 
     def __repr__(self):
         return self.mq.__repr__()

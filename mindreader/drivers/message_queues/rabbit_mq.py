@@ -9,7 +9,8 @@ class RabbitMQ:  # TODO: remove prints
         self.port = port
 
         try:  # test connection
-            pika.BlockingConnection(pika.ConnectionParameters(host=self.host, port=self.port))
+            pika.BlockingConnection(pika.ConnectionParameters(host=self.host, port=self.port,
+                                                              connection_attempts=6, retry_delay=20))  # 2 minutes timeout
         except pika.exceptions.AMQPConnectionError:
             raise ConnectionError
 

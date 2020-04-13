@@ -38,6 +38,7 @@ def run_parser(parser_name: str, mq_url: str):
     (for example: rabbitmq://...)
     """
     mq = MessageQueue(mq_url)
+    print(f"Parser {parser_name} connected to the queue")
 
     def handler(snapshot):
         result = parse(parser_name, snapshot)
@@ -72,7 +73,6 @@ def run_all_parsers(mq_url):
     for parser_name in get_available_parsers():
         t = Thread(target=run_parser, args=(parser_name, mq_url))
         t.start()
-        print(f'Parser {parser_name} is activated')
 
 
 def get_available_parsers():
