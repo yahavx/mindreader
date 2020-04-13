@@ -32,7 +32,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ~/mindreader/:/var/data/mindreader
+      - ~/mindreader_data:/var/data/mindreader
 
   pose-parser:
     depends_on:
@@ -46,7 +46,7 @@ services:
     environment:
       - PARSER=pose
     volumes:
-      - ~/mindreader:/var/data/mindreader
+      - ~/mindreader_data:/var/data/mindreader
 
   feelings-parser:
     depends_on:
@@ -60,7 +60,7 @@ services:
     environment:
       - PARSER=feelings
     volumes:
-      - ~/mindreader:/var/data/mindreader
+      - ~/mindreader_data:/var/data/mindreader
 
   depth-image-parser:
     depends_on:
@@ -74,7 +74,7 @@ services:
     environment:
       - PARSER=depth_image
     volumes:
-      - ~/mindreader:/var/data/mindreader
+      - ~/mindreader_data:/var/data/mindreader
 
   color-image-parser:
     depends_on:
@@ -88,7 +88,7 @@ services:
     environment:
       - PARSER=color_image
     volumes:
-      - ~/mindreader:/var/data/mindreader
+      - ~/mindreader_data:/var/data/mindreader
 
   saver:
     depends_on:
@@ -101,7 +101,7 @@ services:
     networks:
       - mindreader-net
     volumes:
-      - ~/mindreader:/var/data/mindreader
+      - ~/mindreader_data:/var/data/mindreader
 
   api:
     depends_on:
@@ -115,7 +115,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ~/mindreader:/var/data/mindreader
+      - ~/mindreader_data:/var/data/mindreader
 
   gui:
     depends_on:

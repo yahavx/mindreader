@@ -12,7 +12,12 @@ def cli():
 @click.argument('topic')
 @click.argument('path')
 def save(database, topic, path):
-    saver = Saver(database)
+    try:
+        saver = Saver(database)
+    except ConnectionError:
+        print("Saver error: couldn't connect to database")
+        exit(1)
+
     with open(path, 'r') as f:
         saver.save(topic, f.read())
 
@@ -21,7 +26,12 @@ def save(database, topic, path):
 @click.argument('db_url')
 @click.argument('mq_url')
 def run_saver(db_url, mq_url):
-    saver = Saver(db_url)
+    try:
+        saver = Saver(db_url)
+    except ConnectionError:
+        print("Saver error: couldn't connect to database")
+        exit(1)
+
     saver.run_all_savers(mq_url)
 
 

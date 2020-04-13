@@ -2,7 +2,7 @@ import json
 import os
 
 
-data_dir = '/home/user/mindreader/mindreader_data'
+data_dir = '/var/data/mindreader_data'  # this path allows the dockers to communicate, so changes should be considered carefully
 
 
 class Context:  # this class is used to work with the disk

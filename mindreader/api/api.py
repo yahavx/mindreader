@@ -12,7 +12,11 @@ db = None
 
 def run_api_server(host, port, database_url):
     global db
-    db = Database(database_url)
+    try:
+        db = Database(database_url)
+    except ConnectionError:
+        print("API error: couldn't connect to database")
+        exit(1)
     serv.run(host, int(port))
 
 

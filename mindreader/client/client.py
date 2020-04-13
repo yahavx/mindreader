@@ -16,18 +16,13 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
     :param host: host of the server.
     :param port: port of the server.
     :param path: path to the file (relative or absolute).
-    :param file_format: the format of the file provided.
-
-    :raises FileNotFoundError: the path to the file is invalid.
-    :raises ConnectionRefusedError: couldn't establish connection to the server.
-    :raises ConnectionError: the server returned a bad response code.
-
-    :return: The number of snapshots sent successfully.
+    :param file_format: the format of the file provided, default is 'pb' (protobuf).
     """
     try:
         reader = Reader(path, file_format)  # load sample
     except FileNotFoundError:
-        raise FileNotFoundError(f"Client failure: path to sample does not exist")
+        print(f"Client error: path to sample does not exist")
+        exit(1)
 
     user = reader.get_user()
     address = generate_snapshot_address(host, port)
@@ -39,40 +34,27 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
             send_snapshot(address, snapshot, user)
             i += 1
     except ConnectionRefusedError:
-        raise ConnectionRefusedError(f"Client failure: couldn't connect to server")
+        print(f"Client error: couldn't connect to server")
+        exit(1)
     except ConnectionError:
-        raise ConnectionError("Client failure: the server sent back a bad response")
+        print("Client error: the server sent back a bad response")
+        exit(1)
     except KeyboardInterrupt:
         print(f'Some of the snapshots were not sent due to a keyboard interrupt. Total sent: {i}')
     else:
         print(f"All the {i} snapshots were sent successfully!")
-    return i
 
 
 def send_snapshot(address: str, snapshot: Snapshot, user: User):
     """Sends a single snapshot to the server."""
     encoded_data = encoder.message_encode(user, snapshot)
     try:
-        status_code = post_serialized_data_to_server(address, encoded_data)
-        if status_code != 200:
-            raise ConnectionError
-
-    except ConnectionRefusedError:
-        raise ConnectionRefusedError
-
-
-def post_serialized_data_to_server(address: str, data) -> int:
-    """
-    Sends a post request to the server.
-
-    :return: Status code of the post request.
-    """
-    try:
-        r = requests.post(url=address, data=data)
-        return r.status_code
-
+        r = requests.post(url=address, data=encoded_data)
     except requests.exceptions.ConnectionError:
         raise ConnectionRefusedError
+
+    if r.status_code != 200:
+        raise ConnectionError
 
 
 def generate_snapshot_address(host: str, port: int) -> str:

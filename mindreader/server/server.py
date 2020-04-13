@@ -24,9 +24,14 @@ def run_server(host, port, publish=None, mq_url=None):
         message_handler = publish
     elif mq_url:
         global mq
-        mq = MessageQueue(mq_url)
+        try:
+            mq = MessageQueue(mq_url)
+        except ConnectionError:
+            print("Server error: couldn't connect to message queue")
+
     else:
-        raise ValueError("No handler provided for snapshots")
+        print("Server error: no handler supplied for snapshots")
+        exit(1)
     serv.run(host, int(port))
 
 
@@ -39,7 +44,12 @@ def post_snapshot():
     depth_image_data = json.dumps(list(snapshot.depth_image.data))
 
     user, snapshot = _convert_objects_format(user, snapshot)  # convert objects format to a JSON-supported one
-    context = Context(user.user_id, snapshot.snapshot_id)
+    try:
+        context = Context(user.user_id, snapshot.snapshot_id)
+    except PermissionError:
+        print("Server error: no permission to create data folder, check context saving location")
+        return "", 500
+
     snapshot.color_image_path = context.save('color_image', color_image_data)
     snapshot.depth_image_path = context.save('depth_image', depth_image_data)
 
@@ -56,9 +66,9 @@ def post_snapshot():
         mq.publish('snapshot_md', snapshot_md)
         mq.publish('user', user)
     except ConnectionError:
-        raise ConnectionError("Server failure: received a message from client, but couldn't connect to queue")
-
-    return ""
+        print("Server error: connection to message queue was lost")
+        return "", 500
+    return "", 200
 
 
 def _generate_snapshot_metadata(user, snapshot):
