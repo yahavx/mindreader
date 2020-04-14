@@ -14,7 +14,7 @@ class Reader:
 
     To add a new reader, add a file named <name>_file_reader.py to the sub-package file_readers
     with a class named <name>FileReader, which has an attribute named 'prefix' (string),
-    that indicates the type of files it supports reading from.
+    that indicates the type of files it supports reading from. It should implement the functions below.
     """
 
     def __init__(self, path: str, file_format: str):
@@ -60,13 +60,7 @@ class Reader:
 
 
 def load_readers():
-    """
-    Loads dynamically all the file readers.
-
-    To add a new reader, add a file to the sub-package 'file_readers'
-    with a class named ***Reader, with an attribute named 'prefix' (string),
-    which indicates the file format this reader supports.
-    """
+    """Loads dynamically all the available file readers."""
     root = (Path(__file__).parent / 'file_readers').absolute()
     sys.path.insert(0, str(root.parent))
     for file in root.iterdir():

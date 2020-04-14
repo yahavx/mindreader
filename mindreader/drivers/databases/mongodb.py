@@ -10,10 +10,17 @@ SNAPSHOT_COL = "snapshots"
 class MongoDB:
     prefix = 'mongodb'
 
-    def __init__(self, host, port):
-        self.address = f'{host}:{port}'
+    def __init__(self, host: str, port: int):
+        """
+        Connects to the mongo db client. Timeouts after 2 minutes.
+
+        :param host: client host.
+        :param port: client port.
+        """
+        self.host = host
+        self.port = port
         try:
-            self.client = pymongo.MongoClient(host, int(port), serverSelectionTimeoutMS=120000)  # 2 minutes timeout
+            self.client = pymongo.MongoClient(host, int(port), serverSelectionTimeoutMS=120000)
         except pymongo.errors.ServerSelectionTimeoutError:
             raise ConnectionError
 
@@ -21,13 +28,13 @@ class MongoDB:
         self.users = self.db[USERS_COL]
         self.snapshots = self.db[SNAPSHOT_COL]
 
-        try:
-            self.client.server_info()  # test connection
+        try:  # check the connection
+            self.client.server_info()  # the connection is not a must right now, but better to detect errors now
         except pymongo.errors.ServerSelectionTimeoutError:
-            raise ConnectionError(f"Couldn't connect to mongoDB at {self.host}:{self.port}")
+            raise ConnectionError
 
     def __repr__(self):
-        return f'MongoDB({self.address})'
+        return f'MongoDB({self.host}:{self.port})'
 
     def insert_user(self, user):
         self.users.update_one({'user_id': user['user_id']}, {'$set': user}, upsert=True)

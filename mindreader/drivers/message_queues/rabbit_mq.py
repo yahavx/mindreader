@@ -5,14 +5,23 @@ class RabbitMQ:
     prefix = 'rabbitmq'
 
     def __init__(self, host, port):
+        """
+        Connects to the mongo db client. Timeouts after 2 minutes.
+
+        :param host: client host.
+        :param port: client port.
+        """
         self.host = host
         self.port = port
 
         try:  # test connection
             pika.BlockingConnection(pika.ConnectionParameters(host=self.host, port=self.port,
-                                                              connection_attempts=6, retry_delay=20))  # 2 minutes timeout
+                                                              connection_attempts=6, retry_delay=20))
         except pika.exceptions.AMQPConnectionError:
             raise ConnectionError
+
+    def __repr__(self):
+        return f'RabbitMQ({self.host}:{self.port})'
 
     def publish(self, topic, message):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host, port=self.port))

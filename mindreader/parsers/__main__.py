@@ -1,7 +1,7 @@
 import click
 from . import parse as parse_data
 from . import run_parser as register_parser
-from .parsers import run_all_parsers
+from mindreader.parsers.parsers import run_all_parsers
 
 
 @click.group()
@@ -21,8 +21,9 @@ def parse(parser_name, path):
 @cli.command()
 @click.argument('parser_name')
 @click.argument('mq_url')
-def run_parser(parser_name, mq_url):
-    register_parser(parser_name, mq_url)
+@click.option('--debug/--no-debug', default=False, help="If enabled, the parsing results will be printed")
+def run_parser(parser_name, mq_url, debug):
+    register_parser(parser_name, mq_url, debug)
 
 
 @cli.command()

@@ -8,6 +8,9 @@ The current parsers are color_image, depth_image, feelings, and pose. You can
 [add your own new parser](#adding-a-new-parser) in a few simple steps, and it will be automatically collected and
 can be easily deployed.
 
+The 'parser_workers' sub-package contains the actual parsing functions/classes. It is not called 'parsers' to
+avoid confusion.
+
 The parsers (package) provides the following functions:
 * `parse`: parses a snapshot, and returns the result in JSON format. It receives the following arguments:
     * `parser_name`: the name of the parser
@@ -37,7 +40,10 @@ The parsers (package) provides the following functions:
     [mindreader] $ python -m mindreader.parsers run-parser 'feeling' 'rabbitmq://127.0.0.1:5672/'
     ...  # Listening on the message queue
     ```
-
+    
+    To print the parser result each time a snapshot is received, before posting it to the queue,
+    add the `--debug` flag.
+    
 * `run_parsers`: collects all available parsers, and runs each one as a service, as in `run_parser`.
     This is also only available via the CLI.
     This command receives only a url to a message queue. Example usage:
@@ -47,7 +53,7 @@ The parsers (package) provides the following functions:
     ```
   
 #### Adding a new parser
-In order to add a new parser, create a `<parser_name>.py` inside this `parsers` sub-package.
+In order to add a new parser, create a `<parser_name>.py` inside the `parser_workers` sub-package.
 Inside, add the parser as a function, which is named `parse_<parser_name>`.
 It should receive a [snapshot](../objects/snapshot.py), and return the parsed data, in JSON format.
 Finally, add to the function an attribute, named `field`, which is the name of the parser (a string).

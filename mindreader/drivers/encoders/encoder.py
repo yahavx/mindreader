@@ -15,10 +15,16 @@ class Encoder:
 
     To add a new encoder, add a file named <name>_encoder.py to the current-package,
     with a class named <name>Encoder, which has an attribute named 'encoder_type' (string),
-    that indicates the encoding method of this class.
+    that indicates the encoding method of this class. It should implement the functions below.
     """
     def __init__(self, encoder_type: str):
-        """Initializes an encoder."""
+        """
+        Initializes an encoder.
+
+        :param encoder_type: type of the encoder.
+
+        :raises NotImplementedError: the encoding method is not supported.
+        """
         if encoder_type not in supported_encoders:
             raise NotImplementedError(f"Encoder type ('{encoder_type}') is not supported")
         self.encoder = supported_encoders[encoder_type]()

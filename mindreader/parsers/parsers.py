@@ -31,27 +31,30 @@ def parse(parser_name: str, raw_snapshot: str):
     parsing_result = parser(snapshot)
     wrapped_parsing_result = wrap_parser_result(parsing_result, parser_name, snapshot)  # wrap with metadata
     ret = json.dumps(wrapped_parsing_result, indent=4)
-    print(ret)
     return ret
 
 
-def run_parser(parser_name: str, mq_url: str):
+def run_parser(parser_name: str, mq_url: str, debug: bool = False):
     """
     Runs a parser as a service, so it registers to a message queue,
     parse snapshots received on a queue, and pass the results back to another queue.
 
     :param parser_name: name of the parser to use.
     :param mq_url: a url to the queue. The prefix should indicate the type of the message queue
-    (for example: rabbitmq://...)
+                   (for example: rabbitmq://...)
+    :param debug: if enabled, the parsing results will be printed before passing them to the queue
     """
     mq = MessageQueue(mq_url)
     print(f"Parser {parser_name} connected to the queue")
 
     def handler(snapshot):
         result = parse(parser_name, snapshot)
+        if debug:
+            print("Parsed a snapshot:")
+            print(result)
         mq.publish(parser_name, result)
 
-    mq.consume('snapshot', handler, queue=parser_name)  # allows scalability
+    mq.consume('snapshot', handler, queue=parser_name)
 
 
 def wrap_parser_result(data: dict, data_type: str, snapshot: Snapshot):
@@ -78,7 +81,7 @@ def run_all_parsers(mq_url):
         t.start()
 
 
-def get_available_parsers():
+def get_available_parsers() -> list:
     """Returns the list of available parsers."""
     return list(available_parsers.keys())
 
@@ -88,7 +91,7 @@ def load_parsers():
     Loads dynamically all the available parsers.
     In order to add a new parser, check the 'parsers' section in the README.md of this package.
     """
-    root = Path("mindreader/parsers").absolute()
+    root = (Path(__file__).parent / 'parser_workers').absolute()
     sys.path.insert(0, str(root.parent))
     for file in root.iterdir():
         if file.name.startswith('_') or file.name == 'parsers.py' or not file.suffix == '.py':
