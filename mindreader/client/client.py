@@ -1,10 +1,11 @@
 import requests
 
-from mindreader.drivers.encoders import PBEncoder
+from mindreader.drivers.encoders import DefaultClientServerProtocolEncoder
 from mindreader.drivers import Reader
 from mindreader.objects import User, Snapshot
 
-encoder = PBEncoder()
+
+encoder = DefaultClientServerProtocolEncoder()
 
 
 def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):

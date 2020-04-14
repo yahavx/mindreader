@@ -1,4 +1,4 @@
-from mindreader-base
+FROM mindreader-base
 
 ENV MQ_URL rabbitmq://mq:5672
 ENV DB_URL mongodb://db:27017

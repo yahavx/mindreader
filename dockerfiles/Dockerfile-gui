@@ -1,4 +1,4 @@
-from mindreader-base
+FROM mindreader-base
 
 ENV HOST 127.0.0.1
 ENV PORT 8080

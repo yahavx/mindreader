@@ -4,7 +4,7 @@ import json
 import uuid
 
 from mindreader.drivers.context import Context
-from mindreader.drivers.encoders import PBEncoder
+from mindreader.drivers.encoders import DefaultClientServerProtocolEncoder
 from mindreader.drivers.encoders import JSONEncoder
 from mindreader.drivers import MessageQueue
 from mindreader.objects.snapshot import Snapshot
@@ -14,7 +14,7 @@ from mindreader.objects.user import User
 serv = Flask(__name__)
 message_handler = None
 mq = None
-protocol_encoder = PBEncoder()  # encoder for the client-server protocol
+protocol_encoder = DefaultClientServerProtocolEncoder()  # encoder for the client-server protocol
 json_encoder = JSONEncoder()  # encoder for the server-parser protocol
 
 

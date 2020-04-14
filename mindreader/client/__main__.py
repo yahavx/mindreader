@@ -9,7 +9,7 @@ def cli():
 
 
 @cli.command()
-@click.option('-h', '--host', default='localhost')
+@click.option('-h', '--host', default='127.0.0.1')
 @click.option('-p', '--port', default=8000)
 @click.argument('path')
 @click.option('-f', '--format', default='pb')
