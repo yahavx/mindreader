@@ -1,8 +1,16 @@
 import datetime as dt
 
 
-class User:  # this user implementation is used from the server and forward in the pipeline
-    def __init__(self, user_id, username, birthday, gender):
+class User:
+    """
+    This class describes the user object of the mindreader package.
+    Any changes to this class should be considered carefully.
+
+    :attribute userame:
+
+    """
+
+    def __init__(self, user_id: int, username: str, birthday: int, gender: str):
         self.user_id = user_id
         self.username = username
         self.birthday = birthday

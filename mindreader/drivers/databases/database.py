@@ -41,7 +41,7 @@ class Database:
 
 
 def load_databases():
-    root = Path("mindreader/drivers/databases").absolute()
+    root = Path(__file__).parent.absolute()
     sys.path.insert(0, str(root.parent))
     for file in root.iterdir():
         if file.name.startswith('_') or file.name == 'database.py' or not file.suffix == '.py':

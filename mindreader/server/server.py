@@ -4,8 +4,7 @@ import json
 import uuid
 
 from mindreader.drivers.context import Context
-from mindreader.drivers.encoders import DefaultClientServerProtocolEncoder
-from mindreader.drivers.encoders import DefaultServerParserProtocolEncoder
+from mindreader.drivers import Encoder
 from mindreader.drivers import MessageQueue
 from mindreader.objects.snapshot import Snapshot
 from mindreader.objects.user import User
@@ -14,8 +13,6 @@ from mindreader.objects.user import User
 serv = Flask(__name__)
 message_handler = None
 mq = None
-protocol_encoder = DefaultClientServerProtocolEncoder()  # encoder for the client-server protocol
-json_encoder = DefaultServerParserProtocolEncoder()  # encoder for the server-parser protocol
 
 
 def run_server(host, port, publish=None, mq_url=None):
@@ -38,8 +35,12 @@ def run_server(host, port, publish=None, mq_url=None):
 @serv.route('/snapshot', methods=['POST'])
 def post_snapshot():
     message_bytes = request.get_data()
-    user, snapshot = protocol_encoder.message_decode(message_bytes)  # convert from bytes to pb objects
+    encoder = Encoder('protobuf')
+    user, snapshot = encoder.message_decode(message_bytes)
 
+    print(user)
+    print(snapshot)
+    return ""
     color_image_data = snapshot.color_image.data
     depth_image_data = json.dumps(list(snapshot.depth_image.data))
 

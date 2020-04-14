@@ -149,3 +149,7 @@ dmypy.json
 /sb
 /quick-testing.sh
 /docker-compose-test.yml
+/mindreader.proto
+/cortex.proto
+/mindreader/drivers/reader/file_readers/cortex.proto
+/mindreader/drivers/encoders/mindreader.proto

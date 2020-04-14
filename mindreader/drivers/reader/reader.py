@@ -1,6 +1,7 @@
-from pathlib import Path
 import importlib
 import sys
+from pathlib import Path
+from mindreader.objects import Snapshot, User
 
 
 supported_file_readers = {}
@@ -8,7 +9,15 @@ supported_file_readers = {}
 
 
 class Reader:
-    """This class is used to parse users and snapshots from files."""
+
+    """
+    This class is used to reads users and snapshots from files.
+    It serves as an interface to the available readers.
+
+    To add a new reader, add a file named <name>_file_reader.py to the sub-package file_readers
+    with a class named <name>FileReader, which has an attribute named 'prefix' (string),
+    that indicates the type of files it supports reading from.
+    """
 
     def __init__(self, path: str, file_format: str):
         """
@@ -23,13 +32,13 @@ class Reader:
             raise NotImplementedError("File format is not supported")
         self.file_reader = supported_file_readers[file_format]()
         self.file_reader.open_file(path)
-        self.user = self.file_reader.get_user_information()
+        self.user = self.file_reader.get_user()
 
-    def get_user(self):
+    def get_user(self) -> User:
         """Returns the user associated to the file."""
         return self.user
 
-    def get_snapshot(self):
+    def get_snapshot(self) -> Snapshot:
         """Returns the next snapshot in the file."""
         return self.file_reader.get_snapshot()
 
@@ -60,7 +69,7 @@ def load_readers():
     with a class named ***Reader, with an attribute named 'prefix' (string),
     which indicates the file format this reader supports.
     """
-    root = Path("mindreader/drivers/reader/file_readers").absolute()
+    root = (Path(__file__).parent / 'file_readers').absolute()
     sys.path.insert(0, str(root.parent))
     for file in root.iterdir():
         if file.name.startswith('_') or not file.suffix == '.py':
