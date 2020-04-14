@@ -8,12 +8,18 @@ Yahav's final project for Advanced System Design course.
 
 ## Table of Contents
 
-* [Prerequities]
+* [Prerequisites](#prerequisites)
 * [Installation](#installation)
 * [Quickstart](#quickstart)
 * [Usage](#usage)
 * [Documentation](#documentation)
 * [Support](#support)
+
+## Prerequisites
+* Python 3.8
+* Docker 18.09.9
+* docker-compose 1.23.2
+
 
 ## Installation
 
