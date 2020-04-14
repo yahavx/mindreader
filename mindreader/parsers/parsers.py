@@ -43,10 +43,9 @@ def run_parser(parser_name: str, mq_url: str):
     def handler(snapshot):
         result = parse(parser_name, snapshot)
         wrapped = wrap_parser_result(parser_name, result, snapshot)
-        print(f"Parsed {parser_name}")
         mq.publish(parser_name, wrapped)
 
-    mq.consume('snapshot', handler)
+    mq.consume('snapshot', handler, queue=parser_name)  # allows scalability
 
 
 def wrap_parser_result(data_type, data, snapshot):

@@ -20,20 +20,17 @@ class RabbitMQ:  # TODO: remove prints
         channel.exchange_declare(exchange=topic, exchange_type='fanout')
         channel.basic_publish(exchange=topic, routing_key='', body=message)
         connection.close()
-        # print('Message sent to queue')
 
-    def consume(self, topic, handler):
+    def consume(self, topic, handler, queue):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host, port=self.port))
         channel = connection.channel()
         channel.exchange_declare(exchange=topic, exchange_type='fanout')
-        result = channel.queue_declare(queue='', exclusive=True)
+        result = channel.queue_declare(queue=queue, exclusive=False)
         queue_name = result.method.queue
         channel.queue_bind(exchange=topic, queue=queue_name)
 
         def callback(channel, method, properties, body):
             handler(body)
-            # print("Handled message from queue")
 
         channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
-        # print('Waiting for messages')
         channel.start_consuming()

@@ -29,13 +29,13 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
     address = generate_snapshot_address(host, port)
 
     i = 0  # count the snapshots sent
-
+    print("Starting to send...")
     try:
         for snapshot in reader:
             send_snapshot(address, snapshot, user)
-            i += 1
+            i += 1  # we may count one less sometimes...
     except ConnectionRefusedError:
-        print(f"Client error: couldn't connect to server")
+        print("Client error: couldn't connect to server")
         exit(1)
     except ConnectionError:
         print("Client error: the server sent back a bad response")

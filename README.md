@@ -182,6 +182,10 @@ implements `__call__(self, snapshot)`. The rules from above will follow to this 
 The parser will be automatically collected, to be used through the parsing functions (with the name
 assigned under `field`), and also deployed when [running the pipeline](#quickstart).
 
+#### Scalability
+It is possible to have as many workers as you like on a single parser. Simply call `run-parser` multiple times
+with the same parser and it will be adjusted automatically to split the work between them.
+
 Example:
 ```python
 # parsers/example.py

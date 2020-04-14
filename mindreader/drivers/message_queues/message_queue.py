@@ -24,8 +24,8 @@ class MessageQueue:
     def publish(self, topic, message):
         self.mq.publish(topic, message)
 
-    def consume(self, topic, handler):
-        self.mq.consume(topic, handler)
+    def consume(self, topic, handler, queue=''):
+        self.mq.consume(topic, handler, queue)
 
 
 def load_message_queues():
