@@ -15,7 +15,7 @@ serv = Flask(__name__)
 message_handler = None
 mq = None
 protocol_encoder = DefaultClientServerProtocolEncoder()  # encoder for the client-server protocol
-json_encoder = JSONEncoder()  # encoder for the server-parser protocol
+json_encoder = DefaultServerParserProtocolEncoder()  # encoder for the server-parser protocol
 
 
 def run_server(host, port, publish=None, mq_url=None):

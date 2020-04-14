@@ -39,7 +39,7 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'pb'):
         exit(1)
     except ConnectionError:
         print("Client error: the server sent back a bad response")
-        exit(1)
+        exit(1)  # we prefer not to retry to avoid cognition on server
     except KeyboardInterrupt:
         print(f'Some of the snapshots were not sent due to a keyboard interrupt. Total sent: {i}')
     else:

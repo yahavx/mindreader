@@ -23,15 +23,8 @@ def run_server(host, port, api_host, api_port):
         print(f'Error in GUI: {e}')
 
 
-if __name__ == '__main__':
-    cli(prog_name='gui')
-
-
 def update_api_url(api_url):
-    """
-    The Thoughts app is using the ./static/env.js file as configuration file.
-    This function updates the api url in this file to the given url.
-    """
+    """Updates the api-url entry in the configuration file of the web application."""
     base_path = path.dirname(__file__)
     file_path = path.abspath(path.join(base_path, "static", "env.js"))
 
@@ -48,3 +41,7 @@ def update_api_url(api_url):
 
     with open(file_path, 'w') as f:
         f.write(data)
+
+
+if __name__ == '__main__':
+    cli(prog_name='gui')
