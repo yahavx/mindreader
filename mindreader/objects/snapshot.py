@@ -6,6 +6,8 @@ class Snapshot:
     """
     This class describes the snapshot object of the mindreader package.
     Any changes to this class should be considered carefully.
+
+    All attributes classes, are located in ./snapshot_utils.py.
     """
 
     def __init__(self, pose: Pose, color_image: Image, depth_image: Image, feelings: Feelings,

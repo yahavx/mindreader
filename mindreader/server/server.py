@@ -9,82 +9,82 @@ from mindreader.drivers import MessageQueue
 from mindreader.objects.snapshot import Snapshot
 from mindreader.objects.user import User
 
-
 serv = Flask(__name__)
 message_handler = None
-mq = None
+mq: MessageQueue = None
 
 
 def run_server(host, port, publish=None, mq_url=None):
-    if publish:
+    """
+    Runs the server, waiting to receive snapshots and handles them,
+    either by a self-made handler, or by posting them to the message queue.
+
+    To run with a self-handler, publish should be supplied (see parameter for details below).
+    To register to queue, mq_url should be supplied.
+    Only and exactly one should be supplied in a call, otherwise its an error.
+
+    :param host: server host.
+    :param port: server port.
+    :param publish: handler for snapshots, a function that receive a (user, snapshot) and process them.
+    :param mq_url: a url to a message queue, to post snapshots on.
+    """
+
+    if (publish is not None and mq_url is not None) or (publish is None and mq_url is None):
+        print("Server error: handler or mq_url should be supplied, and only one of them")
+        exit(1)
+
+    if publish is not None:
         global message_handler
         message_handler = publish
-    elif mq_url:
+
+    else:  # mq is not None
         global mq
         try:
             mq = MessageQueue(mq_url)
         except ConnectionError:
             print("Server error: couldn't connect to message queue")
 
-    else:
-        print("Server error: no handler supplied for snapshots")
-        exit(1)
     serv.run(host, int(port))
 
 
 @serv.route('/snapshot', methods=['POST'])
 def post_snapshot():
     message_bytes = request.get_data()
+
     encoder = Encoder('protobuf')
     user, snapshot = encoder.message_decode(message_bytes)
 
-    print(user)
-    print(snapshot)
-    return ""
-    color_image_data = snapshot.color_image.data
-    depth_image_data = json.dumps(list(snapshot.depth_image.data))
-
-    user, snapshot = _convert_objects_format(user, snapshot)  # convert objects format to a JSON-supported one
-    try:
-        context = Context(user.user_id, snapshot.snapshot_id)
-    except PermissionError:
-        print("Server error: no permission to create data folder, check context saving location")
-        return "", 500
-
-    snapshot.color_image_path = context.save('color_image', color_image_data)
-    snapshot.depth_image_path = context.save('depth_image', depth_image_data)
-
     if message_handler:  # run_server was invoked through API
-        message_handler(message_bytes)
-        return ""  # return status code 200
-
-    snapshot_md = _generate_snapshot_metadata(user, snapshot)
-    snapshot = json_encoder.snapshot_encode(snapshot)
-    user = json_encoder.user_encode(user)
+        message_handler(user, snapshot)
+        return ""
 
     try:
-        mq.publish('snapshot', snapshot)
-        mq.publish('snapshot_md', snapshot_md)
+        context = Context.generate_context_from_snapshot_metadata(snapshot.metadata)
+    except PermissionError:
+        print("Server error: no permission to save data, check context saving location")
+        exit(1)
+
+    replace_large_data_with_metadata(snapshot, context)
+
+    encoder = Encoder('json')
+    user = encoder.user_encode(user)
+    snapshot = encoder.snapshot_encode(snapshot)
+
+    try:
         mq.publish('user', user)
+        mq.publish('snapshot', snapshot)
     except ConnectionError:
         print("Server error: connection to message queue was lost")
-        return "", 500
+        exit(1)
     return "", 200
 
 
-def _generate_snapshot_metadata(user, snapshot):
-    return json.dumps({'user_id': user.user_id,
-                       'snapshot_id': snapshot.snapshot_id,
-                       'timestamp': snapshot.timestamp})
-
-
-def _convert_objects_format(user, snapshot):  # converts user and snapshot from protobuf format to self-created format
-    snapshot_id = str(uuid.uuid4())
-    datetime = dt.datetime.fromtimestamp(snapshot.datetime / 1000).strftime('%d/%m/%Y, %H:%M:%S:%f')
-    snapshot = Snapshot(user.user_id, snapshot_id, datetime, snapshot.pose, '', snapshot.color_image.width,
-                        snapshot.color_image.height, '', snapshot.depth_image.width, snapshot.depth_image.height,
-                        snapshot.feelings)
-    gender = 'male' if user.gender == 0 else 'female' if user.gender == '1' else 'unknown'
-    datetime = dt.datetime.fromtimestamp(user.birthday).strftime('%d/%m/%Y')
-    user = User(user.user_id, user.username, datetime, gender)
-    return user, snapshot
+def replace_large_data_with_metadata(snapshot: Snapshot, context: Context):
+    """
+    Saves the large parts of the snapshot to storage (i.e. images),
+    and replaces them with metadata (path).
+    """
+    color_image_data = snapshot.color_image.data
+    depth_image_data = json.dumps(list(snapshot.depth_image.data))
+    snapshot.color_image.data = context.save('color_image', color_image_data)
+    snapshot.depth_image.data = context.save('depth_image', depth_image_data)

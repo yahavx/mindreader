@@ -93,3 +93,6 @@ class SnapshotMetadata:
         self.timestamp = timestamp
         self.user_id = user_id
         self.snapshot_id = snapshot_id
+
+    def __repr__(self):
+        return f'Metadata(timestamp={self.timestamp}, user_id={self.user_id}, snapshot_id={self.snapshot_id})'
