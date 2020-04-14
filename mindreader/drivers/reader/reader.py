@@ -3,8 +3,13 @@ import sys
 from pathlib import Path
 from mindreader.objects import Snapshot, User
 
+
 supported_file_readers = {}
-"""Holds the list of supported file formats, loaded dynamically."""
+"""
+Mapping of the supported file formats, loaded dynamically.
+Currently available:
+Protobuf - 'protobuf'
+"""
 
 
 class Reader:
@@ -15,6 +20,7 @@ class Reader:
     To add a new reader, add a file named <name>_file_reader.py to the sub-package file_readers
     with a class named <name>FileReader, which has an attribute named 'prefix' (string),
     that indicates the type of files it supports reading from. It should implement the functions below.
+    Make sure you update the prefix you chose in 'supported_dbs' above.
     """
 
     def __init__(self, path: str, file_format: str):

@@ -5,7 +5,13 @@ from pathlib import Path
 
 from mindreader.objects import User
 
+
 supported_dbs = {}
+"""
+Mapping of the supported databases, loaded dynamically.
+Currently available:
+MongoDB - 'mongodb'
+"""
 
 
 class Database:
@@ -19,6 +25,7 @@ class Database:
     To add a new database, add a file named <name>db.py to this package,
     with a class named <name>DB, which has an attribute named 'prefix' (string),
     which is the database name. It should implement the functions below.
+    Make sure you update the prefix you chose in 'supported_dbs' above.
     """
     def __init__(self, url):
         """

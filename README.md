@@ -18,9 +18,9 @@ Yahav's final project for Advanced System Design course.
 ## Prerequisites
 
 ```
-* Python 3.8
-* Docker 18.09.9
-* docker-compose 1.23.2
+Python 3.8
+Docker 18.09.9
+docker-compose 1.23.2
 ```
 
 ## Installation
@@ -79,6 +79,7 @@ The project contains one package, `mindreader`, which provides the following sub
 * [`api`](/mindreader/server/README.md) :book: - an API to consume the data.
 * [`cli`](/mindreader/cli/README.md) :memo: - a CLI that consumes the API.
 * [`gui`](/mindreader/gui/README.md) :computer: - allows to visualize the data comfortably.
+* [`drivers`](/mindreader/drivers/README.md) :floppy_disk: - utility that provides services to all the components
 
 Click on your desired package to be forwarded to the matching readme, which supply a simple yet more extensive 
 description, and also usage examples of the basic functionality.

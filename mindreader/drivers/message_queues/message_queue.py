@@ -4,6 +4,11 @@ from furl import furl
 from pathlib import Path
 
 supported_mqs = {}
+"""
+Mapping of the supported message queses, loaded dynamically.
+Currently available:
+RabbitMQ - 'rabbitmq'
+"""
 
 
 class MessageQueue:
@@ -13,6 +18,7 @@ class MessageQueue:
     To add a new message queue, add a file named <name>_mq.py to the current-package,
     with a class named <name>MQ, which has an attribute named 'prefix' (string),
     which is the message queue name. It should implement the functions below.
+    Make sure you update the prefix you chose in 'supported_dbs' above.
     """
 
     def __init__(self, url):

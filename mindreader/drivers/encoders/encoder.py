@@ -5,7 +5,12 @@ from pathlib import Path
 
 
 supported_encoders = {}
-"""Holds the list of supported encoders, loaded dynamically."""
+"""
+Mapping of the supported encoders, loaded dynamically.
+Currently available:
+Json - 'json'
+Protobuf - 'protobuf'
+"""
 
 
 class Encoder:
