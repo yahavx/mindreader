@@ -2,11 +2,12 @@ import json
 import os
 
 
-data_dir = '/var/data/mindreader_data'  # this path allows the dockers to communicate, so changes should be considered carefully
+data_dir = '/var/data/mindreader_data'
+# this path is configured to allow the containers to communicate, so changes should be considered carefully
 
 
-class Context:  # this class is used to work with the disk
-    def __init__(self, user_id, snapshot_id):
+class Context:
+    def __init__(self, user_id: int, snapshot_id: str):
         self.data_dir = f'{data_dir}/{user_id}/{snapshot_id}'
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)

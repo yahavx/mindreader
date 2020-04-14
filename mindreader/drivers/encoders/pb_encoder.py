@@ -5,6 +5,9 @@ from mindreader.objects.cortex_pb2 import Snapshot
 
 
 class PBEncoder:
+    """
+    Encodes a
+    """
     def user_encode(self, user):
         return user.SerializeToString()
 

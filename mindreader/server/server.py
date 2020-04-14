@@ -5,7 +5,7 @@ import uuid
 
 from mindreader.drivers.context import Context
 from mindreader.drivers.encoders import DefaultClientServerProtocolEncoder
-from mindreader.drivers.encoders import JSONEncoder
+from mindreader.drivers.encoders import DefaultServerParserProtocolEncoder
 from mindreader.drivers import MessageQueue
 from mindreader.objects.snapshot import Snapshot
 from mindreader.objects.user import User

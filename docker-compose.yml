@@ -24,8 +24,8 @@ services:
     depends_on:
       - mq
     build:
-      context: ./dockerfiles
-      dockerfile: Dockerfile-server
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile-server
     restart: on-failure
     networks:
       - mindreader-net
@@ -38,8 +38,8 @@ services:
     depends_on:
       - mq
     build:
-      context: ./dockerfiles
-      dockerfile: Dockerfile-parsers
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile-parsers
     restart: on-failure
     networks:
       - mindreader-net
@@ -52,8 +52,8 @@ services:
     depends_on:
       - mq
     build:
-      context: ./dockerfiles
-      dockerfile: Dockerfile-parsers
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile-parsers
     restart: on-failure
     networks:
       - mindreader-net
@@ -66,8 +66,8 @@ services:
     depends_on:
       - mq
     build:
-      context: ./dockerfiles
-      dockerfile: Dockerfile-parsers
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile-parsers
     restart: on-failure
     networks:
       - mindreader-net
@@ -80,8 +80,8 @@ services:
     depends_on:
       - mq
     build:
-      context: ./dockerfiles
-      dockerfile: Dockerfile-parsers
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile-parsers
     restart: on-failure
     networks:
       - mindreader-net
@@ -95,8 +95,8 @@ services:
       - mq
       - db
     build:
-      context: ./dockerfiles
-      dockerfile: Dockerfile-saver
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile-saver
     restart: on-failure
     networks:
       - mindreader-net
@@ -107,8 +107,8 @@ services:
     depends_on:
       - db
     build:
-      context: ./dockerfiles
-      dockerfile: ./Dockerfile-api
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile-api
     restart: on-failure
     networks:
       - mindreader-net
@@ -121,8 +121,8 @@ services:
     depends_on:
       - api
     build:
-      context: ./dockerfiles
-      dockerfile: Dockerfile-gui
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile-gui
     restart: on-failure
     networks:
       - mindreader-net
