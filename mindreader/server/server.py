@@ -1,4 +1,4 @@
-import datetime as dt
+import sys
 from flask import Flask, request
 import json
 import uuid
@@ -30,7 +30,7 @@ def run_server(host, port, publish=None, mq_url=None):
     """
 
     if (publish is not None and mq_url is not None) or (publish is None and mq_url is None):
-        print("Server error: handler or mq_url should be supplied, and only one of them")
+        sys.stderr.write("Server error: handler or mq_url should be supplied, and only one of them")
         exit(1)
 
     if publish is not None:
@@ -42,7 +42,7 @@ def run_server(host, port, publish=None, mq_url=None):
         try:
             mq = MessageQueue(mq_url)
         except ConnectionError:
-            print("Server error: couldn't connect to message queue")
+            sys.stderr.write("Server error: couldn't connect to message queue")
 
     serv.run(host, int(port))
 
@@ -61,7 +61,7 @@ def post_snapshot():
     try:
         context = Context.generate_context_from_snapshot_metadata(snapshot.metadata)
     except PermissionError:
-        print("Server error: no permission to save data, check context saving location")
+        sys.stderr.write("Server error: no permission to save data, check context saving location")
         exit(1)
 
     replace_large_data_with_metadata(snapshot, context)

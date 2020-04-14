@@ -2,6 +2,6 @@ from mindreader.client import client
 import pytest
 
 
-def test_path_not_exists():
-    with pytest.raises(FileNotFoundError):
-        client.upload_sample('127.0.0.1', 8000, path='')
+#  Client functionality is tested in integration test with server
+#  Unit tests will be added as the client expand
+

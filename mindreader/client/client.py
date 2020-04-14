@@ -18,8 +18,7 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'protobuf'
     :param path: path to the file (relative or absolute).
     :param file_format: the format of the file provided, default is 'pb' (protobuf).
     """
-    test(path, file_format)
-    exit(0)
+
     try:
         reader = Reader(path, file_format)  # load sample
     except FileNotFoundError:
