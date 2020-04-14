@@ -8,6 +8,7 @@ Yahav's final project for Advanced System Design course.
 
 ## Table of Contents
 
+* [Prerequities]
 * [Installation](#installation)
 * [Quickstart](#quickstart)
 * [Usage](#usage)
@@ -50,8 +51,15 @@ Everything is ready!
 [mindreader] $
 ```
 
-Now upload some samples using the [upload_sample](#client), and than you can visit
-http://127.0.0.1:8080/ to see the results. You can also use the [CLI](#cli) or [API](#api) to consume the data.
+Now upload some snapshots from the [client](/mindreader/client/README.md):
+```sh
+[mindreader] $ python -m mindreader.client snapshot.mind.gz
+...
+All the 1024 snapshots were sent successfully!
+[mindreader] $ 
+```
+After than, visit http://127.0.0.1:8080/ to see the results. You can also use the [CLI](/mindreader/cli/README.md) or 
+the [API](/mindreader/api/README.md) to view the data.
 
 ## Usage
 
@@ -64,7 +72,7 @@ The project contains one package, `mindreader`, which provides the following sub
 * [`cli`](/mindreader/cli/README.md) :memo: - a CLI that consumes the API.
 * [`gui`](/mindreader/gui/README.md) :computer: - allows to visualize the data comfortably.
 
-Click on your desired packaged to be forwarded to the matching readme, which supply a simple yet more extensive 
+Click on your desired package to be forwarded to the matching readme, which supply a simple yet more extensive 
 description, and also usage examples of the basic functionality.
 
 For a more detailed explanation, as well as necessary information to manage the code, check the
