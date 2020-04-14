@@ -1,7 +1,7 @@
 import json
 from threading import Thread
 
-from mindreader.drivers import Database, MessageQueue
+from mindreader.drivers import Database, MessageQueue, Encoder
 from mindreader.parsers import get_available_parsers
 
 
@@ -14,7 +14,7 @@ class Saver:
         Saves data to the database.
 
         :param topic: The type of the data (user, pose, etc).
-        :param data: The data, in JSON format (as string).
+        :param data: The data, in JSON format.
         :param debug: if enabled, the data will be printed before saved to the database.
         :return:
         """
@@ -22,11 +22,12 @@ class Saver:
             print(f'Saving data of type {topic}')
             print(data)
 
-        data = json.loads(data)
-
         if topic == 'user':
-            self.db.insert_user(data)
+            encoder = Encoder('json')
+            user = encoder.user_decode(data)
+            self.db.insert_user(user)
         else:
+            data = json.loads(data)
             self.db.insert_data(data)
 
     def run_saver(self, topic: str, mq: MessageQueue, debug=False):
@@ -35,7 +36,7 @@ class Saver:
         received snapshot parsing results, and saves them to the database.
 
         :param topic: The type of parsed data it consumes (user, pose, etc).
-        :param mq: A message queue. Note that it should already be initialized (not au url).
+        :param mq: A message queue. Note that it should already be initialized (not a url).
         :param debug: if enabled, each data will be printed before saved to the database.
         """
         mq.consume(topic, lambda data: self.save(topic, data, debug))

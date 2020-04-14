@@ -16,10 +16,12 @@ Yahav's final project for Advanced System Design course.
 * [Support](#support)
 
 ## Prerequisites
+
+```
 * Python 3.8
 * Docker 18.09.9
 * docker-compose 1.23.2
-
+```
 
 ## Installation
 

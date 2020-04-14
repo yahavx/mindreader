@@ -30,7 +30,7 @@ def save(database, topic, path):
 @click.argument('db_url')
 @click.argument('mq_url')
 @click.option('--debug/--no-debug', default=False, help="If enabled, the saver will print the data that it saves")
-def run_saver(db_url, mq_url):
+def run_saver(db_url, mq_url, debug):
     try:
         saver = Saver(db_url)
     except ConnectionError:
@@ -38,7 +38,7 @@ def run_saver(db_url, mq_url):
         exit(1)
 
     try:
-        saver.run_all_savers(mq_url)
+        saver.run_all_savers(mq_url, debug)
     except Exception as e:
         print(f"Error in saver: {e}")
         exit(1)

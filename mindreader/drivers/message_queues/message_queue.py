@@ -42,7 +42,7 @@ class MessageQueue:
         Publishes a message to the queue.
 
         :param topic: the name of the exchange to post into (consumers will have to use that to receive messages).
-        :param message: the data, in JSON (string) format.
+        :param message: the data, encoded in JSON format.
         """
         self.mq.publish(topic, message)
 

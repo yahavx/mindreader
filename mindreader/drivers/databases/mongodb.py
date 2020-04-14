@@ -1,6 +1,6 @@
 import pymongo
-from bson.json_util import dumps
 
+from mindreader.objects import User
 
 DB = "db"
 USERS_COL = "users"
@@ -36,11 +36,16 @@ class MongoDB:
     def __repr__(self):
         return f'MongoDB({self.host}:{self.port})'
 
-    def insert_user(self, user):
-        self.users.update_one({'user_id': user['user_id']}, {'$set': user}, upsert=True)
+    def insert_user(self, user: User):
+        user_dict = dict(username=user.username, user_id=user.user_id, birthday=user.birthday, gender=user.gender)
+        self.users.update_one({'user_id': user.user_id}, {'$set': user_dict}, upsert=True)
 
     def insert_data(self, data):
-        self.snapshots.update_one({'snapshot_id': data['snapshot_id']},
+        snapshot_id = data['metadata']['snapshot_id']
+        user_id = data['metadata']['user_id']
+        timestamp = data['metadata']['timestamp']
+        self.snapshots.update_one({'metadata':
+                                       {'snapshot_id': snapshot_id, 'user_id': user_id, 'timestamp': timestamp}},
                                   [{'$set': data}], upsert=True)  # create or update
 
     def get_users(self):

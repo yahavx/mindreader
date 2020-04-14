@@ -11,12 +11,12 @@ It provides a `Saver` class, which is instantiated via a database url:
 After that, the `saver` provide the following functions:
 * `save`: saves data to the database. It receives the following arguments:
     * `topic`: the type of parsed data, usually the name of the parser which produces it
-    * `data`: the data, in JSON format
+    * `data`: the data, as a dictionary
     
     Example usage:    
     ```pycon
     >>> from mindreader.parsers import parse
-    >>> data = ...  # some parsed data, in JSON
+    >>> data = ... 
     >>> result = parse('feelings', data)
     ```
   

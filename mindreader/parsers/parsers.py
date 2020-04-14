@@ -57,15 +57,15 @@ def run_parser(parser_name: str, mq_url: str, debug: bool = False):
     mq.consume('snapshot', handler, queue=parser_name)
 
 
-def wrap_parser_result(data: dict, data_type: str, snapshot: Snapshot):
+def wrap_parser_result(data: dict, data_type: str, snapshot: Snapshot) -> dict:
     """
     Wraps data produced by a parser, with metadata needed for the next stages.
 
-    :param data: The data, produced by some parser, in JSON format.
+    :param data: The data, produced by some parser
     :param data_type: The type of the data (usually the name of the parser that produced it).
     :param snapshot: A snapshot object
 
-    :return: The wrapped object, in JSON format
+    :return: The wrapped object
     """
     metadata = dict(timestamp=snapshot.metadata.timestamp, user_id=snapshot.metadata.user_id,
                     snapshot_id=snapshot.metadata.snapshot_id)

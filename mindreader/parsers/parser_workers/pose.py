@@ -14,9 +14,7 @@ def parse_pose(snapshot: Snapshot):
         x=snapshot.pose.translation.x,
         y=snapshot.pose.translation.y,
         z=snapshot.pose.translation.z)
-    print(rotation)
-    print(translation)
-    return json.dumps({'rotation': rotation, 'translation': translation})
+    return {'rotation': rotation, 'translation': translation}
 
 
 parse_pose.field = 'pose'

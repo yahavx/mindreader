@@ -73,7 +73,7 @@ class Context:
     def get_file_path(self, name):
         """
         Return the full path of a file in the context directory.
-        Its on the caller responsibility to validate the existence of the path.
+        Its on the caller responsibility to validate the existence of the path/file if needed.
 
         :param name: name of the file, in the context directory.
         """

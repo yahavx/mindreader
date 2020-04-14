@@ -52,24 +52,24 @@ class Database:
     def insert_data(self, data: dict):
         """
         Inserts data to the database.
-        The data should be in JSON format,
+        The data should be a dictionary,
         and contain a 'metadata' entry (that is similar to objects/SnapshotMetadata class).
         """
         self.db.insert_data(data)
 
-    def get_users(self):
+    def get_users(self) -> list:
         """Returns the list of available users."""
         return self.db.get_users()
 
-    def get_user_by_id(self, user_id):
+    def get_user_by_id(self, user_id) -> dict:
         """Returns a user that matches the user_id."""
         return self.db.get_user_by_id(user_id)
 
-    def get_snapshots_by_user_id(self, user_id):
+    def get_snapshots_by_user_id(self, user_id) -> list:
         """Returns list of snapshots (metadata) that belongs to user with user_id."""
         return self.db.get_snapshots_by_user_id(user_id)
 
-    def get_snapshot_by_id(self, user_id, snapshot_id):
+    def get_snapshot_by_id(self, user_id, snapshot_id) -> dict:
         """Returns a snapshot with snapshot_id (metadata, and available topics)."""
         return self.db.get_snapshot_by_id(user_id, snapshot_id)
 

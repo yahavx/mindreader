@@ -1,13 +1,11 @@
 import sys
 from flask import Flask, request
-import json
-import uuid
 
 from mindreader.drivers.context import Context
 from mindreader.drivers import Encoder
 from mindreader.drivers import MessageQueue
 from mindreader.objects.snapshot import Snapshot
-from mindreader.objects.user import User
+
 
 serv = Flask(__name__)
 message_handler = None
