@@ -7,7 +7,7 @@ from mindreader.drivers import Reader, Encoder
 from mindreader.objects import User, Snapshot
 
 
-def upload_sample(host: str, port: int, path: str, file_format: str = 'protobuf'):
+def upload_sample(host: str, port: int, path: str, file_format: str = 'protobuf', limit: int = 0):
     """
     Reads snapshots from a file, and sends them to the server.
     If all the snapshots were sent successfully to the server,
@@ -17,6 +17,7 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'protobuf'
     :param port: port of the server.
     :param path: path to the file (relative or absolute).
     :param file_format: the format of the file provided, default is 'pb' (protobuf).
+    :param limit: limit the number of snapshots that can be sent to server. If 0, it has no effect
     """
 
     try:
@@ -37,6 +38,10 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'protobuf'
             snapshot.metadata.snapshot_id = str(uuid.uuid4())  # generate id for the snapshot before sending
             i += 1  # we may count one more sometimes, usually its ok somehow...
             send_snapshot(host, port, snapshot, user)
+
+            if i == limit:
+                print(f'Reached the limit of {i}...')
+                break
 
     except ConnectionRefusedError:
         print("Client error: couldn't connect to server")

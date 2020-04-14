@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 from threading import Thread
 
-from mindreader.drivers import MessageQueue
-
+from mindreader.drivers import MessageQueue, Encoder
+from mindreader.objects import Snapshot
 
 available_parsers = {}
 
@@ -23,9 +23,16 @@ def parse(parser_name: str, raw_snapshot: str):
     """
     if parser_name not in available_parsers:
         raise NotImplementedError("Parser type is not supported")
-
     parser = available_parsers[parser_name]
-    return parser(raw_snapshot)
+
+    encoder = Encoder('json')
+    snapshot = encoder.snapshot_decode(raw_snapshot)
+
+    parsing_result = parser(snapshot)
+    wrapped_parsing_result = wrap_parser_result(parsing_result, parser_name, snapshot)  # wrap with metadata
+    ret = json.dumps(wrapped_parsing_result, indent=4)
+    print(ret)
+    return ret
 
 
 def run_parser(parser_name: str, mq_url: str):
@@ -42,27 +49,24 @@ def run_parser(parser_name: str, mq_url: str):
 
     def handler(snapshot):
         result = parse(parser_name, snapshot)
-        wrapped = wrap_parser_result(parser_name, result, snapshot)
-        mq.publish(parser_name, wrapped)
+        mq.publish(parser_name, result)
 
     mq.consume('snapshot', handler, queue=parser_name)  # allows scalability
 
 
-def wrap_parser_result(data_type, data, snapshot):
+def wrap_parser_result(data: dict, data_type: str, snapshot: Snapshot):
     """
     Wraps data produced by a parser, with metadata needed for the next stages.
 
-    :param data_type: The type of the data (usually the name of the parser that produced it).
     :param data: The data, produced by some parser, in JSON format.
-    :param snapshot: A snapshot, in JSON format.
+    :param data_type: The type of the data (usually the name of the parser that produced it).
+    :param snapshot: A snapshot object
 
-    :return: The wrapped object, in JSON format.
+    :return: The wrapped object, in JSON format
     """
-    snapshot = json.loads(snapshot)
-    data = json.loads(data)
-    wrapped = {'snapshot_id': snapshot['snapshot_id'],
-               'results': {data_type: data}}
-    return json.dumps(wrapped)
+    metadata = dict(timestamp=snapshot.metadata.timestamp, user_id=snapshot.metadata.user_id,
+                    snapshot_id=snapshot.metadata.snapshot_id)
+    return {'metadata': metadata, data_type: data}
 
 
 def run_all_parsers(mq_url):
@@ -82,7 +86,7 @@ def get_available_parsers():
 def load_parsers():
     """
     Loads dynamically all the available parsers.
-    In order to add a new parser, check the 'parsers' section in the README of the project.
+    In order to add a new parser, check the 'parsers' section in the README.md of this package.
     """
     root = Path("mindreader/parsers").absolute()
     sys.path.insert(0, str(root.parent))

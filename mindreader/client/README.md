@@ -6,7 +6,8 @@ It provides the following functions:
     * `host`: server host
     * `port`: server port
     * `path`: relative or absolute path to the sample
-    * `format`: the format of the sample supplied. Optional parameter, defaults to 'pb' (protobuf)
+    * `format`: the format of the sample supplied. Optional parameter, defaults to protobuf
+    * `limit`: limit the number of snapshots that can be sent to the server, disabled by default
 
     Example usage:    
     ```pycon
@@ -19,8 +20,8 @@ It provides the following functions:
   
     It is also consumable by a CLI, where the host and port are optional (and default to the shown here):
     ```sh
-    [mindreader] $ python -m mindreader.client -h/--host '127.0.0.1' -p/--port 8000 \
-    -f/--file_format 'protobuf' snapshot.mind.gz'
+    [mindreader] $ python -m mindreader.client upload-sample -h/--host '127.0.0.1' \
+    -p/--port 8000 -f/--file_format -l/--limit 2000 'protobuf' sample.mind.gz'
     ...
     All the 1024 snapshots were sent successfully!  # We were patient this time
     [mindreader] $ 

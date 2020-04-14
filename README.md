@@ -59,7 +59,7 @@ Everything is ready!
 
 Now upload some snapshots from the [client](/mindreader/client/README.md):
 ```sh
-[mindreader] $ python -m mindreader.client snapshot.mind.gz
+[mindreader] $ python -m mindreader.client upload-sample sample.mind.gz
 ...
 All the 1024 snapshots were sent successfully!
 [mindreader] $ 

@@ -1,7 +1,7 @@
 import pika
 
 
-class RabbitMQ:  # TODO: remove prints
+class RabbitMQ:
     prefix = 'rabbitmq'
 
     def __init__(self, host, port):

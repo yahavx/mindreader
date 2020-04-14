@@ -3,13 +3,11 @@ import sys
 from pathlib import Path
 from mindreader.objects import Snapshot, User
 
-
 supported_file_readers = {}
 """Holds the list of supported file formats, loaded dynamically."""
 
 
 class Reader:
-
     """
     This class is used to reads users and snapshots from files.
     It serves as an interface to the available readers.

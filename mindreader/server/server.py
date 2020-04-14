@@ -49,6 +49,8 @@ def run_server(host, port, publish=None, mq_url=None):
 
 @serv.route('/snapshot', methods=['POST'])
 def post_snapshot():
+    """Handles the post requests of the snapshots."""
+
     message_bytes = request.get_data()
 
     encoder = Encoder('protobuf')
@@ -85,6 +87,6 @@ def replace_large_data_with_metadata(snapshot: Snapshot, context: Context):
     and replaces them with metadata (path).
     """
     color_image_data = snapshot.color_image.data
-    depth_image_data = json.dumps(list(snapshot.depth_image.data))
+    depth_image_data = list(snapshot.depth_image.data)
     snapshot.color_image.data = context.save('color_image', color_image_data)
-    snapshot.depth_image.data = context.save('depth_image', depth_image_data)
+    snapshot.depth_image.data = context.save('depth_image', depth_image_data, is_json=True)

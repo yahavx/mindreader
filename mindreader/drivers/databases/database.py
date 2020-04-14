@@ -8,6 +8,14 @@ supported_dbs = {}
 
 
 class Database:
+    """
+    This class is used to communicate with databases.
+    It is called databases but in fact its a thick layer above it (sometimes called persistence).
+
+    To add a new database, add a file named <name>db.py to this package,
+    with a class named <name>DB, which has an attribute named 'prefix' (string),
+    which is the database name.
+    """
     def __init__(self, url):
         url = furl(url)
         prefix = url.scheme
