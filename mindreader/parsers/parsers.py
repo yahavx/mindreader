@@ -50,7 +50,7 @@ def run_parser(parser_name: str, mq_url: str, debug: bool = False):
     def handler(snapshot):
         result = parse(parser_name, snapshot)
         if debug:
-            print("Parsed a snapshot:")
+            print(f"Parsed {parser_name} parsed a snapshot:")
             print(result)
         mq.publish(parser_name, result)
 
@@ -69,7 +69,7 @@ def wrap_parser_result(data: dict, data_type: str, snapshot: Snapshot) -> dict:
     """
     metadata = dict(timestamp=snapshot.metadata.timestamp, user_id=snapshot.metadata.user_id,
                     snapshot_id=snapshot.metadata.snapshot_id)
-    return {'metadata': metadata, data_type: data}
+    return {'metadata': metadata, 'topics': {data_type: data}}
 
 
 def run_all_parsers(mq_url):

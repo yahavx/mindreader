@@ -38,3 +38,6 @@ The following functions are exposed via the CLI:
     'rabbitmq://127.0.0.1:5672/'
     ...
     ```
+  
+    To print the parser result each time a topic is received, before saving it to the database,
+    add the `--debug` flag.

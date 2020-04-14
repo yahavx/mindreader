@@ -42,20 +42,17 @@ class MongoDB:
 
     def insert_data(self, data):
         snapshot_id = data['metadata']['snapshot_id']
-        user_id = data['metadata']['user_id']
-        timestamp = data['metadata']['timestamp']
-        self.snapshots.update_one({'metadata':
-                                       {'snapshot_id': snapshot_id, 'user_id': user_id, 'timestamp': timestamp}},
+        self.snapshots.update_one({'metadata.snapshot_id': snapshot_id},
                                   [{'$set': data}], upsert=True)  # create or update
 
-    def get_users(self):
+    def get_users(self) -> list:
         return list(self.users.find({}, {'_id': 0}))
 
-    def get_user_by_id(self, user_id):
+    def get_user_by_id(self, user_id) -> dict:
         return self.users.find_one({'user_id': user_id}, {'_id': 0})
 
-    def get_snapshots_by_user_id(self, user_id):
-        return list(self.snapshots.find({'user_id': user_id}, {'_id': 0}))
+    def get_snapshots_by_user_id(self, user_id) -> list:
+        return list(self.snapshots.find({'metadata.user_id': user_id}, {'_id': 0}))
 
-    def get_snapshot_by_id(self, user_id, snapshot_id):
-        return self.snapshots.find_one({'user_id': user_id, 'snapshot_id': snapshot_id}, {'_id': 0})
+    def get_snapshot_by_id(self, user_id, snapshot_id) -> dict:
+        return self.snapshots.find_one({'metadata.user_id': user_id, 'metadata.snapshot_id': snapshot_id}, {'_id': 0})

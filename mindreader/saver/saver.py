@@ -16,7 +16,6 @@ class Saver:
         :param topic: The type of the data (user, pose, etc).
         :param data: The data, in JSON format.
         :param debug: if enabled, the data will be printed before saved to the database.
-        :return:
         """
         if debug:
             print(f'Saving data of type {topic}')
