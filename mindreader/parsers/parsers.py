@@ -10,7 +10,7 @@ from mindreader.objects import Snapshot
 available_parsers = {}
 
 
-def parse(parser_name: str, raw_snapshot: str):
+def parse(parser_name: str, raw_snapshot: str) -> str:
     """
     Runs a parser on a snapshot.
 

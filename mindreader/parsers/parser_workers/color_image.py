@@ -19,7 +19,7 @@ def parse_color_image(snapshot: Snapshot) -> dict:
     image.save(image_path, 'PNG')
 
     width, height = size
-    return dict(data_path=image_path, image_width=width, image_height=height)
+    return dict(data_path=image_path, width=width, height=height)
 
 
 parse_color_image.field = 'color_image'

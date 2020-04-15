@@ -25,7 +25,7 @@ def parse_depth_image(snapshot: Snapshot):
     image_path = context.get_file_path('depth_image.png')
     plt.savefig(image_path)
 
-    return dict(data_path=image_path, image_width=width, image_height=height)
+    return dict(data_path=image_path, width=width, height=height)
 
 
 parse_depth_image.field = 'depth_image'

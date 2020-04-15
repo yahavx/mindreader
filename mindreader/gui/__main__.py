@@ -1,7 +1,7 @@
 import click
 from . import run_server as run_gui_server
-import os
-from os import path
+from pathlib import Path
+import fileinput
 
 
 @click.group()
@@ -10,13 +10,14 @@ def cli():
 
 
 @cli.command()
-@click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='8080')
-@click.option('-H', '--api-host', default='127.0.0.1')
-@click.option('-P', '--api-port', default='5000')
+@click.option('-h', '--host', default='127.0.0.1', help="server host")
+@click.option('-p', '--port', default='8080', help="server port")
+@click.option('-H', '--api-host', default='127.0.0.1', help="API host")
+@click.option('-P', '--api-port', default='5000', help="API port")
 def run_server(host, port, api_host, api_port):
-    api_url = f'http://{api_host}:{api_port}'
-    update_api_url(api_url)
+    if api_host != '127.0.0.1' or api_port != '5000':
+        api_url = f'http://{api_host}:{api_port}'
+        update_api_url(api_url)
     try:
         run_gui_server(host, port)
     except Exception as e:
@@ -25,22 +26,11 @@ def run_server(host, port, api_host, api_port):
 
 def update_api_url(api_url):
     """Updates the api-url entry in the configuration file of the web application."""
-    base_path = path.dirname(__file__)
-    file_path = path.abspath(path.join(base_path, "static", "env.js"))
+    env_file = Path(__file__).parent / 'static' / 'env.js'
 
-    data = ''
-    with open(file_path, 'r') as fin:
-        for line in fin:
-            if 'apiUrl' in line:
-                equals_index = line.index('=')
-                new_line = line[0:equals_index + 1]
-                new_line += f" '{api_url}'\n"
-                data += new_line
-            else:
-                data += line
-
-    with open(file_path, 'w') as f:
-        f.write(data)
+    with fileinput.FileInput(env_file, inplace=True, backup='.bak') as file:
+        for line in file:
+            print(line.replace('http://127.0.0.1:5000', api_url), end='')
 
 
 if __name__ == '__main__':

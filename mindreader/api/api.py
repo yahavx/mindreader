@@ -33,8 +33,8 @@ def get_users():
 def get_user_by_id(user_id):
     """Get user by his id."""
     user = db.get_user_by_id(user_id)
-    user_dict = [dict(userId=user['user_id'], username=user['username'],
-                      birthday=user['birthday'], gender=user['gender'])]
+    user_dict = dict(userId=user['user_id'], username=user['username'],
+                     birthday=user['birthday'], gender=user['gender'])
     return jsonify(user_dict)
 
 
