@@ -24,7 +24,11 @@ class ProtobufFileReader:
 
     def _get_data(self) -> bytes:
         """Reads 4 bytes, parses it to an integer, and returns the following <number> bytes."""
-        size, = struct.unpack('I', self.stream.read(UINT_SIZE))
+        length = self.stream.read(UINT_SIZE)
+        if len(length) == 0:
+            return None
+
+        size, = struct.unpack('I', length)
         return self.stream.read(size)
 
     def get_user(self) -> User:
@@ -37,7 +41,10 @@ class ProtobufFileReader:
     def get_snapshot(self) -> Snapshot:
         """Returns the next snapshot in the stream."""
         pb_snapshot = ProtobufSnapshot()
-        pb_snapshot.ParseFromString(self._get_data())
+        data = self._get_data()
+        if not data:  # reached EOF
+            return None
+        pb_snapshot.ParseFromString(data)
 
         snapshot = _convert_pb_to_snapshot(pb_snapshot)
 

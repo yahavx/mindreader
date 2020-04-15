@@ -11,7 +11,7 @@ def data_dir():
 
 
 @pytest.fixture
-def mock_database(monkeypatch, tmp_path):
+def mock_database(monkeypatch):
     storage = {}
 
     class MockDatabase:

@@ -18,16 +18,19 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'protobuf'
     :param path: path to the file (relative or absolute).
     :param file_format: the format of the file provided, default is 'pb' (protobuf).
     :param limit: limit the number of snapshots that can be sent to server. If 0, it has no effect
+
+    :raises FileNotFoundError: path to sample does not exist.
+    :raises NotImplementedError: sample format is not supported.
+    :raises ConnectionRefusedError: can't connect to server.
+    :raises ConnectionError: server returned a bad response.
     """
 
     try:
         reader = Reader(path, file_format)  # load sample
     except FileNotFoundError:
-        print(f"Client error: path to sample does not exist")
-        exit(1)
+        raise FileNotFoundError('Client error: path to sample does not exist')
     except NotImplementedError:
-        print("Client error: sample format is not supported")
-        exit(1)
+        raise NotImplementedError('Client error: sample format is not supported')
 
     user = reader.get_user()
     i = 0  # count the snapshots sent
@@ -44,11 +47,9 @@ def upload_sample(host: str, port: int, path: str, file_format: str = 'protobuf'
                 break
 
     except ConnectionRefusedError:
-        print("Client error: couldn't connect to server")
-        exit(1)
+        raise ConnectionRefusedError("Client error: couldn't connect to server")
     except ConnectionError:
-        print("Client error: the server sent back a bad response")
-        exit(1)  # we prefer not to retry to avoid cognition on server
+        raise ConnectionError("Client error: the server sent back a bad response")
     except KeyboardInterrupt:
         print(f'Some of the snapshots were not sent due to a keyboard interrupt. Total sent: {i}')
     else:
