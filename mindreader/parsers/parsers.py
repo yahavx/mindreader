@@ -61,11 +61,11 @@ def wrap_parser_result(data: dict, data_type: str, snapshot: Snapshot) -> dict:
     """
     Wraps data produced by a parser, with metadata needed for the next stages.
 
-    :param data: The data, produced by some parser
+    :param data: The data, produced by some parser.
     :param data_type: The type of the data (usually the name of the parser that produced it).
-    :param snapshot: A snapshot object
+    :param snapshot: A snapshot object.
 
-    :return: The wrapped object
+    :return: The wrapped object.
     """
     metadata = dict(timestamp=snapshot.metadata.timestamp, user_id=snapshot.metadata.user_id,
                     snapshot_id=snapshot.metadata.snapshot_id)

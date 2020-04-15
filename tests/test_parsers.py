@@ -6,8 +6,8 @@ from mindreader.parsers import parse
 
 
 @pytest.fixture
-def json_snapshot(json_snapshot_path):
-    with open(json_snapshot_path, 'r') as f:
+def json_snapshot(data_dir):
+    with open(data_dir / 'snapshot.json', 'r') as f:
         raw_snapshot = f.read()
     return raw_snapshot
 
@@ -38,9 +38,10 @@ def test_parse_feelings(json_snapshot):
     assert feelings['happiness'] == 0.23434
 
 
-def test_parse_pose_from_cli(json_snapshot_path, tmp_path):
+def test_parse_pose_from_cli(data_dir, tmp_path):
+    source_path = data_dir / 'snapshot.json'
     result_path = f'{tmp_path}/pose.result'
-    command = f"python -m mindreader.parsers parse 'pose' {json_snapshot_path} > {result_path}"
+    command = f"python -m mindreader.parsers parse 'pose' {source_path} > {result_path}"
     os.system(command)
 
     with open(result_path, 'r') as f:

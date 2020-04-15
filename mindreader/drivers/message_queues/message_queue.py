@@ -30,6 +30,7 @@ class MessageQueue:
         :raises NotImplementedError: the message queue type is not supported.
         :raises ConnectionError: connection couldn't be established in less than two minutes.
         """
+        self.url = url
         url = furl(url)
         prefix = url.scheme
         if prefix not in supported_mqs:
