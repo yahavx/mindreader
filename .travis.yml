@@ -4,7 +4,8 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - source .env/bin/activate
+  - python -m virtualenv .env
+    find .env -name site-packages -exec bash -c 'echo "../../../../" > {}/self.pth' \;
   - pytest --cov-report term --cov=mindreader
 after_success:
   - codecov
