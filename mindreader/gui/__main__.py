@@ -1,3 +1,4 @@
+import sys
 import click
 from . import run_server as run_gui_server
 from pathlib import Path
@@ -16,9 +17,8 @@ def cli():
 @click.option('-P', '--api-port', default='5000', help="API port")
 def run_server(host, port, api_host, api_port):
     try:
-        if api_host != '127.0.0.1' or api_port != '5000':
-            api_url = f'http://{api_host}:{api_port}'
-            update_api_url(api_url)
+        api_url = f'http://{api_host}:{api_port}'
+        update_api_url(api_url)
         run_gui_server(host, port)
     except Exception as error:
         print(f'GUI ERROR: {error}')
@@ -29,9 +29,19 @@ def update_api_url(api_url):
     """Updates the api-url entry in the configuration file of the web application."""
     env_file = Path(__file__).parent / 'static' / 'env.js'
 
-    with fileinput.FileInput(env_file, inplace=True, backup='.bak') as file:
-        for line in file:
-            print(line.replace('http://127.0.0.1:5000', api_url), end='')
+    data = ''
+    with open(env_file, 'r') as fin:
+        for line in fin:
+            if 'apiUrl' in line:
+                equals_index = line.index('=')
+                new_line = line[0:equals_index + 1]
+                new_line += f" '{api_url}'\n"
+                data += new_line
+            else:
+                data += line
+
+    with open(env_file, 'w') as fout:
+        fout.write(data)
 
 
 if __name__ == '__main__':

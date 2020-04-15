@@ -23,3 +23,5 @@ The GUI consumes and API and visualizes all of the above. It provides the follow
     # Serving on http://127.0.0.1:8080/ 
     ```
     After that, visit http://127.0.0.1:8080/ (or your chosen url) to view the website.
+    
+    Please note that changing the API port may require you to clean your browser cache.
