@@ -12,7 +12,10 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../mindreader'))
+from pathlib import Path
+
+# mindreader_base = Path(__file__).parent.parent.parent
+# sys.path.insert(0, mindreader_base)
 # import sphinx_click
 
 

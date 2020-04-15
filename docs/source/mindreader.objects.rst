@@ -4,18 +4,18 @@ mindreader.objects package
 Submodules
 ----------
 
-mindreader.objects.cortex\_pb2 module
--------------------------------------
-
-.. automodule:: mindreader.objects.cortex_pb2
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 mindreader.objects.snapshot module
 ----------------------------------
 
 .. automodule:: mindreader.objects.snapshot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mindreader.objects.snapshot\_utils module
+-----------------------------------------
+
+.. automodule:: mindreader.objects.snapshot_utils
    :members:
    :undoc-members:
    :show-inheritance:

@@ -30,7 +30,7 @@ def run_parser(parser_name, mq_url, debug):
     try:
         register_parser(parser_name, mq_url, debug)
     except Exception as error:
-        print(f'ERROR: {error}')
+        print(f'Parser ERROR: {error}')
         return 1
 
 
