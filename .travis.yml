@@ -2,10 +2,7 @@ language: python
 python:
   - "3.8"
 install:
-  - python -m virtualenv .env --prompt "[mindreader] "
-  - find .env -name site-packages -exec bash -c 'echo "../../../../" > {}/self.pth' \;
-  - .env/bin/pip install -U pip
-  - .env/bin/pip install -r requirements.txt
+  - pip install -r requirements.txt
 script:
   - pytest --cov-report term --cov=mindreader
 after_success:
