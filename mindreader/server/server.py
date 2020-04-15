@@ -25,11 +25,13 @@ def run_server(host, port, publish=None, mq_url=None):
     :param port: server port.
     :param publish: handler for snapshots, a function that receive a (user, snapshot) and process them.
     :param mq_url: a url to a message queue, to post snapshots on.
+
+    :raises EnvironmentError: publish or mq_url were supplied in correctly.
+    :raises ConnectionError: couldn't connect to queue.
     """
 
     if (publish is not None and mq_url is not None) or (publish is None and mq_url is None):
-        sys.stderr.write("Server error: handler or mq_url should be supplied, and only one of them")
-        exit(1)
+        raise EnvironmentError("Server error: handler or mq_url should be supplied, and only one of them")
 
     if publish is not None:
         global message_handler
@@ -47,7 +49,12 @@ def run_server(host, port, publish=None, mq_url=None):
 
 @serv.route('/snapshot', methods=['POST'])
 def post_snapshot():
-    """Handles the post requests of the snapshots."""
+    """
+    Handles the post requests of the snapshots.
+
+    :raises PermissionError: tried to save snapshot data to a path without a permission.
+    :raises ConnectionError: connection to the message queue to lost.
+    """
 
     message_bytes = request.get_data()
 
@@ -61,8 +68,7 @@ def post_snapshot():
     try:
         context = Context.generate_context_from_snapshot_metadata(snapshot.metadata)
     except PermissionError:
-        sys.stderr.write("Server error: no permission to save data, check context saving location")
-        exit(1)
+        raise PermissionError("Server error: no permission to save data, check context saving location")
 
     replace_large_data_with_metadata(snapshot, context)
 
@@ -74,8 +80,8 @@ def post_snapshot():
         mq.publish('user', user)
         mq.publish('snapshot', snapshot)
     except ConnectionError:
-        print("Server error: connection to message queue was lost")
-        exit(1)
+        raise ConnectionError("Server error: connection to message queue was lost")
+
     return "", 200
 
 

@@ -18,7 +18,7 @@ def upload_sample(host, port, path, file_format, limit):
     try:
         client.upload_sample(host, int(port), path, file_format, limit)
     except Exception as error:
-        print(f'ERROR: {error}')
+        print(f'Client ERROR: {error}')
         return 1
 
 

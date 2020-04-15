@@ -14,16 +14,11 @@ def cli():
 def save(database, topic, path):
     try:
         saver = Saver(database)
-    except ConnectionError:
-        print("Saver error: couldn't connect to database")
-        exit(1)
-
-    try:
         with open(path, 'r') as f:
             saver.save(topic, f.read())
-    except Exception as e:
-        print(f"Error in saver: {e}")
-        exit(1)()
+    except Exception as error:
+        print(f'Saver ERROR: {error}')
+        return 1
 
 
 @cli.command()
@@ -33,15 +28,11 @@ def save(database, topic, path):
 def run_saver(db_url, mq_url, debug):
     try:
         saver = Saver(db_url)
-    except ConnectionError:
-        print("Error in saver: couldn't connect to database")
-        exit(1)
-
-    try:
         saver.run_all_savers(mq_url, debug)
-    except Exception as e:
-        print(f"Error in saver: {e}")
-        exit(1)
+
+    except Exception as error:
+        print(f'Saver ERROR: {error}')
+        return 1
 
 
 if __name__ == '__main__':

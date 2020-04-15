@@ -15,7 +15,8 @@ def run_server(host, port, mq_url):
     try:
         run(host, port, mq_url=mq_url)
     except Exception as error:
-        print(f'Error in server: {error}')
+        print(f'Server ERROR: {error}')
+        return 1
 
 
 if __name__ == '__main__':

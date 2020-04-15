@@ -9,7 +9,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ~/data:/var/data/db_mongo
+      - mindreader_data:~/mindreader_data/db
 
   mq:
     image: rabbitmq
@@ -32,7 +32,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ~/mindreader_data:/var/data/mindreader
+      - mindreader_data:~/mindreader_data
 
   pose-parser:
     depends_on:
@@ -46,7 +46,7 @@ services:
     environment:
       - PARSER=pose
     volumes:
-      - ~/mindreader_data:/var/data/mindreader
+      - mindreader_data:~/mindreader_data
 
   feelings-parser:
     depends_on:
@@ -60,7 +60,7 @@ services:
     environment:
       - PARSER=feelings
     volumes:
-      - ~/mindreader_data:/var/data/mindreader
+      - mindreader_data:~/mindreader_data
 
   depth-image-parser:
     depends_on:
@@ -74,7 +74,7 @@ services:
     environment:
       - PARSER=depth_image
     volumes:
-      - ~/mindreader_data:/var/data/mindreader
+      - mindreader_data:~/mindreader_data
 
   color-image-parser:
     depends_on:
@@ -88,7 +88,7 @@ services:
     environment:
       - PARSER=color_image
     volumes:
-      - ~/mindreader_data:/var/data/mindreader
+      - mindreader_data:~/mindreader_data
 
   saver:
     depends_on:
@@ -101,7 +101,7 @@ services:
     networks:
       - mindreader-net
     volumes:
-      - ~/mindreader_data:/var/data/mindreader
+      - mindreader_data:~/mindreader_data
 
   api:
     depends_on:
@@ -115,7 +115,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ~/mindreader_data:/var/data/mindreader
+      - mindreader_data:~/mindreader_data
 
   gui:
     depends_on:
@@ -132,3 +132,6 @@ services:
 
 networks:
   mindreader-net:
+
+volumes:
+  mindreader_data

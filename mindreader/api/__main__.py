@@ -14,8 +14,9 @@ def cli():
 def run_server(host, port, database):
     try:
         run_api_server(host, port, database)
-    except Exception as e:
-        print(f"API server error: {e}")
+    except Exception as error:
+        print(f'API ERROR: {error}')
+        return 1
 
 
 if __name__ == '__main__':

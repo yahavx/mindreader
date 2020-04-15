@@ -15,13 +15,14 @@ def cli():
 @click.option('-H', '--api-host', default='127.0.0.1', help="API host")
 @click.option('-P', '--api-port', default='5000', help="API port")
 def run_server(host, port, api_host, api_port):
-    if api_host != '127.0.0.1' or api_port != '5000':
-        api_url = f'http://{api_host}:{api_port}'
-        update_api_url(api_url)
     try:
+        if api_host != '127.0.0.1' or api_port != '5000':
+            api_url = f'http://{api_host}:{api_port}'
+            update_api_url(api_url)
         run_gui_server(host, port)
-    except Exception as e:
-        print(f'Error in GUI: {e}')
+    except Exception as error:
+        print(f'GUI ERROR: {error}')
+        return 1
 
 
 def update_api_url(api_url):

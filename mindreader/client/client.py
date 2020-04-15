@@ -1,8 +1,6 @@
 import uuid
-
 import requests
 
-from mindreader.drivers.encoders import DefaultClientServerProtocolEncoder
 from mindreader.drivers import Reader, Encoder
 from mindreader.objects import User, Snapshot
 
