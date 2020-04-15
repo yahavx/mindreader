@@ -10,6 +10,7 @@ db = None
 def run_api_server(host, port, database_url):
     """
     Runs the api server and serves data.
+    Entry names are returned in javascript convention (variableName).
 
     :param host: api host.
     :param port: api port.
@@ -24,15 +25,17 @@ def run_api_server(host, port, database_url):
 def get_users():
     """Get all available users."""
     users = db.get_users()
-    [dict(userId=user['user_id'], username=user['username']) for user in users]
-    return jsonify(users)
+    users_dict = [dict(userId=user['user_id'], username=user['username']) for user in users]
+    return jsonify(users_dict)
 
 
 @serv.route('/users/<int:user_id>')
 def get_user_by_id(user_id):
     """Get user by his id."""
     user = db.get_user_by_id(user_id)
-    return jsonify(user)
+    user_dict = [dict(userId=user['user_id'], username=user['username'],
+                      birthday=user['birthday'], gender=user['gender'])]
+    return jsonify(user_dict)
 
 
 @serv.route('/users/<int:user_id>/snapshots')
@@ -46,7 +49,7 @@ def get_snapshots_by_user_id(user_id):
 
 @serv.route('/users/<int:user_id>/snapshots/<snapshot_id>')
 def get_snapshot_by_id(user_id, snapshot_id):
-    """Get snapshot its id."""
+    """Get snapshot by its id."""
     snapshot = db.get_snapshot_by_id(user_id, snapshot_id)
     topics = list(snapshot['topics'].keys())
     ret = dict(snapshotId=snapshot['metadata']['snapshot_id'],
@@ -60,7 +63,8 @@ def get_snapshot_topic(user_id, snapshot_id, topic):
     """Get a snapshot specific topic."""
     topic_result = db.get_snapshot_by_id(user_id, snapshot_id)['topics'][topic]
     if 'data_path' in topic_result:  # this topic contains metadata only
-        topic_result['data_path'] = f'/users/{user_id}/snapshots/{snapshot_id}/{topic}/data'  # expose the api endpoint
+        topic_result['dataUrl'] = f'/users/{user_id}/snapshots/{snapshot_id}/{topic}/data'  # expose the api endpoint
+        del topic_result['data_path']  # don't expose the actual file path
     return jsonify(topic_result)
 
 
