@@ -1,13 +1,13 @@
 import json
 from threading import Thread
 
-from mindreader.drivers import Database, MessageQueue, Encoder
+from mindreader import drivers
 from mindreader.parsers import get_available_parsers
 
 
 class Saver:
     def __init__(self, database_url):
-        self.db = Database(database_url)
+        self.db = drivers.Database(database_url)
 
     def save(self, topic: str, data: str, debug: bool = False):
         """
@@ -22,14 +22,14 @@ class Saver:
             print(data)
 
         if topic == 'user':
-            encoder = Encoder('json')
+            encoder = drivers.Encoder('json')
             user = encoder.user_decode(data)
             self.db.insert_user(user)
         else:
             data = json.loads(data)
             self.db.insert_data(data)
 
-    def run_saver(self, topic: str, mq: MessageQueue, debug=False):
+    def run_saver(self, topic: str, mq: drivers.MessageQueue, debug=False):
         """
         Registers to a message queue on a single parser type,
         received snapshot parsing results, and saves them to the database.
@@ -48,7 +48,7 @@ class Saver:
         :param debug:  if enabled, each data will be printed before saved to the database.
         """
 
-        mq = MessageQueue(mq_url)
+        mq = drivers.MessageQueue(mq_url)
         print("Saver connected to the queue")
         for parser_name in [*get_available_parsers(), 'user']:
             t = Thread(target=self.run_saver, args=(parser_name, mq, debug))

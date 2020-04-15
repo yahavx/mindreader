@@ -50,7 +50,7 @@ docker-compose 1.23.2
     ```
 
 ## Quickstart
-After finishing the [installation](#installation) step, run the ```run-pipeline``` script:
+After finishing the [installation](#installation) step, run the `run-pipeline` script:
 
 ```sh
 [mindreader] $ ./scripts/run-pipeline.sh
