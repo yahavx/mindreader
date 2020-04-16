@@ -1,7 +1,8 @@
-import os
 import sys
 import pytest
 from pathlib import Path
+
+sys.path.append(Path(__file__).parent.parent)
 from mindreader import drivers
 
 
@@ -28,4 +29,3 @@ def mock_database(monkeypatch):
     return storage
 
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
