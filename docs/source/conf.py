@@ -15,7 +15,7 @@ import sys
 import sphinx_click
 from pathlib import Path
 
-mindreader_base = Path(__file__).parent.parent.parent
+mindreader_base = Path(__file__).parent.parent.parent / 'mindreader'
 sys.path.insert(0, mindreader_base)
 
 
