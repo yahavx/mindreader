@@ -6,15 +6,9 @@
 Welcome to mindreader's documentation!
 ======================================
 
+Project by Yahav Ben Yaakov.
+
 .. toctree::
    modules
    :maxdepth: 2
    :caption: Contents:
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
