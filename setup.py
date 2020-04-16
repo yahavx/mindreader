@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mindreader',
-    version='1.0.1',
+    version='2.0.1',
     author='Yahav Ben Yaakov',
     description='A brain computer interface.',
     packages=find_packages(),
