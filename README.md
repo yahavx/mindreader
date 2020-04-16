@@ -4,6 +4,9 @@
 
 # mindreader
 
+A brain computer interface, that receives cognition snapshots from a client, manipulates them, and allow to
+visualize and consume the results in various ways.
+
 Yahav's final project for Advanced System Design course.
 
 ## Table of Contents
@@ -30,7 +33,7 @@ docker-compose 1.23.2
     ```sh
     $ git clone git@github.com:yahavx/mindreader.git
     ...
-    $ cd mindreader/
+    $ cd mindreader
     ```
 
 2. Run the installation script and activate the virtual environment:
