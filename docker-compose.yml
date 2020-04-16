@@ -132,6 +132,3 @@ services:
 
 networks:
   mindreader-net:
-
-volumes:
-    mindreader_data:
