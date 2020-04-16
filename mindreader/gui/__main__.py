@@ -1,8 +1,6 @@
-import sys
 import click
-from . import run_server as run_gui_server
 from pathlib import Path
-import fileinput
+from . import run_server as run_gui_server
 
 
 @click.group()

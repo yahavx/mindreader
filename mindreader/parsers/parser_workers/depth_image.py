@@ -1,9 +1,7 @@
-import json
-from mindreader.drivers.context import Context
 import numpy
 import matplotlib
 import matplotlib.pyplot as plt
-
+from mindreader.drivers.context import Context
 from mindreader.objects import Snapshot
 
 

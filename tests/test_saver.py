@@ -53,4 +53,3 @@ def mock_database(monkeypatch):
     from mindreader import drivers
     monkeypatch.setattr(drivers, 'Database', MockDatabase)
     return storage
-

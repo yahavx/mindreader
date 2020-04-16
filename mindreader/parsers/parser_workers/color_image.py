@@ -1,7 +1,5 @@
-import json
-from mindreader.drivers.context import Context
 from PIL import Image as PIL
-
+from mindreader.drivers.context import Context
 from mindreader.objects import Snapshot
 
 
