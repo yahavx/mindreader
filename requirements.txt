@@ -22,7 +22,6 @@ sphinx-click
 sphinx_rtd_theme
 urllib3==1.25.7
 
-
 sphinxcontrib-applehelp==1.0.1
 sphinxcontrib-devhelp==1.0.1
 sphinxcontrib-htmlhelp==1.0.2

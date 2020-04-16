@@ -5,6 +5,7 @@ serv = Flask(__name__)
 
 
 def run_server(host, port):
+    """Runs the webserver, serves file from /static."""
     serv.run(host, int(port))
 
 

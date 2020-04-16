@@ -6,8 +6,6 @@
 Welcome to mindreader's documentation!
 ======================================
 
-Project by Yahav Ben Yaakov.
-
 .. toctree::
    modules
    :maxdepth: 2

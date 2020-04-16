@@ -4,8 +4,6 @@ mindreader.drivers.context package
 Submodules
 ----------
 
-mindreader.drivers.context.context module
------------------------------------------
 
 .. automodule:: mindreader.drivers.context.context
    :members:

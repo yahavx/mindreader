@@ -5,4 +5,3 @@ mindreader
    :maxdepth: 4
 
    mindreader
-   setup
