@@ -15,9 +15,8 @@ import sys
 import sphinx_click
 from pathlib import Path
 
-# mindreader_base = Path(__file__).parent.parent.parent
-# sys.path.insert(0, mindreader_base)
-# import sphinx_click
+mindreader_base = Path(__file__).parent.parent.parent
+sys.path.insert(0, mindreader_base)
 
 
 # -- Project information -----------------------------------------------------
