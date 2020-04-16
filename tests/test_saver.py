@@ -1,3 +1,5 @@
+import pytest
+
 from mindreader.saver import Saver
 
 
@@ -33,3 +35,22 @@ def test_save_user_from_cli(mock_database, data_dir):
     assert user.username == "Yosi"
     assert user.birthday == 424244422
     assert user.gender == "female"
+
+
+@pytest.fixture
+def mock_database(monkeypatch):
+    storage = {}
+
+    class MockDatabase:
+        def __init__(self, url):
+            pass
+
+        def insert_user(self, user):
+            storage['user'] = user
+
+        def insert_data(self, data):
+            storage['data'] = data
+    from mindreader import drivers
+    monkeypatch.setattr(drivers, 'Database', MockDatabase)
+    return storage
+
