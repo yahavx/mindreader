@@ -3,7 +3,6 @@ import pytest
 from pathlib import Path
 
 sys.path.append(Path(__file__).parent.parent)
-from mindreader import drivers
 
 
 @pytest.fixture
@@ -24,7 +23,7 @@ def mock_database(monkeypatch):
 
         def insert_data(self, data):
             storage['data'] = data
-
+    from mindreader import drivers
     monkeypatch.setattr(drivers, 'Database', MockDatabase)
     return storage
 
