@@ -1,4 +1,4 @@
-mindreader
+mindreaderc
 ==========
 
 .. toctree::
