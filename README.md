@@ -31,7 +31,7 @@ docker-compose 1.23.2
 1. Clone the repository and enter it:
 
     ```sh
-    $ git clone git@github.com:yahavx/mindreader.git
+    $ git clone https://github.com/yahavx/mindreader.git
     ...
     $ cd mindreader
     ```
