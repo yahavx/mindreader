@@ -5,6 +5,7 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
    mindreader.drivers.context
    mindreader.drivers.databases
