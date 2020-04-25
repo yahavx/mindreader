@@ -1,5 +1,5 @@
-mindreader
-==========
+mindreader project
+===================
 
 .. toctree::
    :maxdepth: 4
