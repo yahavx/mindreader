@@ -4,6 +4,8 @@ mindreader.api package
 Submodules
 ----------
 
+mindreader.api.api module
+-------------------------
 
 .. automodule:: mindreader.api.api
    :members:

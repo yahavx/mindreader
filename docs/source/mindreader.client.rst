@@ -4,6 +4,8 @@ mindreader.client package
 Submodules
 ----------
 
+mindreader.client.client module
+-------------------------------
 
 .. automodule:: mindreader.client.client
    :members:

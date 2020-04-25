@@ -4,6 +4,8 @@ mindreader.server package
 Submodules
 ----------
 
+mindreader.server.server module
+-------------------------------
 
 .. automodule:: mindreader.server.server
    :members:

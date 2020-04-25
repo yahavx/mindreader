@@ -12,6 +12,8 @@ Subpackages
 Submodules
 ----------
 
+mindreader.parsers.parsers module
+---------------------------------
 
 .. automodule:: mindreader.parsers.parsers
    :members:

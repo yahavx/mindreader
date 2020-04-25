@@ -4,6 +4,8 @@ mindreader.saver package
 Submodules
 ----------
 
+mindreader.saver.saver module
+-----------------------------
 
 .. automodule:: mindreader.saver.saver
    :members:

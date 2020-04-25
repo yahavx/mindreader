@@ -12,6 +12,8 @@ Subpackages
 Submodules
 ----------
 
+mindreader.drivers.reader.reader module
+---------------------------------------
 
 .. automodule:: mindreader.drivers.reader.reader
    :members:

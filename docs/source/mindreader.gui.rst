@@ -4,6 +4,8 @@ mindreader.gui package
 Submodules
 ----------
 
+mindreader.gui.gui module
+-------------------------
 
 .. automodule:: mindreader.gui.gui
    :members:

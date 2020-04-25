@@ -12,17 +12,8 @@
 #
 import os
 import sys
-import sphinx_click
-from pathlib import Path
-
 sys.path.insert(0, os.path.abspath('../../mindreader'))
-sys.path.insert(0, os.path.abspath('../..'))
-mindreader_base = (Path(__file__).parent.parent.parent / 'mindreader').absolute()
-sys.path.insert(0, mindreader_base)
-print(f"\n\n\n\n\n {mindreader_base} \n\n\n\n\n")
-mindreader_base = Path(__file__).parent.parent.parent.absolute()
-print(f"\n\n\n\n\n {mindreader_base} \n\n\n\n\n")
-sys.path.insert(0, mindreader_base)
+
 
 # -- Project information -----------------------------------------------------
 
@@ -32,6 +23,7 @@ author = 'Yahav Ben Yaakov'
 
 # The full version, including alpha/beta/rc tags
 release = '2.1.0'
+
 
 # -- General configuration ---------------------------------------------------
 
