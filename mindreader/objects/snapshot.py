@@ -27,8 +27,8 @@ class Snapshot:
         exhaustion = float("%0.1f" % self.feelings.exhaustion)
         happiness = float("%0.1f" % self.feelings.happiness)
 
-        line1 = f'{date=}, {translation=}, {rotation=}'
-        line2 = f'\t\t {hunger=}, {thirst=}, {exhaustion=}, {happiness=}'
+        line1 = f'data={date}, translation={translation}, rotation={rotation}'
+        line2 = f'\t\t hunger={hunger}, thirst={thirst}, exhaustion={exhaustion}, happiness={happiness}'
         return f'Snapshot({line1}\n{line2})'
 
     def __str__(self):

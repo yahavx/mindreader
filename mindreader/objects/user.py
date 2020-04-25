@@ -21,7 +21,7 @@ class User:
         username = self.username
         birthday = dt.datetime.fromtimestamp(self.birthday).strftime("%d/%m/%y")
         gender = self.gender
-        return f'User({user_id=}, {username=}, {birthday=}, {gender=})'
+        return f'User(user_id={user_id}, username={username}, birthday={birthday}, gender={gender})'
 
     def __str__(self):
         user = f'user {self.user_id}'

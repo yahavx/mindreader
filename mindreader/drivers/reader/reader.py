@@ -51,8 +51,7 @@ class Reader:
         return f'Reader({path=}, user={self.user.username})'
 
     def __str__(self):
-        path = self.path
-        return f'Reader({path=}, user={self.user.username})'
+        return f'Reader(path={self.path}, user={self.user.username})'
 
     def __iter__(self):
         """Iterates over all the snapshots in the file."""

@@ -80,7 +80,7 @@ class Feelings:
         thirst = self.thirst
         exhaustion = self.exhaustion
         happiness = self.happiness
-        return f'Feelings({hunger=}, {thirst=}, {exhaustion=}, {happiness=})'
+        return f'Feelings(hunger={hunger}, thirst={thirst}, exhaustion={exhaustion}, happiness={happiness})'
 
 
 class SnapshotMetadata:
