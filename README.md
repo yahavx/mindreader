@@ -73,7 +73,10 @@ All the 1024 snapshots were sent successfully!
 [mindreader] $ 
 ```
 
-There is a sample example in `/tests/data/snapshot.gz` that you can try and use for start. 
+There is a sample example in `/tests/data/snapshot.gz` that you can try and use for start:
+```sh
+[mindreader] $ python -m mindreader.client upload-sample ./tests/data/snapshot.gz
+```
 
 After uploading, visit http://127.0.0.1:8080/ to see the results. You can also use the [CLI](/mindreader/cli/README.md) 
 or the [API](/mindreader/api/README.md) to view the data.
