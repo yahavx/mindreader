@@ -47,8 +47,7 @@ class Reader:
         return self.file_reader.get_snapshot()
 
     def __repr__(self):
-        path = self.path
-        return f'Reader({path=}, user={self.user.username})'
+        return f'Reader(path={self.path}, user={self.user.username})'
 
     def __str__(self):
         return f'Reader(path={self.path}, user={self.user.username})'
