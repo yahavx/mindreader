@@ -1,10 +1,7 @@
-mindreader.parsers.parser\_workers package
+parser_workers package
 ==========================================
 
-Submodules
-----------
-
-mindreader.parsers.parser\_workers.color\_image module
+color_image module
 ------------------------------------------------------
 
 .. automodule:: mindreader.parsers.parser_workers.color_image
@@ -12,7 +9,7 @@ mindreader.parsers.parser\_workers.color\_image module
    :undoc-members:
    :show-inheritance:
 
-mindreader.parsers.parser\_workers.depth\_image module
+depth_image module
 ------------------------------------------------------
 
 .. automodule:: mindreader.parsers.parser_workers.depth_image
@@ -20,7 +17,7 @@ mindreader.parsers.parser\_workers.depth\_image module
    :undoc-members:
    :show-inheritance:
 
-mindreader.parsers.parser\_workers.feelings module
+feelings module
 --------------------------------------------------
 
 .. automodule:: mindreader.parsers.parser_workers.feelings
@@ -28,19 +25,10 @@ mindreader.parsers.parser\_workers.feelings module
    :undoc-members:
    :show-inheritance:
 
-mindreader.parsers.parser\_workers.pose module
+pose module
 ----------------------------------------------
 
 .. automodule:: mindreader.parsers.parser_workers.pose
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: mindreader.parsers.parser_workers
    :members:
    :undoc-members:
    :show-inheritance:
