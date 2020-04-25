@@ -1,10 +1,6 @@
 cli package
 ======================
 
-Module contents
----------------
-
-.. automodule:: mindreader.cli
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. click:: cli.__main__:cli
+   :prog: python -m mindreader.cli
+   :show-nested:

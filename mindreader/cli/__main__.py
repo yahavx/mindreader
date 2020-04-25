@@ -17,31 +17,31 @@ def send_get_request(host, port, directory):
 
 
 @cli.command()
-@click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='5000')
+@click.option('-h', '--host', default='127.0.0.1', help="API host")
+@click.option('-p', '--port', default='5000', help="API port")
 def get_users(host, port):
     print(send_get_request(host, port, 'users'))
 
 
 @cli.command()
-@click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='5000')
+@click.option('-h', '--host', default='127.0.0.1', help="API host")
+@click.option('-p', '--port', default='5000', help="API port")
 @click.argument('user_id')
 def get_user(host, port, user_id):
     print(send_get_request(host, port, f'users/{user_id}'))
 
 
 @cli.command()
-@click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='5000')
+@click.option('-h', '--host', default='127.0.0.1', help="API host")
+@click.option('-p', '--port', default='5000', help="API port")
 @click.argument('user_id')
 def get_snapshots(host, port, user_id):
     print(send_get_request(host, port, f'users/{user_id}/snapshots'))
 
 
 @cli.command()
-@click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='5000')
+@click.option('-h', '--host', default='127.0.0.1', help="API host")
+@click.option('-p', '--port', default='5000', help="API port")
 @click.argument('user_id')
 @click.argument('snapshot_id')
 def get_snapshot(host, port, user_id, snapshot_id):
@@ -49,9 +49,9 @@ def get_snapshot(host, port, user_id, snapshot_id):
 
 
 @cli.command()
-@click.option('-h', '--host', default='127.0.0.1')
-@click.option('-p', '--port', default='5000')
-@click.option('-s', '--save', default='')
+@click.option('-h', '--host', default='127.0.0.1', help="API host")
+@click.option('-p', '--port', default='5000', help="API port")
+@click.option('-s', '--save', default='', help="Path to save the data received")
 @click.argument('user_id')
 @click.argument('snapshot_id')
 @click.argument('result_name')

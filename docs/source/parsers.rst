@@ -16,3 +16,9 @@ parsers module
    :members:
    :undoc-members:
    :show-inheritance:
+
+CLI
+------------
+.. click:: mindreader.parsers.__main__:cli
+   :prog: python -m mindreader.parsers
+   :show-nested:
