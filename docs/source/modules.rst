@@ -4,4 +4,11 @@ mindreader
 .. toctree::
    :maxdepth: 4
 
-   mindreader
+   api
+   cli
+   client
+   drivers
+   gui
+   parsers
+   saver
+   server

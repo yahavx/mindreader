@@ -14,7 +14,7 @@ from pathlib import Path
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../mindreader'))
+sys.path.insert(0, os.path.abspath('../../mindreader'))  # not sure which one of them is necessary, but it works...
 mindreader_base = Path(__file__).parent.parent.parent.absolute()
 sys.path.insert(0, mindreader_base)
 sys.path.insert(0, os.path.abspath('../../'))

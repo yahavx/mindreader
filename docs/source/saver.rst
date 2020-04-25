@@ -1,4 +1,4 @@
-mindreader.saver package
+saver package
 ========================
 
 Submodules

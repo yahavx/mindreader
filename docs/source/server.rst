@@ -1,10 +1,10 @@
-mindreader.server package
+server package
 =========================
 
 Submodules
 ----------
 
-mindreader.server.server module
+server module
 -------------------------------
 
 .. automodule:: mindreader.server.server

@@ -1,4 +1,4 @@
-mindreader.cli package
+cli package
 ======================
 
 Module contents
