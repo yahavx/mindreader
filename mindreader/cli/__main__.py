@@ -15,9 +15,10 @@ def send_get_request(host, port, directory):
         r = requests.get(url=url)
         result = r.json()
         return json.dumps(result, indent=4)
+    except requests.exceptions.ConnectionError:
+        return "CLI ERROR: couldn't connect to API"
     except Exception as error:
-        print(f'CLI ERROR: {error}')
-        return 1
+        return f'CLI ERROR: {error}'
 
 
 @cli.command()
