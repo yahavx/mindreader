@@ -10,10 +10,14 @@ def cli():
 
 
 def send_get_request(host, port, directory):
-    url = f'http://{host}:{port}/{directory}'
-    r = requests.get(url=url)
-    result = r.json()
-    return json.dumps(result, indent=4)
+    try:
+        url = f'http://{host}:{port}/{directory}'
+        r = requests.get(url=url)
+        result = r.json()
+        return json.dumps(result, indent=4)
+    except Exception as error:
+        print(f'CLI ERROR: {error}')
+        return 1
 
 
 @cli.command()
