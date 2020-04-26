@@ -65,10 +65,10 @@ def get_snapshot_by_id(user_id, snapshot_id):
 @serv.route('/users/<int:user_id>/snapshots/<snapshot_id>/<topic>')
 def get_snapshot_topic(user_id, snapshot_id, topic):
     """Get a snapshot specific topic."""
-    topic_result = db.get_snapshot_by_id(user_id, snapshot_id)
-    if not topic_result:
+    snapshot = db.get_snapshot_by_id(user_id, snapshot_id)
+    if not snapshot or 'topics' not in snapshot or topic not in snapshot['topics']:
         return "Topic not found", 404
-    topic_result = topic_result['topics'][topic]
+    topic_result = snapshot['topics'][topic]
     if 'data_path' in topic_result:  # this topic contains metadata only
         topic_result['dataUrl'] = f'/users/{user_id}/snapshots/{snapshot_id}/{topic}/data'  # expose the api endpoint
         del topic_result['data_path']  # don't expose the actual file path
@@ -78,8 +78,10 @@ def get_snapshot_topic(user_id, snapshot_id, topic):
 @serv.route('/users/<int:user_id>/snapshots/<snapshot_id>/<topic>/data')
 def get_snapshot_topic_data(user_id, snapshot_id, topic):
     """If the snapshot topic contained only metadata, this will return the actual data."""
-    path = db.get_snapshot_by_id(user_id, snapshot_id)
-    if not path:
+    snapshot = db.get_snapshot_by_id(user_id, snapshot_id)
+    if not snapshot or 'topics' not in snapshot or topic not in snapshot['topics']:
         return "Topic not found", 404
-    path = path['topics'][topic]['data_path']
-    return send_file(path)
+    topic_data = snapshot['topics'][topic]
+    if 'data_path' not in topic:
+        return "Topic doesn't contain external data", 400
+    return send_file(topic_data['data_path'])
