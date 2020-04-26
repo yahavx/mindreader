@@ -34,7 +34,7 @@ def get_user_by_id(user_id):
     """Get user by his id."""
     user = db.get_user_by_id(user_id)
     if not user:
-        return 404, "User not found"
+        return "User not found", 404
     user_dict = dict(userId=user['user_id'], username=user['username'],
                      birthday=user['birthday'], gender=user['gender'])
     return jsonify(user_dict)
@@ -54,7 +54,7 @@ def get_snapshot_by_id(user_id, snapshot_id):
     """Get snapshot by its id."""
     snapshot = db.get_snapshot_by_id(user_id, snapshot_id)
     if not snapshot:
-        return 404, "Snapshot not found"
+        return "Snapshot not found", 404
     topics = list(snapshot['topics'].keys())
     ret = dict(snapshotId=snapshot['metadata']['snapshot_id'],
                timestamp=snapshot['metadata']['timestamp'],
