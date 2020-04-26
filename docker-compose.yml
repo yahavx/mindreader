@@ -23,6 +23,7 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/Dockerfile-base
+    image: mindreader-base:latest
 
   server:
     depends_on:
