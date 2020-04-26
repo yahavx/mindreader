@@ -82,6 +82,6 @@ def get_snapshot_topic_data(user_id, snapshot_id, topic):
     if not snapshot or 'topics' not in snapshot or topic not in snapshot['topics']:
         return "Topic not found", 404
     topic_data = snapshot['topics'][topic]
-    if 'data_path' not in topic:
+    if 'data_path' not in topic_data:
         return "Topic doesn't contain external data", 400
     return send_file(topic_data['data_path'])
