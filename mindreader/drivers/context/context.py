@@ -10,7 +10,7 @@ class Context:
     This class is used to communicate with the storage (i.e. save/load files).
     """
 
-    base_dir = '~/mindreader_internal_data'
+    base_dir = Path(__file__).parent.parent.parent / './mindreader_data'
 
     def __init__(self, path: str, is_file=False):
         """
