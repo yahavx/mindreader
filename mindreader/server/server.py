@@ -10,9 +10,10 @@ from mindreader.objects.snapshot import Snapshot
 serv = Flask(__name__)
 message_handler = None
 mq: MessageQueue = None
+data_directory: str = "/var/data/mindreader_data"
 
 
-def run_server(host, port, publish=None, mq_url=None):
+def run_server(host, port, publish=None, mq_url=None, data_dir=None):
     """
     Runs the server, waiting to receive snapshots and handles them,
     either by a self-made handler, or by posting them to the message queue.
@@ -25,6 +26,8 @@ def run_server(host, port, publish=None, mq_url=None):
     :param port: server port.
     :param publish: handler for snapshots, a function that receive a (user, snapshot) and process them.
     :param mq_url: a url to a message queue, to post snapshots on.
+    :param data_dir: if the message queue is used, some snapshot data may be saved to this directory.
+                     if not supplied, the default is /var/data/mindreader_data.
 
     :raises EnvironmentError: publish or mq_url were supplied in correctly.
     :raises ConnectionError: couldn't connect to queue.
@@ -38,11 +41,13 @@ def run_server(host, port, publish=None, mq_url=None):
         message_handler = publish
 
     else:  # mq is not None
-        global mq
+        global mq, data_directory
         try:
             mq = MessageQueue(mq_url)
         except ConnectionError:
             raise ConnectionError("Server error: couldn't connect to message queue")
+        if data_dir:
+            data_directory = data_dir
 
     serv.run(host, int(port))
 
@@ -66,7 +71,7 @@ def post_snapshot():
         return ""
 
     try:
-        context = Context.generate_context_from_snapshot_metadata(snapshot.metadata)
+        context = Context.generate_context_from_snapshot_metadata(snapshot.metadata, data_directory)
     except PermissionError:
         raise PermissionError("Server error: no permission to save data, check context saving location")
 

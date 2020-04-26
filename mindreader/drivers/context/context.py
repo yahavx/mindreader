@@ -10,8 +10,6 @@ class Context:
     This class is used to communicate with the storage (i.e. save/load files).
     """
 
-    base_dir = Path(__file__).parent.parent.parent / 'mindreader_data'
-
     def __init__(self, path: str, is_file=False):
         """
         Generate context from a path.
@@ -29,9 +27,14 @@ class Context:
             os.makedirs(self.path)
 
     @classmethod
-    def generate_context_from_snapshot_metadata(cls, metadata: SnapshotMetadata):
-        """Generate a context that is based on snapshot metadata."""
-        return cls(f'{cls.base_dir}/{metadata.user_id}/{metadata.snapshot_id}')
+    def generate_context_from_snapshot_metadata(cls, metadata: SnapshotMetadata, base_dir):
+        """
+        Generate a context that is based on snapshot metadata.
+
+        :param metadata: a snapshot metadata.
+        :param base_dir: a base directory, which the context directory will be created under.
+        """
+        return cls(f'{base_dir}/{metadata.user_id}/{metadata.snapshot_id}')
 
     def save(self, name: str, data, is_json=False):
         """
