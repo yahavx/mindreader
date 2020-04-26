@@ -61,11 +61,16 @@ def get_snapshot(host, port, user_id, snapshot_id):
 @click.argument('result_name')
 def get_result(host, port, save, user_id, snapshot_id, result_name):
     result = send_get_request(host, port, f'users/{user_id}/snapshots/{snapshot_id}/{result_name}')
-    if save:
-        with open(save, 'w+') as f:
-            f.write(result)
-    else:
-        print(result)
+
+    try:
+        if save:
+            with open(save, 'w+') as f:
+                f.write(result)
+        else:
+            print(result)
+    except Exception as error:
+        print(f'CLI ERROR: {error}')
+        return 1
 
 
 if __name__ == '__main__':
