@@ -42,7 +42,7 @@ def run_server(host, port, publish=None, mq_url=None):
         try:
             mq = MessageQueue(mq_url)
         except ConnectionError:
-            sys.stderr.write("Server error: couldn't connect to message queue")
+            raise ConnectionError("Server error: couldn't connect to message queue")
 
     serv.run(host, int(port))
 
@@ -89,6 +89,9 @@ def replace_large_data_with_metadata(snapshot: Snapshot, context: Context):
     """
     Saves the large parts of the snapshot to storage (i.e. images),
     and replaces them with metadata (path).
+
+    :param snapshot: snapshot to process
+    :param context: initialized context object, to save the data
     """
     color_image_data = snapshot.color_image.data
     depth_image_data = list(snapshot.depth_image.data)

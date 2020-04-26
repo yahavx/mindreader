@@ -1,6 +1,6 @@
 import click
 from . import parse as parse_data
-from . import run_parser as register_parser
+from mindreader.parsers.parsers import run_parser as register_parser
 from mindreader.parsers.parsers import run_all_parsers
 
 
@@ -18,7 +18,7 @@ def parse(parser_name, path):
             result = parse_data(parser_name, f.read())
         print(result)
     except Exception as error:
-        print(f'Parser ERROR: {error}')
+        print(f'Parsers ERROR: {error}')
         return 1
 
 
@@ -30,7 +30,7 @@ def run_parser(parser_name, mq_url, debug):
     try:
         register_parser(parser_name, mq_url, debug)
     except Exception as error:
-        print(f'Parser ERROR: {error}')
+        print(f'Parsers ERROR: {error}')
         return 1
 
 
@@ -40,7 +40,7 @@ def run_parsers(mq_url):
     try:
         run_all_parsers(mq_url)
     except Exception as error:
-        print(f'Parser ERROR: {error}')
+        print(f'Parsers ERROR: {error}')
         return 1
 
 
