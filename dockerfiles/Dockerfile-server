@@ -3,4 +3,5 @@ FROM mindreader-base
 ENV HOST 0.0.0.0
 ENV PORT 8000
 ENV MQ_URL rabbitmq://mq:5672
-CMD python -m mindreader.server run-server -h ${HOST} -p ${PORT} ${MQ_URL}
+ENV DATA_DIR /var/data/mindreader_data
+CMD python -m mindreader.server run-server -h ${HOST} -p ${PORT} -d ${DATA_DIR} ${MQ_URL}

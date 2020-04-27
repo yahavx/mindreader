@@ -10,7 +10,7 @@ from mindreader.objects.snapshot import Snapshot
 serv = Flask(__name__)
 message_handler = None
 mq: MessageQueue = None
-data_directory: str = "/var/data/mindreader_data"
+data_directory: str = ''
 
 
 def run_server(host, port, publish=None, mq_url=None, data_dir=None):
@@ -27,7 +27,7 @@ def run_server(host, port, publish=None, mq_url=None, data_dir=None):
     :param publish: handler for snapshots, a function that receive a (user, snapshot) and process them.
     :param mq_url: a url to a message queue, to post snapshots on.
     :param data_dir: if the message queue is used, some snapshot data may be saved to this directory.
-                     if not supplied, the default is /var/data/mindreader_data.
+                     if not supplied, the default is the project root directory under 'mindreader_internal_data'.
 
     :raises EnvironmentError: publish or mq_url were supplied in correctly.
     :raises ConnectionError: couldn't connect to queue.
