@@ -88,7 +88,7 @@ The project contains one package, `mindreader`, which provides the following sub
 * [`server`](/mindreader/server/README.md) :calling: - receives cognition snapshots from the client, and handles them.
 * [`parsers`](/mindreader/parsers/README.md) :hammer: - processes snapshots received from the server.
 * [`saver`](/mindreader/saver/README.md) :key: - saves processed data to the database.
-* [`api`](/mindreader/server/README.md) :book: - an API to consume the data.
+* [`api`](/mindreader/api/README.md) :book: - an API to consume the data.
 * [`cli`](/mindreader/cli/README.md) :memo: - a CLI that consumes the API.
 * [`gui`](/mindreader/gui/README.md) :computer: - allows to visualize the data comfortably.
 * [`drivers`](/mindreader/drivers/README.md) :floppy_disk: - utility that provides services to all the components
